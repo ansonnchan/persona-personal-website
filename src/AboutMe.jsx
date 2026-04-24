@@ -16,8 +16,12 @@ const MAIN_IMAGES = [mainm, mainm2, mainf];
 
 const REVEAL_CONTENT = [
   {
-    upper: ["Name: TODO Your Name", "Role: Aspiring Software Engineer"],
-    lower: "Focus: Frontend development, UI engineering, and product-minded builds",
+    upper: [
+      "Name: TODO Your Name",
+      "Role: Aspiring Software Engineer",
+      "Education: TODO School / Program",
+    ],
+    lower: "TODO: Add graduation year, major, and key coursework here",
   },
   {
     upper: [

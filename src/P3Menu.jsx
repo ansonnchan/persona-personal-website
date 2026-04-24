@@ -1,10 +1,10 @@
 import { useState, useEffect } from "react";
 
 const ITEMS = [
-  { id: "about",      label: "ABOUT ME",            page: "about",      fontSize: 80, offsetX: 0,  offsetY: 0,  skew: -6,  skewY: 10  },
-  { id: "experience", label: "EXPERIENCE & SKILLS", page: "experience", fontSize: 54, offsetX: 12, offsetY: 8,  skew: -11, skewY: -10 },
-  { id: "projects",   label: "PERSONAL PROJECTS",   page: "projects",   fontSize: 56, offsetX: 10, offsetY: 6,  skew: -4,  skewY: 7   },
-  { id: "socials",    label: "SOCIALS",             page: "socials",    fontSize: 74, offsetX: 16, offsetY: 8,  skew: -3,  skewY: 5   },
+  { id: "about",      label: "ABOUT ME",          page: "about",      fontSize: 62, offsetX: 0,  offsetY: 0,  skew: -6,  skewY: 10  },
+  { id: "experience", label: "EXPERIENCE",        page: "experience", fontSize: 58, offsetX: 8,  offsetY: 6,  skew: -11, skewY: -10 },
+  { id: "projects",   label: "PERSONAL PROJECTS", page: "projects",   fontSize: 50, offsetX: 8,  offsetY: 5,  skew: -4,  skewY: 7   },
+  { id: "socials",    label: "SOCIALS",           page: "socials",    fontSize: 62, offsetX: 10, offsetY: 6,  skew: -3,  skewY: 5   },
 ];
 
 const CLIP_SHAPES = [
@@ -62,8 +62,9 @@ export default function P3Menu({ onNavigate }) {
           padding: 48px;
           display: flex;
           flex-direction: column;
-          align-items: center;
+          align-items: flex-start;
           pointer-events: all;
+          margin-left: clamp(220px, 21vw, 360px);
         }
 
         .p3-row {
@@ -196,7 +197,7 @@ export default function P3Menu({ onNavigate }) {
           z-index: 20;
           font-family: 'Anton', sans-serif;
           font-style: italic;
-          font-size: 108px;
+          font-size: 82px;
           line-height: 0.88;
           letter-spacing: 2px;
           color: rgba(10, 10, 14, 0.64);
@@ -211,11 +212,48 @@ export default function P3Menu({ onNavigate }) {
         .p3-name-tag span:first-child {
           color: rgba(0, 0, 0, 0.86);
         }
+
+        @media (max-width: 1100px) {
+          .p3-menu {
+            margin-left: clamp(140px, 15vw, 220px);
+          }
+
+          .p3-name-tag {
+            font-size: 66px;
+            top: 14px;
+            left: 16px;
+          }
+        }
+
+        @media (max-width: 800px) {
+          .p3-overlay {
+            justify-content: flex-start;
+            padding-left: 16px;
+          }
+
+          .p3-menu {
+            margin-left: 0;
+            padding: 18px 8px;
+          }
+
+          .p3-name-tag {
+            display: none;
+          }
+
+          .p3-row {
+            margin-top: 2px !important;
+          }
+
+          .p3-label-base {
+            font-size: clamp(34px, 9vw, 54px) !important;
+            letter-spacing: 1px;
+          }
+        }
       `}</style>
 
       <div className="p3-overlay">
         <div className="p3-name-tag">
-          <span>jade's</span>
+          <span>anson's</span>
           <span>persona</span>
         </div>
         <div className="p3-stripe" />

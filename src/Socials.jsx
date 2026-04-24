@@ -20,23 +20,23 @@ const ROLES = [
 const ITEMS = [
   {
     id: "github", label: "GITHUB", handle: "@ansonnchan", href: "https://github.com/ansonnchan", icon: "🎮", barIcon: icon1, bars: 3, newBars: [0], counts: ["REPOS", "CODE", "OSS"],
-    links: ["github.com/ansonnchan", "github.com/ansonnchan?tab=repositories", "github.com/ansonnchan/persona-personal-website"],
+    links: ["https://github.com/ansonnchan", "https://github.com/ansonnchan?tab=repositories", "https://github.com/ansonnchan/persona-personal-website"],
     stats: [
       { tag: "TYPE", value: "DEV", color: "#9147ff" },
       { tag: "FOCUS", value: "WEB",  color: "#bf94ff" },
     ],
   },
   {
-    id: "linkedin", label: "LINKEDIN", handle: "TODO: your-linkedin", href: "https://www.linkedin.com", icon: "📷", barIcon: icon2, bars: 3, newBars: [1], counts: ["NETWORK", "CAREER", "UPDATES"],
-    links: ["linkedin.com", "linkedin.com/jobs", "linkedin.com/in/your-profile"],
+    id: "linkedin", label: "LINKEDIN", handle: "@ansonnchan", href: "https://linkedin.com/in/ansonnchan", icon: "📷", barIcon: icon2, bars: 3, newBars: [1], counts: ["NETWORK", "CAREER", "UPDATES"],
+    links: ["https://linkedin.com/in/ansonnchan", "https://linkedin.com/jobs", "https://linkedin.com/in/ansonnchan"],
     stats: [
       { tag: "TYPE", value: "PRO", color: "#e1306c" },
       { tag: "GOAL", value: "HIRING",  color: "#f77737" },
     ],
   },
   {
-    id: "email", label: "CONTACT", handle: "TODO: your-email", href: "mailto:your-email@example.com", icon: "🎵", barIcon: icon3, bars: 3, newBars: [0, 2], counts: ["EMAIL", "RESUME", "CALL"],
-    links: ["mailto:your-email@example.com", "github.com/ansonnchan/persona-personal-website", "linkedin.com/in/your-profile"],
+    id: "email", label: "CONTACT", handle: "ananryry180@gmail.com", href: "mailto:ananryry180@gmail.com", icon: "🎵", barIcon: icon3, bars: 3, newBars: [0, 2], counts: ["EMAIL", "REACH", "CALL"],
+    links: ["mailto:ananryry180@gmail.com", "https://github.com/ansonnchan/persona-personal-website", "https://linkedin.com/in/ansonnchan"],
     stats: [
       { tag: "TYPE", value: "DIRECT", color: "#00f2ea" },
       { tag: "SLA", value: "24H",  color: "#ff0050" },
@@ -60,18 +60,24 @@ export default function Socials() {
   }, []);
 
   useEffect(() => {
+    const openLink = (target) => {
+      if (!target) return;
+      const hasScheme = /^(https?:|mailto:)/i.test(target);
+      window.open(hasScheme ? target : `https://${target}`, "_blank");
+    };
+
     const onKey = (e) => {
       if (focus === "left") {
         if (e.key === "ArrowUp")    setActive(i => Math.max(0, i - 1));
         if (e.key === "ArrowDown")  setActive(i => Math.min(ITEMS.length - 1, i + 1));
         if (e.key === "ArrowRight") { setFocus("right"); setActiveInfoBar(0); }
-        if (e.key === "Enter")      window.open(ITEMS[active].href, "_blank");
+        if (e.key === "Enter")      openLink(ITEMS[active].href);
       } else {
         const barCount = ITEMS[active].bars;
         if (e.key === "ArrowUp")   setActiveInfoBar(i => Math.max(0, i - 1));
         if (e.key === "ArrowDown") setActiveInfoBar(i => Math.min(barCount - 1, i + 1));
         if (e.key === "ArrowLeft") setFocus("left");
-        if (e.key === "Enter")     window.open("https://" + ITEMS[active].links[activeInfoBar], "_blank");
+        if (e.key === "Enter")     openLink(ITEMS[active].links[activeInfoBar]);
       }
       if ((e.key === "ArrowLeft" && focus === "left") || e.key === "Escape" || e.key === "Backspace") navigate(-1);
     };

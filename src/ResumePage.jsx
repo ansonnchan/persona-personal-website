@@ -3,9 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const ITEMS = [
   { id: "i", badge: "I", title: "EDUCATION", subtitle: "Degree / Coursework", rank: 3 },
-  { id: "ii", badge: "II", title: "SKILLS", subtitle: "Frontend / Tools / Design", rank: 4 },
-  { id: "iii", badge: "III", title: "PROJECTS", subtitle: "Portfolio Highlights", rank: 5 },
-  { id: "iv", badge: "IV", title: "EXPERIENCE", subtitle: "Internships / Roles", rank: 2 },
+  { id: "ii", badge: "II", title: "PROJECTS", subtitle: "Portfolio Highlights", rank: 5 },
+  { id: "iii", badge: "III", title: "EXPERIENCE", subtitle: "Internships / Roles", rank: 2 },
 ];
 
 const SECTION_DETAILS = [
@@ -27,22 +26,6 @@ const SECTION_DETAILS = [
   },
   {
     index: "02",
-    title: "SKILL MATRIX",
-    progress: "CORE",
-    rows: [
-      { index: "01", title: "React / JavaScript", status: "Advanced" },
-      { index: "02", title: "HTML / CSS / Responsive UI", status: "Advanced" },
-      { index: "03", title: "Git / GitHub", status: "Proficient" },
-      { index: "04", title: "Figma / UI Systems", status: "Proficient" },
-    ],
-    bullets: [
-      "Swap these with your real stack and proficiency levels.",
-      "Keep this section aligned with the jobs you are applying for.",
-      "Prioritize concrete tools over generic buzzwords.",
-    ],
-  },
-  {
-    index: "03",
     title: "PROJECT ARCHIVE",
     progress: "LIVE",
     rows: [
@@ -58,7 +41,7 @@ const SECTION_DETAILS = [
     ],
   },
   {
-    index: "04",
+    index: "03",
     title: "EXPERIENCE LOG",
     progress: "CAREER",
     rows: [
@@ -77,7 +60,7 @@ const SECTION_DETAILS = [
 
 export default function ResumePage({ src }) {
   const navigate = useNavigate();
-  const [active, setActive] = useState(1);
+  const [active, setActive] = useState(0);
   const [mounted, setMounted] = useState(false);
 
   useEffect(() => {
