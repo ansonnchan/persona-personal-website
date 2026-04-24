@@ -19,27 +19,27 @@ const ROLES = [
 
 const ITEMS = [
   {
-    id: "twitch", label: "TWITCH", handle: "@yourname", href: "https://twitch.tv/yourname", icon: "🎮", barIcon: icon1, bars: 1, newBars: [0], counts: ["56"],
-    links: ["twitch.tv/videos/2041837265"],
+    id: "github", label: "GITHUB", handle: "@ansonnchan", href: "https://github.com/ansonnchan", icon: "🎮", barIcon: icon1, bars: 3, newBars: [0], counts: ["REPOS", "CODE", "OSS"],
+    links: ["github.com/ansonnchan", "github.com/ansonnchan?tab=repositories", "github.com/ansonnchan/persona-personal-website"],
     stats: [
-      { tag: "FOL", value: "1.2K", color: "#9147ff" },
-      { tag: "VWR", value: "042",  color: "#bf94ff" },
+      { tag: "TYPE", value: "DEV", color: "#9147ff" },
+      { tag: "FOCUS", value: "WEB",  color: "#bf94ff" },
     ],
   },
   {
-    id: "instagram", label: "INSTAGRAM", handle: "@yourhandle", href: "https://instagram.com/yourhandle", icon: "📷", barIcon: icon2, bars: 5, newBars: [1, 2], counts: ["3.4M", "2.5M", "676K", "412K", "198K"],
-    links: ["instagram.com/p/C4xQmRrNk2a", "instagram.com/p/C3wLpBsOj7f", "instagram.com/reel/C2vKoArMi6e", "instagram.com/p/C1uJnZqLh5d", "instagram.com/reel/C0tImYpKg4c"],
+    id: "linkedin", label: "LINKEDIN", handle: "TODO: your-linkedin", href: "https://www.linkedin.com", icon: "📷", barIcon: icon2, bars: 3, newBars: [1], counts: ["NETWORK", "CAREER", "UPDATES"],
+    links: ["linkedin.com", "linkedin.com/jobs", "linkedin.com/in/your-profile"],
     stats: [
-      { tag: "FOL", value: "3.4K", color: "#e1306c" },
-      { tag: "PST", value: "128",  color: "#f77737" },
+      { tag: "TYPE", value: "PRO", color: "#e1306c" },
+      { tag: "GOAL", value: "HIRING",  color: "#f77737" },
     ],
   },
   {
-    id: "tiktok", label: "TIKTOK", handle: "@yourhandle", href: "https://tiktok.com/@yourhandle", icon: "🎵", barIcon: icon3, bars: 7, newBars: [0, 3, 5, 6], counts: ["5.1M", "3.7M", "2.2M", "1.4M", "831K", "490K", "217K"],
-    links: ["tiktok.com/@yourhandle/video/7318492016374859054", "tiktok.com/@yourhandle/video/7305837261940183342", "tiktok.com/@yourhandle/video/7291046385720348974", "tiktok.com/@yourhandle/video/7278392047163820334", "tiktok.com/@yourhandle/video/7264819203847165742", "tiktok.com/@yourhandle/video/7251047382916430126", "tiktok.com/@yourhandle/video/7237294018463851822"],
+    id: "email", label: "CONTACT", handle: "TODO: your-email", href: "mailto:your-email@example.com", icon: "🎵", barIcon: icon3, bars: 3, newBars: [0, 2], counts: ["EMAIL", "RESUME", "CALL"],
+    links: ["mailto:your-email@example.com", "github.com/ansonnchan/persona-personal-website", "linkedin.com/in/your-profile"],
     stats: [
-      { tag: "FOL", value: "8.9K", color: "#00f2ea" },
-      { tag: "LKS", value: "52K",  color: "#ff0050" },
+      { tag: "TYPE", value: "DIRECT", color: "#00f2ea" },
+      { tag: "SLA", value: "24H",  color: "#ff0050" },
     ],
   },
 ];

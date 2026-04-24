@@ -2,17 +2,77 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 
 const ITEMS = [
-  { id: "i", badge: "I", title: "EDUCATION", subtitle: "University / Coursework", rank: 3 },
-  { id: "ii", badge: "II", title: "SKILLS", subtitle: "Frontend / Design / UI", rank: 4 },
-  { id: "iii", badge: "III", title: "PROJECTS", subtitle: "Featured Work", rank: 5 },
+  { id: "i", badge: "I", title: "EDUCATION", subtitle: "Degree / Coursework", rank: 3 },
+  { id: "ii", badge: "II", title: "SKILLS", subtitle: "Frontend / Tools / Design", rank: 4 },
+  { id: "iii", badge: "III", title: "PROJECTS", subtitle: "Portfolio Highlights", rank: 5 },
   { id: "iv", badge: "IV", title: "EXPERIENCE", subtitle: "Internships / Roles", rank: 2 },
 ];
 
-const EDUCATION_ROWS = [
-  { index: "01", title: "General Education", status: "Complete" },
-  { index: "02", title: "Computer Science Core", status: "In Progress" },
-  { index: "03", title: "Elective Track", status: "Queued" },
-  { index: "04", title: "Capstone Prep", status: "Pending" },
+const SECTION_DETAILS = [
+  {
+    index: "01",
+    title: "EDUCATION LOG",
+    progress: "TODO",
+    rows: [
+      { index: "01", title: "TODO: University Name", status: "Ongoing" },
+      { index: "02", title: "TODO: Degree Program", status: "BSc / BA" },
+      { index: "03", title: "TODO: Expected Graduation", status: "YYYY" },
+      { index: "04", title: "TODO: Relevant Coursework", status: "Update" },
+    ],
+    bullets: [
+      "Add your school, major, and graduation timeline.",
+      "Highlight coursework tied to software, UI, or product work.",
+      "List awards, dean's list, or notable academic achievements.",
+    ],
+  },
+  {
+    index: "02",
+    title: "SKILL MATRIX",
+    progress: "CORE",
+    rows: [
+      { index: "01", title: "React / JavaScript", status: "Advanced" },
+      { index: "02", title: "HTML / CSS / Responsive UI", status: "Advanced" },
+      { index: "03", title: "Git / GitHub", status: "Proficient" },
+      { index: "04", title: "Figma / UI Systems", status: "Proficient" },
+    ],
+    bullets: [
+      "Swap these with your real stack and proficiency levels.",
+      "Keep this section aligned with the jobs you are applying for.",
+      "Prioritize concrete tools over generic buzzwords.",
+    ],
+  },
+  {
+    index: "03",
+    title: "PROJECT ARCHIVE",
+    progress: "LIVE",
+    rows: [
+      { index: "01", title: "Persona Portfolio Website", status: "Deployed" },
+      { index: "02", title: "TODO: Project Name #2", status: "In Progress" },
+      { index: "03", title: "TODO: Project Name #3", status: "Planned" },
+      { index: "04", title: "TODO: Project Name #4", status: "Backlog" },
+    ],
+    bullets: [
+      "Add project names with one-line outcome-focused summaries.",
+      "Mention measurable impact where possible (users, speed, results).",
+      "Link each project to repo, live demo, or case study.",
+    ],
+  },
+  {
+    index: "04",
+    title: "EXPERIENCE LOG",
+    progress: "CAREER",
+    rows: [
+      { index: "01", title: "TODO: Company / Internship", status: "Role" },
+      { index: "02", title: "TODO: Main Responsibility", status: "Impact" },
+      { index: "03", title: "TODO: Team / Domain", status: "Context" },
+      { index: "04", title: "TODO: Dates", status: "YYYY-YYYY" },
+    ],
+    bullets: [
+      "Describe what you built and why it mattered to the team.",
+      "Use action + result phrasing (implemented, improved, delivered).",
+      "Include internships, freelance work, or leadership experience.",
+    ],
+  },
 ];
 
 export default function ResumePage({ src }) {
@@ -435,16 +495,16 @@ export default function ResumePage({ src }) {
           ))}
         </div>
 
-        {active === 0 && (
+        {SECTION_DETAILS[active] && (
           <div className="resume-detail-panel">
             <div className="resume-detail-top">
-              <div className="resume-detail-top-index">01</div>
-              <div className="resume-detail-top-title">EDUCATION LOG</div>
-              <div className="resume-detail-top-progress">7/5</div>
+              <div className="resume-detail-top-index">{SECTION_DETAILS[active].index}</div>
+              <div className="resume-detail-top-title">{SECTION_DETAILS[active].title}</div>
+              <div className="resume-detail-top-progress">{SECTION_DETAILS[active].progress}</div>
             </div>
 
             <div className="resume-detail-list">
-              {EDUCATION_ROWS.map((row) => (
+              {SECTION_DETAILS[active].rows.map((row) => (
                 <div className="resume-detail-row" key={row.index}>
                   <div className="resume-detail-row-index">{row.index}</div>
                   <div className="resume-detail-row-title">{row.title}</div>
@@ -456,9 +516,9 @@ export default function ResumePage({ src }) {
             <div className="resume-detail-bottom">
               <div className="resume-detail-bottom-title">DETAILS</div>
               <div className="resume-detail-bullets">
-                <div className="resume-detail-bullet">- Maintain progress across required classes and supporting work.</div>
-                <div className="resume-detail-bullet">- Track portfolio-ready projects tied to coursework and labs.</div>
-                <div className="resume-detail-bullet">- Keep materials prepared for internships, research, and review.</div>
+                {SECTION_DETAILS[active].bullets.map((bullet) => (
+                  <div className="resume-detail-bullet" key={bullet}>- {bullet}</div>
+                ))}
               </div>
             </div>
           </div>

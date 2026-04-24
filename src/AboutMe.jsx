@@ -16,24 +16,24 @@ const MAIN_IMAGES = [mainm, mainm2, mainf];
 
 const REVEAL_CONTENT = [
   {
-    upper: ["name moneybagg", "age:23"],
-    lower: "major: computer science",
+    upper: ["Name: TODO Your Name", "Role: Aspiring Software Engineer"],
+    lower: "Focus: Frontend development, UI engineering, and product-minded builds",
   },
   {
     upper: [
-      "Cleopatra lived closer to the Moon landing than to the building of the pyramids.",
-      "Vikings kept cats on ships for pest control (and vibes).",
-      "In medieval Europe, animals could be put on trial for crimes",
+      "I enjoy turning complex ideas into clear user experiences.",
+      "I like combining visual design and engineering in one workflow.",
+      "I actively build projects to strengthen practical, job-ready skills.",
     ],
-    lower: "abbove is some history fun fact",
+    lower: "Strengths: communication, ownership, and continuous improvement",
   },
   {
     upper: [
-      "Oxford University founding is older than the Aztec Empire.",
-      "The shortest war in history lasted 38–45 minutes (Britain vs Zanzibar).",
-      "Humans have been writing for ~5,000 years",
+      "Goal: contribute to real products with measurable impact.",
+      "Open to internships and early-career software opportunities.",
+      "Building this portfolio to showcase my growth and execution style.",
     ],
-    lower: "yes it's a place holder",
+    lower: "TODO: Replace this section with your own short personal statement",
   },
 ];
 
@@ -45,27 +45,27 @@ const ROLES = [
 
 const ITEMS = [
   {
-    id: "twitch", label: "ABOUT ME", handle: "@yourname", href: "https://twitch.tv/yourname", icon: "🎮", barIcon: icon1, bars: 1, newBars: [0], counts: ["56"],
-    links: ["twitch.tv/videos/2041837265"],
+    id: "profile", label: "PROFILE", handle: "@ansonnchan", href: "https://github.com/ansonnchan", icon: "🎮", barIcon: icon1, bars: 1, newBars: [0], counts: ["01"],
+    links: ["github.com/ansonnchan"],
     stats: [
-      { tag: "FOL", value: "1.2K", color: "#9147ff" },
-      { tag: "VWR", value: "042",  color: "#bf94ff" },
+      { tag: "ROLE", value: "SWE", color: "#9147ff" },
+      { tag: "YEAR", value: "2026",  color: "#bf94ff" },
     ],
   },
   {
-    id: "instagram", label: "FUN FACT ABOUT ME", handle: "@yourhandle", href: "https://instagram.com/yourhandle", icon: "📷", barIcon: icon2, bars: 5, newBars: [1, 2], counts: ["3.4M", "2.5M", "676K", "412K", "198K"],
-    links: ["instagram.com/p/C4xQmRrNk2a", "instagram.com/p/C3wLpBsOj7f", "instagram.com/reel/C2vKoArMi6e", "instagram.com/p/C1uJnZqLh5d", "instagram.com/reel/C0tImYpKg4c"],
+    id: "strengths", label: "STRENGTHS", handle: "UI + Engineering", href: "https://www.linkedin.com", icon: "📷", barIcon: icon2, bars: 3, newBars: [1], counts: ["UI", "WEB", "TEAM"],
+    links: ["linkedin.com", "github.com/ansonnchan", "vercel.com"],
     stats: [
-      { tag: "FOL", value: "3.4K", color: "#e1306c" },
-      { tag: "PST", value: "128",  color: "#f77737" },
+      { tag: "FOCUS", value: "FE", color: "#e1306c" },
+      { tag: "MODE", value: "BUILD",  color: "#f77737" },
     ],
   },
   {
-    id: "tiktok", label: "WIRED FACT ABOUT ME", handle: "@yourhandle", href: "https://tiktok.com/@yourhandle", icon: "🎵", barIcon: icon3, bars: 7, newBars: [0, 3, 5, 6], counts: ["5.1M", "3.7M", "2.2M", "1.4M", "831K", "490K", "217K"],
-    links: ["tiktok.com/@yourhandle/video/7318492016374859054", "tiktok.com/@yourhandle/video/7305837261940183342", "tiktok.com/@yourhandle/video/7291046385720348974", "tiktok.com/@yourhandle/video/7278392047163820334", "tiktok.com/@yourhandle/video/7264819203847165742", "tiktok.com/@yourhandle/video/7251047382916430126", "tiktok.com/@yourhandle/video/7237294018463851822"],
+    id: "goals", label: "CAREER GOALS", handle: "Internship + Full-time", href: "https://github.com/ansonnchan/persona-personal-website", icon: "🎵", barIcon: icon3, bars: 3, newBars: [0, 2], counts: ["SWE", "PM", "UX"],
+    links: ["github.com/ansonnchan/persona-personal-website", "linkedin.com", "vercel.com"],
     stats: [
-      { tag: "FOL", value: "8.9K", color: "#00f2ea" },
-      { tag: "LKS", value: "52K",  color: "#ff0050" },
+      { tag: "TARGET", value: "2026", color: "#00f2ea" },
+      { tag: "STATUS", value: "OPEN",  color: "#ff0050" },
     ],
   },
 ];
