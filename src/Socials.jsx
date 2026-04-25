@@ -23,15 +23,15 @@ const ITEMS = [
     links: ["https://github.com/ansonnchan", "https://github.com/ansonnchan?tab=repositories", "https://github.com/ansonnchan/persona-personal-website"],
     stats: [
       { tag: "TYPE", value: "DEV", color: "#9147ff" },
-      { tag: "FOCUS", value: "WEB",  color: "#bf94ff" },
+      { tag: "FOCUS", value: "BACKEND",  color: "#bf94ff" },
     ],
   },
   {
     id: "linkedin", label: "LINKEDIN", handle: "@ansonnchan", href: "https://linkedin.com/in/ansonnchan", icon: "📷", barIcon: icon2, bars: 3, newBars: [1], counts: ["NETWORK", "CAREER", "UPDATES"],
     links: ["https://linkedin.com/in/ansonnchan", "https://linkedin.com/jobs", "https://linkedin.com/in/ansonnchan"],
     stats: [
-      { tag: "TYPE", value: "PRO", color: "#e1306c" },
-      { tag: "GOAL", value: "HIRING",  color: "#f77737" },
+      { tag: "TYPE", value: "LOCKED IN", color: "#e1306c" },
+      { tag: "FOCUS", value: "BEING LOCKED IN",  color: "#f77737" },
     ],
   },
   {
@@ -43,6 +43,31 @@ const ITEMS = [
     ],
   },
 ];
+
+function openExternalLink(target) {
+  if (!target) return;
+
+  const trimmed = target.trim();
+
+  if (/^mailto:/i.test(trimmed)) {
+    window.open(trimmed, "_blank");
+    return;
+  }
+
+  // Fix common typo like "https//example.com" (missing colon)
+  if (/^https?\/\//i.test(trimmed)) {
+    const fixed = trimmed.replace(/^http(s?)\/\//i, "http$1://");
+    window.open(fixed, "_blank");
+    return;
+  }
+
+  if (/^https?:\/\//i.test(trimmed)) {
+    window.open(trimmed, "_blank");
+    return;
+  }
+
+  window.open(`https://${trimmed}`, "_blank");
+}
 
 export default function Socials() {
   const [active, setActive]               = useState(0);
@@ -60,24 +85,18 @@ export default function Socials() {
   }, []);
 
   useEffect(() => {
-    const openLink = (target) => {
-      if (!target) return;
-      const hasScheme = /^(https?:|mailto:)/i.test(target);
-      window.open(hasScheme ? target : `https://${target}`, "_blank");
-    };
-
     const onKey = (e) => {
       if (focus === "left") {
         if (e.key === "ArrowUp")    setActive(i => Math.max(0, i - 1));
         if (e.key === "ArrowDown")  setActive(i => Math.min(ITEMS.length - 1, i + 1));
         if (e.key === "ArrowRight") { setFocus("right"); setActiveInfoBar(0); }
-        if (e.key === "Enter")      openLink(ITEMS[active].href);
+        if (e.key === "Enter")      openExternalLink(ITEMS[active].href);
       } else {
         const barCount = ITEMS[active].bars;
         if (e.key === "ArrowUp")   setActiveInfoBar(i => Math.max(0, i - 1));
         if (e.key === "ArrowDown") setActiveInfoBar(i => Math.min(barCount - 1, i + 1));
         if (e.key === "ArrowLeft") setFocus("left");
-        if (e.key === "Enter")     openLink(ITEMS[active].links[activeInfoBar]);
+        if (e.key === "Enter")     openExternalLink(ITEMS[active].links[activeInfoBar]);
       }
       if ((e.key === "ArrowLeft" && focus === "left") || e.key === "Escape" || e.key === "Backspace") navigate(-1);
     };
@@ -612,7 +631,7 @@ export default function Socials() {
             key={item.id}
             className={`sc-bar-outer${active === i ? " active" : ""}${mounted ? " mounted" : ""}`}
             onClick={() => {
-              if (active === i) window.open(item.href, "_blank");
+              if (active === i) openExternalLink(item.href);
               else setActive(i);
             }}
             onMouseEnter={() => setActive(i)}
@@ -669,7 +688,7 @@ export default function Socials() {
               style={{ animationDelay: `${i * 50}ms` }}
               onClick={() => {
                 if (isMobileViewport || activeInfoBar === i) {
-                  window.open("https://" + ITEMS[active].links[i], "_blank");
+                  openExternalLink(ITEMS[active].links[i]);
                   return;
                 }
                 setActiveInfoBar(i);
@@ -703,7 +722,7 @@ export default function Socials() {
         <button
           className="sc-mobile-btn"
           type="button"
-          onClick={() => window.open(ITEMS[active].href, "_blank")}
+          onClick={() => openExternalLink(ITEMS[active].href)}
         >
           OPEN
         </button>
