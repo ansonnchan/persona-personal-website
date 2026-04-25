@@ -58,19 +58,6 @@ export default function AboutMe() {
   const [revealed, setRevealed] = useState(false);
   const navigate = useNavigate();
 
-  const isMobile =
-    typeof window !== "undefined" &&
-    window.matchMedia("(max-width: 768px)").matches;
-
-  const handleSelect = (i) => {
-    if (isMobile && active === i) {
-      setRevealed((r) => !r);
-      return;
-    }
-    setActive(i);
-    if (isMobile) setRevealed(false);
-  };
-
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 80);
     return () => clearTimeout(t);
@@ -126,8 +113,10 @@ export default function AboutMe() {
           <div
             key={item.id}
             className={`sc-bar-outer ${active === i ? "active" : ""} ${mounted ? "mounted" : ""}`}
-            onClick={() => handleSelect(i)}
-            onMouseEnter={() => setActive(i)}
+            onMouseEnter={() => {
+              if (revealed) return;
+              setActive(i);
+            }}
           >
             <div className="sc-bar-red" />
             <div className="sc-bar">
