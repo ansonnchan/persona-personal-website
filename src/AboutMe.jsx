@@ -309,8 +309,6 @@ export default function AboutMe() {
           display: block;
           width: 45vw;
           flex-shrink: 0;
-          cursor: pointer;
-          pointer-events: all;
           transform: translateX(-100%);
           transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -341,10 +339,18 @@ export default function AboutMe() {
           transition: height 0.3s cubic-bezier(0.22,1,0.36,1);
           background: #111;
           cursor: pointer;
-          pointer-events: none;
+          pointer-events: auto;
+          border: 0;
+          padding: 0;
+          text-align: left;
+          appearance: none;
           clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
           box-shadow: 0 6px 24px rgba(0,0,0,0.65);
           z-index: 1;
+        }
+        .sc-bar:focus-visible {
+          outline: 3px solid rgba(255,255,255,0.85);
+          outline-offset: 3px;
         }
         .sc-bar::after {
           content: '';
@@ -386,7 +392,6 @@ export default function AboutMe() {
           display: flex; align-items: center;
           justify-content: space-between;
           padding: 0 20px;
-          pointer-events: none;
         }
 
         .sc-role {
@@ -398,7 +403,6 @@ export default function AboutMe() {
           transform: rotate(-30deg);
           user-select: none; line-height: 1;
           padding: 0 16px 0 8px;
-          pointer-events: none;
         }
 
         .sc-main {
@@ -406,11 +410,9 @@ export default function AboutMe() {
           display: flex; flex-direction: column;
           align-items: center; justify-content: center;
           gap: 3px; padding-left: 78px;
-          pointer-events: none;
         }
         .sc-main-top {
           display: flex; align-items: center; gap: 12px;
-          pointer-events: none;
         }
 
         .sc-label {
@@ -420,7 +422,6 @@ export default function AboutMe() {
           color: rgba(255,255,255,0.85);
           transition: color 0.2s ease;
           user-select: none;
-          pointer-events: none;
         }
         .sc-bar-outer.active .sc-label { color: #111111; }
 
@@ -531,23 +532,18 @@ export default function AboutMe() {
           <div
             key={item.id}
             className={`sc-bar-outer${active === i ? " active" : ""}${mounted ? " mounted" : ""}`}
-            onMouseEnter={() => selectSection(i)}
-            onPointerEnter={() => selectSection(i)}
-            onFocus={() => selectSection(i)}
-            onClick={() => revealSection(i)}
-            role="button"
-            aria-label={item.label}
-            aria-pressed={revealed && active === i}
-            tabIndex={0}
-            onKeyDown={(e) => {
-              if (e.key === "Enter" || e.key === " ") {
-                e.preventDefault();
-                revealSection(i);
-              }
-            }}
           >
             <div className="sc-bar-red" />
-            <div className="sc-bar">
+            <button
+              type="button"
+              className="sc-bar"
+              onMouseEnter={() => selectSection(i)}
+              onPointerEnter={() => selectSection(i)}
+              onFocus={() => selectSection(i)}
+              onClick={() => revealSection(i)}
+              aria-label={item.label}
+              aria-pressed={revealed && active === i}
+            >
               <img className="sc-char" src={CHARS[i]} alt="" />
               <div className="sc-bar-fill" />
               <div className="sc-bar-shade" />
@@ -559,7 +555,7 @@ export default function AboutMe() {
                   </div>
                 </div>
               </div>
-            </div>
+            </button>
           </div>
         ))}
       </div>
