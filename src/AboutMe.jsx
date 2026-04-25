@@ -16,10 +16,10 @@ const REVEAL_CONTENT = [
     upper: [
       "Hi! I'm Anson, a second-year computer engineering student at UBC.",
       " I was born in Hong Kong, but was raised in Australia for 15 years.",
-      "I am passionate about software development and am currently exploring machine learning", 
+      "I'm passionate about software development and machine learning", 
       "I also enjoy playing tennis, trumpet, and League of Legends in my free time.", 
     ],
-    lower: "current mainning ahri and shen",
+    lower: "current mains: ahri and shen",
   },
   {
     upper: [
@@ -65,6 +65,8 @@ export default function AboutMe() {
   const navigate = useNavigate();
 
   const handleBarClick = (index) => {
+    if (revealed) return;
+
     setActive(index);
     setRevealed(true);
   };
@@ -693,6 +695,7 @@ export default function AboutMe() {
             key={item.id}
             className={`sc-bar-outer${active === i ? " active" : ""}${mounted ? " mounted" : ""}`}
             onClick={() => handleBarClick(i)}
+            role="button"
           >
             <div className="sc-bar-red" />
             <div className="sc-bar">
