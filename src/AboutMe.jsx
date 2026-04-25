@@ -14,27 +14,28 @@ const MAIN_IMAGES = [mainm, mainm2, mainf];
 const REVEAL_CONTENT = [
   {
     upper: [
-      "Name: Anson Chan",
-      "Born in Hong Kong; raised in Australia for 15 years.",
-      "Moved to Canada in late 2021.",
+      "Hi! I'm Anson, a second-year computer engineering student at UBC. I was born in Hong Kong, but was raised in Australia for 15 years.",
+      "I moved to Canada in late 2021. I am passionate about software development and am currently exploring machine learning", 
+      "I also enjoy playing tennis, trumpet, and League of Legends in my free time.", 
     ],
-    lower: "Interests: coding, tennis, trumpet, League of Legends",
+    lower: "current mains: ahri or shen",
   },
   {
     upper: [
-      "University of British Columbia (UBC)",
-      "Computer Engineering",
-      "Expected graduation: 2029",
+      "Education: University of British Columbia (UBC)",
+      "Major: Computer Engineering",
+      "Dean's List: 2024W, 2025W"
     ],
-    lower: "Focus: software engineering and AI/ML",
+    lower: "expected graduation: 2029",
   },
   {
     upper: [
       "Currently working on:",
-      "Building an NLP engine that analyzes user feedback and generates sentiment reports.",
-      "Building an OpenCV project that recreates Jujutsu Kaisen cursed techniques from hand signals.",
+      "NLP engine that analyzes user feedback and generates sentiment reports.",
+      "OpenCV project recreating Jujutsu Kaisen cursed techniques from hand signals.",
+      "Learning system design",
     ],
-    lower: "Also learning system design and improving at League.",
+    lower: "Also pushing plat in league",
   },
 ];
 
