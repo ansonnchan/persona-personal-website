@@ -4,13 +4,9 @@ import char1 from "./assets/char1.png";
 import char2 from "./assets/char2.png";
 import char3 from "./assets/char3.png";
 import bgVideo from "./assets/main1.mp4";
-import icon1 from "./assets/icon1.png";
-import icon2 from "./assets/icon2.png";
-import icon3 from "./assets/icon3.png";
 import mainm from "./assets/mainm.jpeg";
 import mainm2 from "./assets/mainm2.jpeg";
 import mainf from "./assets/mainf.jpeg";
-import { scrapeSVGMotionValuesFromProps } from "framer-motion";
 
 const CHARS = [char1, char2, char3];
 const MAIN_IMAGES = [mainm, mainm2, mainf];
@@ -19,27 +15,26 @@ const REVEAL_CONTENT = [
   {
     upper: [
       "Name: Anson Chan",
-      "Born in Hong Kong, raised in Australia for 15 years. Moved to Canada in late 2021.",
-      "Favorite League of Legends champion: Ahri",
+      "Born in Hong Kong; raised in Australia for 15 years.",
+      "Moved to Canada in late 2021.",
     ],
-    lower: "Hobbies: Tennis, Trumpet, League of Legends",
+    lower: "Interests: coding, tennis, trumpet, League of Legends",
   },
   {
     upper: [
-      "University: University of British Columbia (UBC)",
-      "Major: Computer Engineering",
-      "Expected Graduation: 2029",
+      "University of British Columbia (UBC)",
+      "Computer Engineering",
+      "Expected graduation: 2029",
     ],
-    lower: "Academic focus: software engineering with an AI/ML focus",
+    lower: "Focus: software engineering and AI/ML",
   },
   {
     upper: [
       "Currently working on:",
-      "Building an NLP engine that takes in user feedback, analyzes sentiment, and generates a user report.",
-      "Developing a program that uses OpenCV to recreate Jujutsu Kaisen cursed techniques from hand signals.",
-      "Pushing to Plat in League of Legends "
+      "Building an NLP engine that analyzes user feedback and generates sentiment reports.",
+      "Building an OpenCV project that recreates Jujutsu Kaisen cursed techniques from hand signals.",
     ],
-    lower: "also crashing out on learning system design",
+    lower: "Also learning system design and improving at League.",
   },
 ];
 
@@ -51,28 +46,13 @@ const ROLES = [
 
 const ITEMS = [
   {
-    id: "profile", label: "PROFILE", handle: "@ansonnchan", href: "https://github.com/ansonnchan", icon: "🎮", barIcon: icon1, bars: 1, newBars: [0], counts: ["01"],
-    links: ["github.com/ansonnchan"],
-    stats: [
-      { tag: "ROLE", value: "SWE", color: "#9147ff" },
-      { tag: "YEAR", value: "2026",  color: "#bf94ff" },
-    ],
+    id: "profile", label: "PROFILE",
   },
   {
-    id: "education", label: "EDUCATION", handle: "UBC Computer Engineering", href: "https://www.linkedin.com", icon: "📷", barIcon: icon2, bars: 3, newBars: [1], counts: ["UBC", "CPEN", "2029"],
-    links: ["linkedin.com", "github.com/ansonnchan", "vercel.com"],
-    stats: [
-      { tag: "FOCUS", value: "CPEN", color: "#e1306c" },
-      { tag: "YEAR", value: "2029",  color: "#f77737" },
-    ],
+    id: "education", label: "EDUCATION",
   },
   {
-    id: "goals", label: "CURRENTLY WORKING ON", handle: "Internship + Full-time", href: "https://github.com/ansonnchan/persona-personal-website", icon: "🎵", barIcon: icon3, bars: 3, newBars: [0, 2], counts: ["SWE", "PM", "UX"],
-    links: ["github.com/ansonnchan/persona-personal-website", "linkedin.com", "vercel.com"],
-    stats: [
-      { tag: "TARGET", value: "2026", color: "#00f2ea" },
-      { tag: "STATUS", value: "OPEN",  color: "#ff0050" },
-    ],
+    id: "goals", label: "CURRENTLY WORKING ON",
   },
 ];
 
@@ -82,19 +62,9 @@ export default function AboutMe() {
   const [revealed, setRevealed] = useState(false);
   const navigate = useNavigate();
 
-  const isMobileViewport =
-    typeof window !== "undefined" && window.matchMedia("(max-width: 768px)").matches;
-
   const handleBarClick = (index) => {
-    if (isMobileViewport && active === index) {
-      setRevealed((prev) => !prev);
-      return;
-    }
-
     setActive(index);
-    if (isMobileViewport) {
-      setRevealed(false);
-    }
+    setRevealed(true);
   };
 
   useEffect(() => {
@@ -536,67 +506,6 @@ export default function AboutMe() {
         }
         .sc-bar-outer.active .sc-label { color: #111111; }
 
-        /* right: stats group */
-        .sc-stats {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding-right: 24px;
-          flex-shrink: 0;
-        }
-
-        .sc-stat {
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-
-        .sc-stat-top {
-          display: flex;
-          align-items: baseline;
-          gap: 4px;
-        }
-
-        .sc-stat-tag {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: 9px;
-          letter-spacing: 1.5px;
-          padding: 1px 4px;
-          border-width: 1px;
-          border-style: solid;
-          line-height: 1.4;
-          user-select: none;
-        }
-
-        .sc-stat-num {
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: 26px;
-          font-style: italic;
-          line-height: 1;
-          color: #ffffff;
-          letter-spacing: 1px;
-          user-select: none;
-          transition: color 0.2s ease;
-        }
-        .sc-bar-outer.active .sc-stat-num { color: #111111; }
-
-        .sc-stat-bars {
-          width: 100%;
-          display: flex;
-          flex-direction: column;
-          gap: 1px;
-          margin-top: 2px;
-        }
-        .sc-stat-bar-color {
-          height: 3px;
-          width: 100%;
-        }
-        .sc-stat-bar-black {
-          height: 2px;
-          width: 100%;
-          background: #000;
-        }
-
         /* character portrait */
         .sc-char {
           position: absolute;
@@ -781,12 +690,7 @@ export default function AboutMe() {
           <div
             key={item.id}
             className={`sc-bar-outer${active === i ? " active" : ""}${mounted ? " mounted" : ""}`}
-            onClick={() => {
-              handleBarClick(i);
-            }}
-            onMouseEnter={() => {
-              setActive(i);
-            }}
+            onClick={() => handleBarClick(i)}
           >
             <div className="sc-bar-red" />
             <div className="sc-bar">
