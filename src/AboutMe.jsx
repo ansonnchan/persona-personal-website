@@ -14,11 +14,12 @@ const MAIN_IMAGES = [mainm, mainm2, mainf];
 const REVEAL_CONTENT = [
   {
     upper: [
-      "Hi! I'm Anson, a second-year computer engineering student at UBC. I was born in Hong Kong, but was raised in Australia for 15 years.",
-      "I moved to Canada in late 2021. I am passionate about software development and am currently exploring machine learning", 
+      "Hi! I'm Anson, a second-year computer engineering student at UBC.",
+      " I was born in Hong Kong, but was raised in Australia for 15 years.",
+      "I am passionate about software development and am currently exploring machine learning", 
       "I also enjoy playing tennis, trumpet, and League of Legends in my free time.", 
     ],
-    lower: "current mains: ahri or shen",
+    lower: "current mainning ahri and shen",
   },
   {
     upper: [
