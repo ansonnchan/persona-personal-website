@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import bgVideo from "./assets/Mainn.mp4";
+import bgVideo from "./assets/Mainn-web.mp4";
 import char2 from "./assets/char2.png";
 
 const SECTIONS = [

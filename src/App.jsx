@@ -1,6 +1,6 @@
 import { Routes, Route, useLocation, useNavigate } from 'react-router-dom'
 import { AnimatePresence } from 'framer-motion'
-import sharedBackground from './assets/Mainn.mp4'
+import sharedBackground from './assets/Mainn-web.mp4'
 import P3Menu from './P3Menu'
 import Experience from './Experience'
 import PersonalProjects from './PersonalProjects'
