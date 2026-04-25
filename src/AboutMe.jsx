@@ -58,16 +58,6 @@ export default function AboutMe() {
   const [revealed, setRevealed] = useState(false);
   const navigate = useNavigate();
 
-  const selectSection = (index) => {
-    if (revealed) return;
-    setActive(index);
-  };
-
-  const revealSection = (index) => {
-    setActive(index);
-    setRevealed(true);
-  };
-
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
@@ -191,8 +181,8 @@ export default function AboutMe() {
         }
         .sc-main-portrait {
           width: 100%; height: 100%;
-          object-fit: cover; object-position: center top;
-          transform: skewX(8deg) scale(1.01);
+          object-fit: cover; object-position: top right;
+          transform: skewX(8deg) scale(1.08);
           transform-origin: top right;
         }
 
@@ -309,6 +299,7 @@ export default function AboutMe() {
           display: block;
           width: 45vw;
           flex-shrink: 0;
+          pointer-events: none;
           transform: translateX(-100%);
           transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -338,19 +329,10 @@ export default function AboutMe() {
           width: 45vw; height: 64px;
           transition: height 0.3s cubic-bezier(0.22,1,0.36,1);
           background: #111;
-          cursor: pointer;
-          pointer-events: auto;
-          border: 0;
-          padding: 0;
-          text-align: left;
-          appearance: none;
+          pointer-events: none;
           clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
           box-shadow: 0 6px 24px rgba(0,0,0,0.65);
           z-index: 1;
-        }
-        .sc-bar:focus-visible {
-          outline: 3px solid rgba(255,255,255,0.85);
-          outline-offset: 3px;
         }
         .sc-bar::after {
           content: '';
@@ -534,16 +516,7 @@ export default function AboutMe() {
             className={`sc-bar-outer${active === i ? " active" : ""}${mounted ? " mounted" : ""}`}
           >
             <div className="sc-bar-red" />
-            <button
-              type="button"
-              className="sc-bar"
-              onMouseEnter={() => selectSection(i)}
-              onPointerEnter={() => selectSection(i)}
-              onFocus={() => selectSection(i)}
-              onClick={() => revealSection(i)}
-              aria-label={item.label}
-              aria-pressed={revealed && active === i}
-            >
+            <div className="sc-bar" aria-hidden="true">
               <img className="sc-char" src={CHARS[i]} alt="" />
               <div className="sc-bar-fill" />
               <div className="sc-bar-shade" />
@@ -555,7 +528,7 @@ export default function AboutMe() {
                   </div>
                 </div>
               </div>
-            </button>
+            </div>
           </div>
         ))}
       </div>
