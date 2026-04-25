@@ -16,7 +16,7 @@ const REVEAL_CONTENT = [
     upper: [
       "Hi! I'm Anson, a second-year computer engineering student at UBC.",
       " I was born in Hong Kong, but was raised in Australia for 15 years.",
-      "I'm passionate about software development and machine learning", 
+      "I'm passionate about software development and machine learning.", 
       "I also enjoy playing tennis, trumpet, and League of Legends in my free time.", 
     ],
     lower: "current mains: ahri and shen",
