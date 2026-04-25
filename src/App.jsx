@@ -5,6 +5,7 @@ import main2 from './assets/circletransition.mp4'
 import P3Menu from './P3Menu'
 import ExperiencePage from './ResumePage'
 import PersonalProjects from './PersonalProjects'
+import TechnicalSkills from './TechnicalSkills'
 import PageTransition from './PageTransition'
 import Socials from './Socials'
 import AboutMe from './AboutMe'
@@ -36,6 +37,9 @@ function AnimatedRoutes() {
         } />
         <Route path="/projects" element={
           <PageTransition><PersonalProjects /></PageTransition>
+        } />
+        <Route path="/skills" element={
+          <PageTransition><TechnicalSkills /></PageTransition>
         } />
         <Route path="/socials" element={
           <PageTransition variant="socials"><Socials /></PageTransition>
