@@ -119,13 +119,14 @@ export default function AboutMe() {
         .sc-root {
           position: absolute;
           inset: 0;
-          z-index: 6;
-          pointer-events: all;
+          z-index: 10;
+          pointer-events: none;
           display: flex;
           flex-direction: column;
           align-items: flex-start;
           justify-content: center;
           gap: 6px;
+          padding-left: 0;
         }
 
         .sc-dim {
@@ -296,7 +297,6 @@ export default function AboutMe() {
         .sc-bar-outer {
           position: relative;
           flex-shrink: 0;
-          cursor: pointer;
           transform: translateX(-100%);
           transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -511,13 +511,9 @@ export default function AboutMe() {
             key={item.id}
             className={`sc-bar-outer${active === i ? " active" : ""}${mounted ? " mounted" : ""}`}
             onMouseEnter={() => setActive(i)}
-            onPointerEnter={() => setActive(i)}
-            onMouseMove={() => {
-              if (active !== i) setActive(i);
-            }}
             onClick={() => {
-              setActive(i);
-              setRevealed(true);
+              if (active === i) setRevealed(true);
+              else setActive(i);
             }}
             role="button"
             aria-label={item.label}
