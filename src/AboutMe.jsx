@@ -165,10 +165,10 @@ export default function AboutMe() {
 
         .sc-main-portrait-shell {
           position: absolute;
-          top: 0; right: -1vw;
+          top: -2vh; right: -2vw;
           z-index: 13;
           pointer-events: none;
-          width: 40vw; height: 100vh;
+          width: 42vw; height: 104vh;
           overflow: hidden;
           opacity: 0;
           transform: translateX(24px) skewX(-8deg) scale(0.98);
@@ -183,7 +183,7 @@ export default function AboutMe() {
         .sc-main-portrait {
           width: 100%; height: 100%;
           object-fit: cover; object-position: 62% top;
-          transform: skewX(8deg) scale(0.92);
+          transform: skewX(8deg) scale(0.96);
           transform-origin: top right;
         }
 
@@ -461,7 +461,7 @@ export default function AboutMe() {
 
         @media (max-width: 768px) {
           .sc-main-portrait-shell {
-            top: 8vh; right: -9vw; width: 46vw; height: 44vh; z-index: 13;
+            top: 8vh; right: -9vw; width: 48vw; height: 46vh; z-index: 13;
           }
           .sc-main-portrait { transform: none; object-position: center top; }
           .sc-reveal-panel {
@@ -501,7 +501,7 @@ export default function AboutMe() {
         }
 
         @media (min-width: 769px) and (max-width: 1200px) {
-          .sc-main-portrait-shell { right: -4vw; width: 42vw; height: 92vh; }
+          .sc-main-portrait-shell { top: -1vh; right: -5vw; width: 44vw; height: 96vh; }
           .sc-reveal-panel {
             top: 46vh; left: -2vw; width: 78vw; height: 52vh;
             transform: translateX(0) rotate(-14deg);
