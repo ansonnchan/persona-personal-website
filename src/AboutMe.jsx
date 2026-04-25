@@ -360,7 +360,7 @@ export default function AboutMe() {
           height: 64px;
           transition: height 0.3s cubic-bezier(0.22,1,0.36,1);
           background: #111;
-          cursor: default;
+          cursor: pointer;
           pointer-events: all;
           clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
           box-shadow: 0 6px 24px rgba(0,0,0,0.65);
@@ -373,7 +373,7 @@ export default function AboutMe() {
           flex-shrink: 0;
           transform: translateX(-100%);
           transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-          cursor: default;
+          cursor: pointer;
           pointer-events: all;
         }
         .sc-bar-outer.active .sc-bar     { height: 90px; }
@@ -687,13 +687,26 @@ export default function AboutMe() {
           <div
             key={item.id}
             className={`sc-bar-outer${active === i ? " active" : ""}${mounted ? " mounted" : ""}`}
+            onPointerEnter={() => {
+              if (revealed) return;
+              setActive(i);
+            }}
             onMouseEnter={() => {
+              if (revealed) return;
+              setActive(i);
+            }}
+            onMouseOver={() => {
               if (revealed) return;
               setActive(i);
             }}
             onMouseMove={() => {
               if (revealed) return;
               if (active !== i) setActive(i);
+            }}
+            onClick={() => {
+              if (revealed) return;
+              setActive(i);
+              setRevealed(true);
             }}
             role="button"
             aria-label={item.label}
