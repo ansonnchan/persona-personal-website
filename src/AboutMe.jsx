@@ -17,29 +17,31 @@ const MAIN_IMAGES = [mainm, mainm2, mainf];
 const REVEAL_CONTENT = [
   {
     upper: [
-      "Hi! I'm Anson, a second-year computer engineering student at UBC.",
+      "ANSON",
+      "Second-year Computer Engineering student at UBC.",
+      "Interested in software engineering, machine learning, and scalable systems.",
       "Born in Hong Kong, raised in Australia for 15 years.",
-      "Passionate about software engineering and machine learning.",
-      "I enjoy tennis, trumpet, and League of Legends.",
     ],
-    lower: "current mains: ahri and shen",
+    lower:
+      "currently into: machine learning • system design • jujutsu kaisen • league",
   },
   {
     upper: [
-      "Education: University of British Columbia",
-      "Major: Computer Engineering",
-      "Dean's List: 2024W, 2025W",
+      "EDUCATION",
+      "University of British Columbia — Computer Engineering.",
+      "Dean’s List recipient.",
+      "Focused on backend systems, low-level programming, and AI.",
     ],
     lower: "expected graduation: 2029",
   },
   {
     upper: [
-      "Currently working on:",
-      "NLP engine for sentiment analysis + reporting.",
-      "OpenCV cursed-technique hand sign project.",
-      "Learning system design + scalable backend architecture.",
+      "CURRENTLY WORKING ON",
+      "NLP sentiment analysis + automated reporting engine.",
+      "OpenCV hand-sign recognition experiments.",
+      "Learning scalable backend architecture + distributed systems.",
     ],
-    lower: "also trying to hit plat in league",
+    lower: "also trying to escape elo hell in league",
   },
 ];
 
@@ -50,20 +52,20 @@ const ROLES = [
 ];
 
 const ITEMS = [
-  { id: "profile", label: "PROFILE" },
+  { id: "profile", label: "ABOUT ME" },
   { id: "education", label: "EDUCATION" },
-  { id: "goals", label: "CURRENTLY WORKING ON" },
+  { id: "projects", label: "CURRENTLY WORKING ON" },
 ];
 
 export default function AboutMe() {
   const [active, setActive] = useState(0);
-  const [revealed, setRevealed] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [revealed, setRevealed] = useState(false);
 
   const navigate = useNavigate();
 
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 50);
+    const t = setTimeout(() => setMounted(true), 60);
     return () => clearTimeout(t);
   }, []);
 
@@ -74,6 +76,7 @@ export default function AboutMe() {
           e.preventDefault();
           setActive((i) => Math.max(0, i - 1));
         }
+
         if (e.key === "ArrowDown") {
           e.preventDefault();
           setActive((i) => Math.min(ITEMS.length - 1, i + 1));
@@ -87,7 +90,9 @@ export default function AboutMe() {
 
       if (e.key === "ArrowLeft") {
         e.preventDefault();
-        setRevealed(false);
+
+        if (revealed) setRevealed(false);
+        else navigate(-1);
       }
 
       if (e.key === "Escape" || e.key === "Backspace") {
@@ -97,24 +102,11 @@ export default function AboutMe() {
     };
 
     window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
+
+    return () => {
+      window.removeEventListener("keydown", onKey);
+    };
   }, [navigate, revealed]);
-
-  const handleMouseEnter = (index) => {
-    if (!revealed) {
-      setActive(index);
-    }
-  };
-
-  const handleClick = (index) => {
-    if (revealed) {
-      // If revealed, clicking again could close it
-      setRevealed(false);
-    } else {
-      setActive(index);
-      setRevealed(true);
-    }
-  };
 
   return (
     <div id="menu-screen">
@@ -127,12 +119,20 @@ export default function AboutMe() {
         playsInline
       />
 
-      {/* OVERLAY - Only show when revealed */}
+      <div className="sc-noise" />
+
       {revealed && (
-        <div className="sc-overlay">
-          <div className="sc-dim" onClick={() => setRevealed(false)} />
-          
-          <div className="sc-main-portrait-shell">
+        <>
+          <div
+            className="sc-dim"
+            onClick={() => setRevealed(false)}
+          />
+
+          <div
+            className={`sc-main-portrait-shell ${
+              mounted ? "mounted" : ""
+            }`}
+          >
             <img
               className="sc-main-portrait"
               src={MAIN_IMAGES[active]}
@@ -140,10 +140,17 @@ export default function AboutMe() {
             />
           </div>
 
-          <div className="sc-reveal-panel">
+          <div
+            className={`sc-reveal-panel ${
+              mounted ? "mounted" : ""
+            }`}
+          >
             <div className="sc-reveal-upper-bar">
               {REVEAL_CONTENT[active].upper.map((line, idx) => (
-                <div className="sc-reveal-upper-line" key={idx}>
+                <div
+                  className="sc-reveal-upper-line"
+                  key={idx}
+                >
                   {line}
                 </div>
               ))}
@@ -161,7 +168,7 @@ export default function AboutMe() {
             <span className="sc-nav-btn">RB</span>
             <span className="sc-nav-arrow right">►</span>
           </div>
-        </div>
+        </>
       )}
 
       <div className="sc-root">
@@ -172,20 +179,31 @@ export default function AboutMe() {
               sc-bar-outer
               ${active === i ? "active" : ""}
               ${mounted ? "mounted" : ""}
-              ${revealed ? "disabled" : ""}
             `}
-            onMouseEnter={() => handleMouseEnter(i)}
-            onClick={() => handleClick(i)}
+            onMouseEnter={() => setActive(i)}
+            onClick={() => {
+              setActive(i);
+              setRevealed(true);
+            }}
           >
             <div className="sc-bar-red" />
+
             <div className="sc-bar">
-              <img className="sc-char" src={CHARS[i]} alt="" />
+              <img
+                className="sc-char"
+                src={CHARS[i]}
+                alt=""
+              />
+
               <div className="sc-bar-fill" />
+
               <div className="sc-bar-shade" />
+
               <div className="sc-bar-content">
                 <div className="sc-role">
                   {ROLES[i].text}
                 </div>
+
                 <div className="sc-main">
                   <div className="sc-label">
                     {item.label}
@@ -202,14 +220,17 @@ export default function AboutMe() {
           <span className="sc-footer-key">↑↓</span>
           <span>SELECT</span>
         </div>
+
         <div className="sc-footer-row">
           <span className="sc-footer-key">↵</span>
           <span>REVEAL</span>
         </div>
+
         <div className="sc-footer-row">
           <span className="sc-footer-key">←</span>
           <span>HIDE</span>
         </div>
+
         <div className="sc-footer-row">
           <span className="sc-footer-key">ESC</span>
           <span>BACK</span>
@@ -217,7 +238,7 @@ export default function AboutMe() {
       </div>
 
       <style>{`
-        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&display=swap');
+        @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Anton&family=Barlow+Condensed:wght@400;600;700&display=swap');
 
         * {
           box-sizing: border-box;
@@ -237,32 +258,46 @@ export default function AboutMe() {
           height: 100%;
           object-fit: cover;
           z-index: 0;
+        }
+
+        .sc-noise {
+          position: fixed;
+          inset: 0;
           pointer-events: none;
+          opacity: 0.03;
+          mix-blend-mode: soft-light;
+          background-image:
+            radial-gradient(
+              rgba(255,255,255,0.35) 1px,
+              transparent 1px
+            );
+          background-size: 3px 3px;
+          z-index: 1;
         }
 
         .sc-root {
           position: fixed;
           inset: 0;
           z-index: 10;
+
           display: flex;
           flex-direction: column;
           justify-content: center;
-          align-items: flex-start;
+
           gap: 6px;
-          pointer-events: auto;
-          padding-left: 40px;
+
+          padding-left: 32px;
         }
 
         .sc-bar-outer {
           position: relative;
-          transform: translateX(-100%);
-          transition: transform 0.55s cubic-bezier(0.22, 1, 0.36, 1);
-          cursor: pointer;
-        }
 
-        .sc-bar-outer.disabled {
-          pointer-events: none;
-          opacity: 0.5;
+          transform: translateX(-100%);
+
+          transition:
+            transform 0.55s cubic-bezier(0.22,1,0.36,1);
+
+          cursor: pointer;
         }
 
         .sc-bar-outer.mounted {
@@ -272,19 +307,79 @@ export default function AboutMe() {
         .sc-bar-outer:nth-child(1) {
           transition-delay: 0ms;
         }
+
         .sc-bar-outer:nth-child(2) {
           transition-delay: 80ms;
         }
+
         .sc-bar-outer:nth-child(3) {
           transition-delay: 160ms;
         }
 
-        .sc-bar-outer:hover:not(.disabled) {
+        .sc-bar-outer:hover {
           transform: translateX(6px);
+        }
+
+        .sc-bar {
+          position: relative;
+
+          width: 45vw;
+          height: 64px;
+
+          background: #111;
+
+          clip-path:
+            polygon(
+              0 0,
+              100% 0,
+              calc(100% - 14px) 100%,
+              0 100%
+            );
+
+          overflow: hidden;
+
+          box-shadow:
+            0 10px 35px rgba(0,0,0,0.55);
+
+          transition:
+            height 0.3s cubic-bezier(0.22,1,0.36,1),
+            filter 0.25s ease;
+        }
+
+        .sc-bar-outer:hover .sc-bar {
+          filter: brightness(1.08);
         }
 
         .sc-bar-outer.active .sc-bar {
           height: 92px;
+        }
+
+        .sc-bar-red {
+          position: absolute;
+
+          top: 0;
+          left: 0;
+
+          width: 45vw;
+          height: 64px;
+
+          background: #c4001a;
+
+          transform: translateY(-7px);
+
+          opacity: 0;
+
+          transition:
+            opacity 0.22s ease,
+            height 0.3s ease;
+
+          clip-path:
+            polygon(
+              50% 0,
+              100% 0,
+              100% 100%,
+              calc(50% - 10px) 100%
+            );
         }
 
         .sc-bar-outer.active .sc-bar-red {
@@ -292,50 +387,52 @@ export default function AboutMe() {
           height: 92px;
         }
 
-        .sc-bar {
-          position: relative;
-          width: 45vw;
-          height: 64px;
-          background: #111;
-          clip-path: polygon(0 0, 100% 0, calc(100% - 14px) 100%, 0 100%);
-          overflow: hidden;
-          transition: height 0.32s cubic-bezier(0.22, 1, 0.36, 1);
-          box-shadow: 0 8px 30px rgba(0,0,0,0.55);
-        }
-
-        .sc-bar-red {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 45vw;
-          height: 64px;
-          background: #c4001a;
-          transform: translateY(-7px);
-          opacity: 0;
-          transition: opacity 0.22s ease, height 0.3s ease;
-          clip-path: polygon(50% 0, 100% 0, 100% 100%, calc(50% - 10px) 100%);
-        }
-
         .sc-bar-fill {
           position: absolute;
           inset: 0;
+
           background: #fff;
-          clip-path: polygon(100% 0, 100% 0, calc(100% - 32px) 100%, calc(100% - 32px) 100%);
-          transition: clip-path 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+
+          clip-path:
+            polygon(
+              100% 0,
+              100% 0,
+              calc(100% - 32px) 100%,
+              calc(100% - 32px) 100%
+            );
+
+          transition:
+            clip-path 0.35s cubic-bezier(0.22,1,0.36,1);
         }
 
         .sc-bar-outer.active .sc-bar-fill {
-          clip-path: polygon(22% 0, 100% 0, calc(100% - 14px) 100%, calc(22% + 138px) 100%);
+          clip-path:
+            polygon(
+              22% 0,
+              100% 0,
+              calc(100% - 14px) 100%,
+              calc(22% + 138px) 100%
+            );
         }
 
         .sc-bar-shade {
           position: absolute;
+
           top: 0;
           bottom: 0;
+
           left: 73%;
           width: 6%;
-          background: linear-gradient(90deg, rgba(0,0,0,0.15) 0%, rgba(0,0,0,0) 100%);
+
+          background:
+            linear-gradient(
+              90deg,
+              rgba(0,0,0,0.15) 0%,
+              rgba(0,0,0,0) 100%
+            );
+
           opacity: 0;
+
           transition: opacity 0.3s ease;
         }
 
@@ -345,37 +442,55 @@ export default function AboutMe() {
 
         .sc-bar-content {
           position: relative;
+
           z-index: 5;
+
           height: 100%;
+
           display: flex;
           align-items: center;
           justify-content: space-between;
+
           padding: 0 20px;
         }
 
         .sc-role {
           font-family: 'Anton', sans-serif;
+
           font-size: 50px;
+
           color: #fff;
+
           transform: rotate(-30deg);
+
           letter-spacing: -2px;
+
           user-select: none;
         }
 
         .sc-main {
           flex: 1;
+
           display: flex;
           justify-content: center;
           align-items: center;
+
           padding-left: 78px;
         }
 
         .sc-label {
           font-family: 'Bebas Neue', sans-serif;
+
           font-size: 30px;
+
           letter-spacing: 4px;
+
           color: rgba(255,255,255,0.9);
+
           transition: color 0.22s ease;
+
+          text-shadow:
+            0 0 10px rgba(255,255,255,0.05);
         }
 
         .sc-bar-outer.active .sc-label {
@@ -384,174 +499,327 @@ export default function AboutMe() {
 
         .sc-char {
           position: absolute;
+
           top: 0;
           left: 110px;
+
           height: 100%;
           max-width: 160px;
-          object-fit: cover;
-          z-index: 4;
-          pointer-events: none;
-          clip-path: polygon(20px 0%, 100% 0%, calc(100% - 20px) 100%, 0% 100%);
-        }
 
-        .sc-overlay {
-          position: fixed;
-          inset: 0;
-          z-index: 20;
-          pointer-events: auto;
+          object-fit: cover;
+
+          z-index: 4;
+
+          pointer-events: none;
+
+          clip-path:
+            polygon(
+              20px 0%,
+              100% 0%,
+              calc(100% - 20px) 100%,
+              0% 100%
+            );
         }
 
         .sc-dim {
           position: fixed;
           inset: 0;
+
           background: rgba(30,35,44,0.72);
-          cursor: pointer;
+
+          z-index: 20;
+
+          animation: fadeIn 0.25s ease;
         }
 
-        .sc-main-portrait-shell {
-          position: fixed;
-          top: 0;
-          right: -4vw;
-          width: 44vw;
-          height: 100vh;
-          overflow: hidden;
-          animation: slideIn 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
-        }
-
-        @keyframes slideIn {
+        @keyframes fadeIn {
           from {
             opacity: 0;
-            transform: translateX(80px) skewX(-8deg) scale(0.96);
           }
           to {
             opacity: 1;
-            transform: translateX(0) skewX(-8deg) scale(1);
           }
+        }
+
+        .sc-main-portrait-shell {
+          position: absolute;
+
+          top: 0;
+          right: -2vw;
+
+          width: 36vw;
+          height: 100vh;
+
+          overflow: hidden;
+
+          z-index: 21;
+
+          opacity: 0;
+
+          transform:
+            translateX(24px)
+            skewX(-8deg)
+            scale(0.98);
+
+          transition:
+            opacity 0.35s ease,
+            transform 0.35s ease;
+
+          filter:
+            drop-shadow(
+              0 0 28px rgba(0,0,0,0.35)
+            );
+        }
+
+        .sc-main-portrait-shell.mounted {
+          opacity: 1;
+
+          transform:
+            translateX(0)
+            skewX(-8deg)
+            scale(1);
         }
 
         .sc-main-portrait {
           width: 100%;
           height: 100%;
+
           object-fit: cover;
           object-position: top right;
-          transform: skewX(8deg) scale(1.08);
+
+          transform:
+            skewX(8deg)
+            scale(1.08);
         }
 
         .sc-reveal-panel {
-          position: fixed;
+          position: absolute;
+
+          top: 45vh;
           left: -4vw;
-          top: 44vh;
-          width: 88vw;
-          height: 58vh;
-          background: linear-gradient(180deg, rgba(255,255,255,0.98) 0%, rgba(240,244,250,0.98) 100%);
-          clip-path: polygon(0 0, 100% 0, calc(100% - 88px) 100%, 0 100%);
-          box-shadow: 0 0 0 2px rgba(255,255,255,0.16), 18px 0 0 rgba(215,13,44,0.82), 28px 0 0 rgba(255,255,255,0.22);
-          animation: panelSlide 0.45s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+
+          width: 82vw;
+          height: 54vh;
+
+          z-index: 20;
+
+          background:
+            linear-gradient(
+              180deg,
+              rgba(255,255,255,0.98) 0%,
+              rgba(242,245,250,0.98) 100%
+            );
+
+          clip-path:
+            polygon(
+              0 0,
+              100% 0,
+              calc(100% - 72px) 100%,
+              0 100%
+            );
+
+          box-shadow:
+            0 0 0 2px rgba(255,255,255,0.12),
+            14px 0 0 rgba(215,13,44,0.82),
+            24px 0 0 rgba(255,255,255,0.2),
+            0 18px 50px rgba(0,0,0,0.4);
+
+          opacity: 0;
+
+          transform:
+            translateX(-40px)
+            rotate(-14deg);
+
+          transform-origin: left bottom;
+        }
+
+        .sc-reveal-panel.mounted {
+          opacity: 0.96;
+
+          transform:
+            translateX(0)
+            rotate(-14deg);
+
+          animation:
+            panelSlide 0.46s
+            cubic-bezier(0.22,1,0.36,1);
         }
 
         @keyframes panelSlide {
           from {
             opacity: 0;
-            transform: translateX(-80px) rotate(-18deg);
+            transform:
+              translateX(-80px)
+              rotate(-18deg);
           }
+
           to {
-            opacity: 1;
-            transform: translateX(0) rotate(-18deg);
+            opacity: 0.96;
+            transform:
+              translateX(0)
+              rotate(-14deg);
           }
         }
 
         .sc-reveal-upper-bar {
           position: absolute;
+
           top: 10%;
           left: 0;
+
           width: 100%;
-          height: 40%;
-          background: rgba(0,0,0,0.92);
+          height: 42%;
+
+          background: rgba(10,10,10,0.94);
+
           display: flex;
           flex-direction: column;
+
           justify-content: center;
           align-items: center;
-          gap: 10px;
-          color: white;
+
+          gap: 8px;
+
           text-align: center;
-          clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%);
+
+          color: white;
+
+          padding: 0 40px;
+
+          clip-path:
+            polygon(
+              0 0,
+              100% 0,
+              calc(100% - 22px) 100%,
+              0 100%
+            );
         }
 
         .sc-reveal-upper-line {
+          font-family: 'Barlow Condensed', sans-serif;
+
+          font-size: 20px;
+
+          line-height: 1.1;
+
+          letter-spacing: 0.4px;
+
+          opacity: 0.82;
+        }
+
+        .sc-reveal-upper-line:first-child {
           font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(18px, 1.6vw, 28px);
-          letter-spacing: 1px;
-          line-height: 1.15;
+
+          font-size: 42px;
+
+          letter-spacing: 3px;
+
+          opacity: 1;
         }
 
         .sc-reveal-lower-bar {
           position: absolute;
-          top: 58%;
+
+          top: 60%;
           right: 0;
-          width: 48%;
-          background: rgba(0,0,0,0.92);
+
+          width: 46%;
+
+          background: rgba(10,10,10,0.94);
+
+          border-left: 4px solid #c4001a;
+
           color: white;
-          font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(18px, 1.8vw, 28px);
-          letter-spacing: 1px;
-          padding: 12px 20px;
-          clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%);
+
+          font-family: 'Barlow Condensed', sans-serif;
+
+          font-size: 24px;
+
+          line-height: 1.15;
+
+          letter-spacing: 0.5px;
+
+          padding: 14px 22px;
+
+          display: flex;
+          align-items: center;
+
+          clip-path:
+            polygon(
+              0 0,
+              100% 0,
+              calc(100% - 22px) 100%,
+              0 100%
+            );
         }
 
         .sc-right-nav {
           position: fixed;
+
           top: 9vh;
           left: 6vw;
+
           display: flex;
           align-items: center;
-          gap: 8px;
-          animation: navSlide 0.35s ease forwards;
-        }
 
-        @keyframes navSlide {
-          from {
-            opacity: 0;
-            transform: translateX(-30px) rotate(-18deg);
-          }
-          to {
-            opacity: 1;
-            transform: translateX(0) rotate(-18deg);
-          }
+          gap: 8px;
+
+          z-index: 30;
+
+          transform: rotate(-14deg);
         }
 
         .sc-nav-btn {
           font-family: 'Bebas Neue', sans-serif;
+
           font-size: 96px;
+
           color: white;
+
           -webkit-text-stroke: 2px black;
         }
 
         .sc-nav-dot {
           width: 16px;
           height: 16px;
+
           border-radius: 999px;
+
           background: black;
         }
 
         .sc-nav-arrow {
           color: #c4001a;
+
           font-size: 22px;
         }
 
         .sc-footer {
           position: fixed;
+
           right: 24px;
           bottom: 20px;
+
           z-index: 50;
+
           display: flex;
           flex-direction: column;
+
           gap: 5px;
+
           padding: 8px 10px;
+
           border-radius: 10px;
+
           background: rgba(0,0,0,0.58);
-          border: 1px solid rgba(255,255,255,0.28);
+
+          border:
+            1px solid rgba(255,255,255,0.28);
+
           opacity: 0;
-          transition: opacity 0.4s ease 0.6s;
+
+          transition:
+            opacity 0.4s ease 0.6s;
         }
 
         .sc-footer.mounted {
@@ -561,56 +829,25 @@ export default function AboutMe() {
         .sc-footer-row {
           display: flex;
           align-items: center;
+
           gap: 8px;
+
           font-family: 'Bebas Neue', sans-serif;
+
           letter-spacing: 2px;
+
           color: white;
         }
 
         .sc-footer-key {
-          border: 1px solid rgba(255,255,255,0.5);
+          border:
+            1px solid rgba(255,255,255,0.5);
+
           border-radius: 5px;
+
           padding: 2px 8px;
+
           background: rgba(0,0,0,0.7);
-        }
-
-        @media (max-width: 768px) {
-          .sc-bar, .sc-bar-red {
-            width: 92vw;
-          }
-
-          .sc-main-portrait-shell {
-            width: 52vw;
-            right: -10vw;
-          }
-
-          .sc-reveal-panel {
-            left: 4vw;
-            width: 92vw;
-            transform: none !important;
-          }
-
-          .sc-right-nav {
-            top: 3vh;
-            left: 4vw;
-            transform: none !important;
-          }
-
-          .sc-nav-btn {
-            font-size: 60px;
-          }
-
-          .sc-role {
-            font-size: 36px;
-          }
-
-          .sc-label {
-            font-size: 22px;
-          }
-
-          .sc-root {
-            padding-left: 20px;
-          }
         }
       `}</style>
     </div>
