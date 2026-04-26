@@ -3,8 +3,8 @@ import { useNavigate } from "react-router-dom";
 
 const ITEMS = [
   { id: "i", badge: "I", title: "EDUCATION", subtitle: "Degree / Coursework", rank: 3 },
-  { id: "ii", badge: "II", title: "PROJECTS", subtitle: "Portfolio Highlights", rank: 5 },
-  { id: "iii", badge: "III", title: "EXPERIENCE", subtitle: "Internships / Roles", rank: 2 },
+  { id: "ii", badge: "II", title: "TECHNICAL EXPERIENCE", subtitle: "Internships / SWE Roles", rank: 5 },
+  { id: "iii", badge: "III", title: "ADDITIONAL EXPERIENCE", subtitle: "Leadership / Teaching / Service", rank: 3 },
 ];
 
 const SECTION_DETAILS = [
@@ -26,34 +26,39 @@ const SECTION_DETAILS = [
   },
   {
     index: "02",
-    title: "PROJECT ARCHIVE",
-    progress: "LIVE",
+    title: "TECHNICAL EXPERIENCE LOG",
+    progress: "SWE",
     rows: [
-      { index: "01", title: "Persona Portfolio Website", status: "Deployed" },
-      { index: "02", title: "TODO: Project Name #2", status: "In Progress" },
-      { index: "03", title: "TODO: Project Name #3", status: "Planned" },
-      { index: "04", title: "TODO: Project Name #4", status: "Backlog" },
+      { index: "01", title: "TODO: Company / Team", status: "Intern" },
+      { index: "02", title: "TODO: Product / Platform", status: "Domain" },
+      { index: "03", title: "TODO: Main Project", status: "Built" },
+      { index: "04", title: "TODO: Impact Metric", status: "% / ms / users" },
+      { index: "05", title: "TODO: Tech Stack", status: "TypeScript / Java / AWS" },
+      { index: "06", title: "TODO: Internship Dates", status: "YYYY-YYYY" },
+      { index: "07", title: "TODO: Internship #2", status: "Add when ready" },
+      { index: "08", title: "TODO: Internship #3", status: "Add when ready" },
     ],
     bullets: [
-      "Add project names with one-line outcome-focused summaries.",
-      "Mention measurable impact where possible (users, speed, results).",
-      "Link each project to repo, live demo, or case study.",
+      "Keep this section focused on internships and technical roles only.",
+      "Use action + metric bullets (implemented X, improved Y by Z%).",
+      "Add multiple internships directly here; panel now supports scrolling.",
     ],
   },
   {
     index: "03",
-    title: "EXPERIENCE LOG",
-    progress: "CAREER",
+    title: "ADDITIONAL EXPERIENCE LOG",
+    progress: "EXTRA",
     rows: [
-      { index: "01", title: "TODO: Company / Internship", status: "Role" },
-      { index: "02", title: "TODO: Main Responsibility", status: "Impact" },
-      { index: "03", title: "TODO: Team / Domain", status: "Context" },
-      { index: "04", title: "TODO: Dates", status: "YYYY-YYYY" },
+      { index: "01", title: "TODO: Sales Associate (GAP)", status: "Customer Ops" },
+      { index: "02", title: "TODO: Kumon Assistant", status: "Teaching" },
+      { index: "03", title: "TODO: Main Responsibility", status: "Ownership" },
+      { index: "04", title: "TODO: Transferable Skill", status: "Communication" },
+      { index: "05", title: "TODO: Dates", status: "YYYY-YYYY" },
     ],
     bullets: [
-      "Describe what you built and why it mattered to the team.",
-      "Use action + result phrasing (implemented, improved, delivered).",
-      "Include internships, freelance work, or leadership experience.",
+      "Include only non-technical roles that prove reliability and communication.",
+      "Keep this section short and secondary to technical experience.",
+      "Use one-line outcomes: trained staff, handled high volume, improved process speed.",
     ],
   },
 ];
@@ -345,6 +350,21 @@ export default function Experience({ src }) {
           flex-direction: column;
           gap: 10px;
           margin-top: 18px;
+          max-height: 330px;
+          overflow-y: auto;
+          padding-right: 6px;
+          scrollbar-width: thin;
+          scrollbar-color: rgba(159, 251, 255, 0.35) rgba(0, 0, 0, 0.22);
+        }
+        .resume-detail-list::-webkit-scrollbar {
+          width: 8px;
+        }
+        .resume-detail-list::-webkit-scrollbar-track {
+          background: rgba(0, 0, 0, 0.25);
+        }
+        .resume-detail-list::-webkit-scrollbar-thumb {
+          background: rgba(159, 251, 255, 0.42);
+          border-radius: 10px;
         }
         .resume-detail-row {
           display: grid;
@@ -468,6 +488,12 @@ export default function Experience({ src }) {
         }
 
         @media (max-width: 768px) {
+          .resume-detail-list {
+            max-height: none;
+            overflow-y: visible;
+            padding-right: 0;
+          }
+
           .resume-footer {
             display: none;
           }
