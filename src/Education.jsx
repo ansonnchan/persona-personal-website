@@ -18,7 +18,7 @@ const REVEAL_CONTENT = [
       "Computer Engineering, Faculty of Applied Science",
       "Expected Graduation: 2029",
     ],
-    lower: "No clubs. I don't touch grass.",
+    lower: "Dean's List 2024W, 2025W",
   },
   {
     upper: [
@@ -26,19 +26,30 @@ const REVEAL_CONTENT = [
       "Data Structures & Algorithms, Object-Oriented Programming (Java), Operating Systems,",
       "Computer Architecture, Applied Machine Learning",
     ],
-    lower: "Courses I'm looking forward to taking: Deep Learning (CPEN 455), Computer Vision (CPSC 425)",
+    lower: ["Courses I'm looking forward to taking:",
+            "Deep Learning (CPEN 455), Computer Vision (CPSC 425)",
+    ]
   },
- 
+ {
+    upper: [
+        "What extracurriculars? I haven't touched grass since 2020. ",
+        "What is social interaction? I thought that was just a myth."
+        
+    ],
+    lower: "I'm in the going-home club if that counts though",
+ }
 ];
 
 const ROLES = [
   { text: "LEADER" },
+  { text: "PARTY" },
   { text: "PARTY" },
 ];
 
 const ITEMS = [
   { id: "profile", label: "PROFILE" },
   { id: "coursework", label: "COURSEWORK" },
+  { id: "clubs", label: "EXTRACURRICULARS" },
 ];
 
 export default function Education() {
@@ -85,10 +96,15 @@ export default function Education() {
               <div className="ed-reveal-upper-line" key={line}>{line}</div>
             ))}
           </div>
-          <div className="ed-reveal-lower-bar">{REVEAL_CONTENT[active].lower}</div>
+          <div className="ed-reveal-lower-bar">
+            {Array.isArray(REVEAL_CONTENT[active].lower)
+              ? REVEAL_CONTENT[active].lower.map((line) => (
+                  <div className = "ed-reveal-lower-line" key={line}>{line}</div>
+                ))
+              : REVEAL_CONTENT[active].lower}
+        </div>
         </div>
       )}
-
       {revealed && (
         <div key={`nav-${active}`} className="ed-right-nav">
           <span className="ed-nav-arrow left">◄</span>
@@ -123,8 +139,8 @@ export default function Education() {
 
         @keyframes ed-reveal-bar-in {
           0%   { opacity: 0; transform: translateX(-120px) rotate(-20deg) scaleX(0.72); }
-          60%  { opacity: 0.96; transform: translateX(18px) rotate(-20deg) scaleX(1.03); }
-          100% { opacity: 0.92; transform: translateX(0) rotate(-20deg) scaleX(1); }
+          60%  { opacity: 1; transform: translateX(18px) rotate(-20deg) scaleX(1.03); }
+          100% { opacity: 1; transform: translateX(0) rotate(-20deg) scaleX(1); }
         }
 
         @keyframes ed-portrait-in {
@@ -146,10 +162,10 @@ export default function Education() {
         .ed-main-portrait-shell {
           position: absolute;
           top: 0;
-          right: -8vw;
+          right: -3vw;
           z-index: 13;
           pointer-events: none;
-          width: 54vw;
+          width: 43vw;
           height: 100vh;
           overflow: hidden;
           opacity: 0;
@@ -167,9 +183,9 @@ export default function Education() {
         .ed-main-portrait {
           width: 100%;
           height: 100%;
-          object-fit: contain;
-          object-position: 50% top;
-          transform: skewX(8deg) scale(0.9);
+          object-fit: cover;
+          object-position: 62% top;
+          transform: skewX(8deg) scale(1.01);
           transform-origin: top right;
         }
 
@@ -194,7 +210,7 @@ export default function Education() {
         }
 
         .ed-reveal-panel.mounted {
-          opacity: 0.92;
+          opacity: 1;
           transform: translateX(0) rotate(-20deg);
           animation: ed-reveal-bar-in 0.46s cubic-bezier(0.22, 1, 0.36, 1);
         }
@@ -244,11 +260,12 @@ export default function Education() {
           background: rgba(0,0,0,0.92);
           clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%);
           display: flex;
+          flex-direction: column;
           align-items: flex-start;
           justify-content: flex-start;
           color: #fff;
           font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(19px, 1.8vw, 28px);
+          font-size: clamp(18px, 1.5vw, 28px);
           line-height: 1.18;
           letter-spacing: 1px;
           text-align: left;
@@ -509,10 +526,10 @@ export default function Education() {
 
         @media (max-width: 768px) {
           .ed-main-portrait-shell {
-            top: 4vh;
-            right: -16vw;
-            width: 64vw;
-            height: 52vh;
+            top: 8vh;
+            right: -9vw;
+            width: 46vw;
+            height: 44vh;
             z-index: 13;
             clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
           }
@@ -561,9 +578,9 @@ export default function Education() {
 
         @media (min-width: 769px) and (max-width: 1200px) {
           .ed-main-portrait-shell {
-            right: -12vw;
-            width: 56vw;
-            height: 94vh;
+            right: -6vw;
+            width: 44vw;
+            height: 92vh;
             clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
           }
 

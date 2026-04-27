@@ -131,8 +131,10 @@ export default function App() {
       <button
         type="button"
         className="bgm-hud"
+        tabIndex={-1}
         aria-live="polite"
         aria-label={isPlaying ? 'Pause background music' : 'Play background music'}
+        onMouseDown={(e) => e.preventDefault()}
         onClick={togglePlayback}
       >
         <div className="bgm-row"><span className="bgm-key">M</span><span>{bgmStatus}</span></div>
