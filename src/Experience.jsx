@@ -4,76 +4,64 @@ import defaultBackground from "./assets/train-web.mp4";
 
 const STATIONS = [
   {
-    id: "education",
-    shortLabel: "EDUC",
-    line: "EDU LINE",
-    title: "Education Arc",
-    details: [
-      "TODO: University Name",
-      "TODO: Faculty",
-      "TODO: Major",
-      "TODO: Expected Graduation",
-      "TODO: Relevant Coursework",
-    ],
-    status: "IN PROGRESS",
-    completion: 35,
-    notes: ["Fill these lines directly with your real education details."],
-  },
-  {
     id: "borrowd",
-    shortLabel: "BORROWD",
-    line: "EXPERIENCE LINE",
-    title: "Internship Arc #1",
+    shortLabel: "ROLE 01",
+    line: "CAREER LINE",
+    title: "Borrowd Internship",
     details: [
-      "TODO: Borrowd",
+      "TODO: Company: Borrowd",
       "TODO: Role",
-      "TODO: Duration",
+      "TODO: Dates",
+      "TODO: Core stack / team",
     ],
     status: "COMPLETED",
     completion: 100,
-    notes: ["Optional: add 1-2 impact bullets later if you want stronger recruiter signal."],
+    notes: ["TODO: Add 1-2 measurable impact bullets for this role."],
   },
   {
     id: "atria",
-    shortLabel: "ATRIA",
-    line: "EXPERIENCE LINE",
-    title: "Internship Arc #2",
+    shortLabel: "ROLE 02",
+    line: "CAREER LINE",
+    title: "Atria Internship",
     details: [
-      "TODO: Atria",
+      "TODO: Company: Atria",
       "TODO: Role",
-      "TODO: Duration",
+      "TODO: Dates",
+      "TODO: Team focus",
     ],
     status: "INCOMING",
     completion: 60,
-    notes: ["Add final start/end dates after internship timeline is confirmed."],
+    notes: ["TODO: Add confirmed timeline and expected responsibilities."],
   },
   {
-    id: "project",
-    shortLabel: "PROJECT",
-    line: "BUILD LINE",
-    title: "Project Expansion Arc",
+    id: "next",
+    shortLabel: "ROLE 03",
+    line: "CAREER LINE",
+    title: "Next Internship Target",
     details: [
-      "TODO: Project / Product Focus",
-      "TODO: Main Role",
-      "TODO: Timeline",
+      "TODO: Target company / domain",
+      "TODO: Preferred role",
+      "TODO: Target term",
+      "TODO: Priority skills to build",
     ],
     status: "ACTIVE",
-    completion: 70,
-    notes: ["Keep this lightweight or remove this station if you want internship-only focus."],
+    completion: 45,
+    notes: ["TODO: Keep this focused on job search pipeline milestones."],
   },
   {
-    id: "current",
-    shortLabel: "CURRENT",
-    line: "MISSION LINE",
-    title: "Current Mission",
+    id: "fulltime",
+    shortLabel: "ROLE 04",
+    line: "CAREER LINE",
+    title: "Full-Time Goal",
     details: [
-      "TODO: Current Focus",
-      "TODO: What you are optimizing next",
-      "TODO: Current timeframe",
+      "TODO: Target role after graduation",
+      "TODO: Preferred industry/team",
+      "TODO: Location preference",
+      "TODO: Readiness checklist",
     ],
-    status: "LIVE",
-    completion: 75,
-    notes: ["Use this station as a short now/next checkpoint."],
+    status: "PLANNING",
+    completion: 30,
+    notes: ["TODO: Use this as the long-term destination checkpoint."],
   },
 ];
 
@@ -88,7 +76,7 @@ function statusClass(status) {
 export default function Experience({ src }) {
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
-  const [panelOpen, setPanelOpen] = useState(true);
+  const [panelOpen, setPanelOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const resolvedBackground = src || defaultBackground;
   const current = STATIONS[active];
@@ -103,12 +91,12 @@ export default function Experience({ src }) {
       if (e.key === "ArrowLeft") {
         e.preventDefault();
         setActive((i) => (i - 1 + STATIONS.length) % STATIONS.length);
-        setPanelOpen(true);
+        setPanelOpen(false);
       }
       if (e.key === "ArrowRight") {
         e.preventDefault();
         setActive((i) => (i + 1) % STATIONS.length);
-        setPanelOpen(true);
+        setPanelOpen(false);
       }
       if (e.key === "Enter") {
         e.preventDefault();
@@ -134,12 +122,12 @@ export default function Experience({ src }) {
       <div className="exp-overlay">
         <header className="exp-header">
           <h1>CAREER ARC</h1>
-          <p>Journey progress: Software Engineer Route</p>
+          <p>Chosen Route: Software Engineer</p>
         </header>
 
         <section className="exp-route-wrap" aria-label="Career arc stations">
           <div className="exp-route-line" aria-hidden="true" />
-          <div className="exp-stations">
+          <div className="exp-stations" style={{ gridTemplateColumns: `repeat(${STATIONS.length}, minmax(0, 1fr))` }}>
             {STATIONS.map((station, index) => {
               const isActive = index === active;
               return (
@@ -149,16 +137,24 @@ export default function Experience({ src }) {
                   className={`exp-station ${isActive ? "active" : ""}`}
                   onClick={() => {
                     setActive(index);
-                    setPanelOpen(true);
+                    setPanelOpen(false);
                   }}
                 >
                   <span className="exp-station-dot" />
-                  <span className="exp-station-label">{station.shortLabel}</span>
+                  <span className="exp-station-label">STOP {index + 1}</span>
+                  {isActive && !panelOpen ? <span className="exp-enter-chip">ENTER</span> : null}
                 </button>
               );
             })}
           </div>
         </section>
+
+        {!panelOpen ? (
+          <div className="exp-enter-hint" role="status" aria-live="polite">
+            <span className="exp-enter-title">{current.title}</span>
+            <span className="exp-enter-text">Press ENTER to view checkpoint summary</span>
+          </div>
+        ) : null}
 
         <section className={`exp-detail ${panelOpen ? "open" : ""}`}>
           <div className="exp-detail-top">
@@ -217,7 +213,8 @@ export default function Experience({ src }) {
           font-size: clamp(48px, 7vw, 92px);
           line-height: 0.9;
           letter-spacing: 1px;
-          text-shadow: 0 2px 0 rgba(0, 0, 0, 0.25);
+          color: #082b73;
+          text-shadow: 0 2px 0 rgba(255, 255, 255, 0.2);
         }
 
         .exp-header p {
@@ -225,7 +222,9 @@ export default function Experience({ src }) {
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(20px, 2.2vw, 34px);
           letter-spacing: 1px;
-          opacity: 0.95;
+          color: #0d347f;
+          opacity: 1;
+          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.22);
         }
 
         .exp-route-wrap {
@@ -289,8 +288,10 @@ export default function Experience({ src }) {
           letter-spacing: 0.7px;
           text-align: center;
           line-height: 1;
-          color: rgba(236, 251, 255, 0.88);
-          transition: color 0.2s ease;
+          color: rgba(236, 251, 255, 0.9);
+          opacity: 0;
+          transform: translateY(-4px);
+          transition: color 0.2s ease, opacity 0.18s ease, transform 0.18s ease;
         }
 
         .exp-station.active .exp-station-dot {
@@ -301,6 +302,55 @@ export default function Experience({ src }) {
 
         .exp-station.active .exp-station-label {
           color: #9cf5ff;
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .exp-enter-chip {
+          margin-top: -4px;
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(13px, 0.95vw, 18px);
+          letter-spacing: 1.2px;
+          padding: 1px 7px;
+          border: 1px solid rgba(255, 255, 255, 0.72);
+          background: rgba(0, 0, 0, 0.52);
+          color: #f4fdff;
+          border-radius: 5px;
+          animation: exp-enter-blink 1s ease-in-out infinite;
+        }
+
+        @keyframes exp-enter-blink {
+          0%, 100% { opacity: 1; }
+          50% { opacity: 0.45; }
+        }
+
+        .exp-enter-hint {
+          justify-self: end;
+          width: min(42vw, 700px);
+          min-height: 86px;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          gap: 2px;
+          padding: 14px 18px;
+          background: linear-gradient(180deg, rgba(10, 24, 92, 0.8) 0%, rgba(6, 14, 54, 0.86) 100%);
+          border: 1px solid rgba(147, 239, 255, 0.35);
+          clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
+          box-shadow: inset 0 0 0 1px rgba(147, 239, 255, 0.08), 14px 14px 0 rgba(0, 6, 30, 0.35);
+        }
+
+        .exp-enter-title {
+          font-family: 'Anton', sans-serif;
+          font-size: clamp(23px, 1.8vw, 31px);
+          color: #a3f7ff;
+          line-height: 1;
+        }
+
+        .exp-enter-text {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(16px, 1.1vw, 22px);
+          letter-spacing: 1px;
+          color: #eefbff;
         }
 
         .exp-detail {
@@ -489,6 +539,11 @@ export default function Experience({ src }) {
           }
 
           .exp-detail {
+            width: min(100%, 760px);
+            justify-self: stretch;
+          }
+
+          .exp-enter-hint {
             width: min(100%, 760px);
             justify-self: stretch;
           }

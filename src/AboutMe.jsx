@@ -165,10 +165,10 @@ export default function AboutMe() {
 
         .sc-main-portrait-shell {
           position: absolute;
-          top: 0; right: -3vw;
+          top: 0; right: -8vw;
           z-index: 13;
           pointer-events: none;
-          width: 43vw; height: 100vh;
+          width: 54vw; height: 100vh;
           overflow: hidden;
           opacity: 0;
           transform: translateX(24px) skewX(-8deg) scale(0.98);
@@ -182,8 +182,8 @@ export default function AboutMe() {
         }
         .sc-main-portrait {
           width: 100%; height: 100%;
-          object-fit: cover; object-position: 62% top;
-          transform: skewX(8deg) scale(1.01);
+          object-fit: cover; object-position: 53% top;
+          transform: skewX(8deg) scale(1.04);
           transform-origin: top right;
         }
 
@@ -461,7 +461,7 @@ export default function AboutMe() {
 
         @media (max-width: 768px) {
           .sc-main-portrait-shell {
-            top: 8vh; right: -9vw; width: 46vw; height: 44vh; z-index: 13;
+            top: 4vh; right: -16vw; width: 64vw; height: 52vh; z-index: 13;
             clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
           }
           .sc-main-portrait { transform: none; object-position: center top; }
@@ -502,7 +502,7 @@ export default function AboutMe() {
         }
 
         @media (min-width: 769px) and (max-width: 1200px) {
-          .sc-main-portrait-shell { right: -6vw; width: 44vw; height: 92vh; clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%); }
+          .sc-main-portrait-shell { right: -12vw; width: 56vw; height: 94vh; clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%); }
           .sc-reveal-panel {
             top: 46vh; left: -2vw; width: 78vw; height: 52vh;
             transform: translateX(0) rotate(-14deg);

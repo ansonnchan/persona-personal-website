@@ -55,6 +55,15 @@ body {
   box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
   backdrop-filter: blur(2px);
   font-family: 'Bebas Neue', sans-serif;
+  color: inherit;
+  appearance: none;
+  cursor: pointer;
+  text-align: left;
+}
+
+.bgm-hud:focus-visible {
+  outline: 2px solid rgba(125, 212, 252, 0.95);
+  outline-offset: 2px;
 }
 
 .bgm-row {
@@ -80,6 +89,30 @@ body {
   font-size: 12px;
   letter-spacing: 1px;
   color: rgba(214, 245, 255, 0.86);
+}
+
+.bgm-title-wrap {
+  width: 250px;
+  overflow: hidden;
+}
+
+.bgm-title-marquee {
+  width: max-content;
+  font-size: 12px;
+  letter-spacing: 1px;
+  color: rgba(214, 245, 255, 0.9);
+  white-space: nowrap;
+  will-change: transform;
+  animation: bgm-title-scroll 11s linear infinite;
+}
+
+@keyframes bgm-title-scroll {
+  0% {
+    transform: translateX(100%);
+  }
+  100% {
+    transform: translateX(-100%);
+  }
 }
 
 /* Touch-friendly defaults for narrow screens */
@@ -434,8 +467,8 @@ body {
   }
 
   .sc-main-portrait-shell {
-    width: 44vw !important;
-    right: -10vw !important;
+    width: 56vw !important;
+    right: -12vw !important;
   }
 
   .sc-reveal-panel {
@@ -486,8 +519,8 @@ body {
   }
 
   .sc-main-portrait-shell {
-    width: 46vw !important;
-    right: -12vw !important;
+    width: 62vw !important;
+    right: -16vw !important;
   }
 
   .sc-reveal-panel {
