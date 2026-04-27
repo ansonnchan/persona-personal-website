@@ -7,12 +7,13 @@ const STATIONS = [
     id: "borrowd",
     shortLabel: "ROLE 01",
     line: "CAREER LINE",
-    title: "Borrowd Internship",
+    title: "Borrowd",
     details: [
-      "TODO: Company: Borrowd",
-      "TODO: Role",
-      "TODO: Dates",
-      "TODO: Core stack / team",
+      "Borrowd",
+      "Software Developer Intern",
+      "January 2026 - April 2026",
+      "Backend development, fixing bugs and implementing features both internally (employees) and externally",
+      "Tech Stack: Python, Django"
     ],
     status: "COMPLETED",
     completion: 100,
@@ -22,17 +23,19 @@ const STATIONS = [
     id: "atria",
     shortLabel: "ROLE 02",
     line: "CAREER LINE",
-    title: "Atria Internship",
+    title: "Atria",
     details: [
-      "TODO: Company: Atria",
-      "TODO: Role",
-      "TODO: Dates",
-      "TODO: Team focus",
+      "Atria",
+      "Software Developer Intern",
+      "May 2026 - Present",
+      "Full-stack development, new feature implementation",
+      "Tech Stack: JavaScript, React, Python, Django",
     ],
     status: "INCOMING",
     completion: 60,
     notes: ["TODO: Add confirmed timeline and expected responsibilities."],
   },
+  /* 
   {
     id: "next",
     shortLabel: "ROLE 03",
@@ -63,6 +66,7 @@ const STATIONS = [
     completion: 30,
     notes: ["TODO: Use this as the long-term destination checkpoint."],
   },
+  */
 ];
 
 function statusClass(status) {

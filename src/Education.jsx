@@ -28,26 +28,17 @@ const REVEAL_CONTENT = [
     ],
     lower: "Courses I'm looking forward to taking: Deep Learning (CPEN 455), Computer Vision (CPSC 425)",
   },
-  {
-    upper: [
-      "TODO: Dean's List / distinctions",
-      "TODO: Scholarships / awards",
-      "TODO: Optional leadership/club highlights",
-    ],
-    lower: "No current extracurriculars",
-  },
+ 
 ];
 
 const ROLES = [
   { text: "LEADER" },
-  { text: "PARTY" },
   { text: "PARTY" },
 ];
 
 const ITEMS = [
   { id: "profile", label: "PROFILE" },
   { id: "coursework", label: "COURSEWORK" },
-  { id: "honors", label: "HONORS" },
 ];
 
 export default function Education() {
@@ -154,31 +145,31 @@ export default function Education() {
 
         .ed-main-portrait-shell {
           position: absolute;
-          top: -2vh;
-          right: -10vw;
+          top: 0;
+          right: -8vw;
           z-index: 13;
           pointer-events: none;
-          width: 50vw;
-          height: 104vh;
+          width: 54vw;
+          height: 100vh;
           overflow: hidden;
           opacity: 0;
-          transform: translateX(24px) skewX(-12deg) rotate(-1.4deg) scale(0.98);
+          transform: translateX(24px) skewX(-8deg) scale(0.98);
           transition: opacity 0.35s ease, transform 0.35s ease;
-          clip-path: polygon(20% 0, 100% 0, 86% 100%, 0 100%);
+          clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
         }
 
         .ed-main-portrait-shell.mounted {
           opacity: 0.96;
-          transform: translateX(0) skewX(-12deg) rotate(-1.4deg) scale(1);
+          transform: translateX(0) skewX(-8deg) scale(1);
           animation: ed-portrait-in 0.5s cubic-bezier(0.22, 1, 0.36, 1);
         }
 
         .ed-main-portrait {
           width: 100%;
           height: 100%;
-          object-fit: cover;
-          object-position: 52% top;
-          transform: skewX(12deg) scale(1.02);
+          object-fit: contain;
+          object-position: 50% top;
+          transform: skewX(8deg) scale(0.9);
           transform-origin: top right;
         }
 
@@ -222,8 +213,8 @@ export default function Education() {
         .ed-reveal-upper-bar {
           position: absolute;
           top: 10%;
-          left: 12%;
-          width: 88%;
+          left: 0;
+          width: 100%;
           height: 40%;
           background: rgba(0,0,0,0.92);
           clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%);
@@ -246,21 +237,21 @@ export default function Education() {
         .ed-reveal-lower-bar {
           position: absolute;
           top: 58%;
-          left: 12%;
-          width: 88%;
+          right: 0;
+          width: 48%;
           min-height: 20%;
           max-height: 34%;
           background: rgba(0,0,0,0.92);
           clip-path: polygon(0 0, 100% 0, calc(100% - 22px) 100%, 0 100%);
           display: flex;
-          align-items: center;
-          justify-content: center;
+          align-items: flex-start;
+          justify-content: flex-start;
           color: #fff;
           font-family: 'Bebas Neue', sans-serif;
           font-size: clamp(19px, 1.8vw, 28px);
           line-height: 1.18;
           letter-spacing: 1px;
-          text-align: center;
+          text-align: left;
           white-space: normal;
           overflow-y: auto;
           padding: 10px 18px 10px 22px;
@@ -518,15 +509,15 @@ export default function Education() {
 
         @media (max-width: 768px) {
           .ed-main-portrait-shell {
-            top: 2vh;
-            right: -18vw;
-            width: 66vw;
-            height: 58vh;
+            top: 4vh;
+            right: -16vw;
+            width: 64vw;
+            height: 52vh;
             z-index: 13;
-            clip-path: polygon(18% 0, 100% 0, 86% 100%, 0 100%);
+            clip-path: polygon(8% 0, 100% 0, 100% 100%, 0 100%);
           }
 
-          .ed-main-portrait { transform: skewX(10deg) scale(1.02); object-position: 52% top; }
+          .ed-main-portrait { transform: none; object-position: center top; }
 
           .ed-reveal-panel {
             top: 44vh !important;
@@ -555,8 +546,7 @@ export default function Education() {
 
           .ed-reveal-lower-bar {
             top: 62%;
-            width: 96%;
-            left: 2%;
+            width: 88%;
             bottom: 8%;
             height: auto;
             max-height: none;
@@ -571,11 +561,10 @@ export default function Education() {
 
         @media (min-width: 769px) and (max-width: 1200px) {
           .ed-main-portrait-shell {
-            top: -1vh;
-            right: -16vw;
-            width: 60vw;
-            height: 100vh;
-            clip-path: polygon(18% 0, 100% 0, 86% 100%, 0 100%);
+            right: -12vw;
+            width: 56vw;
+            height: 94vh;
+            clip-path: polygon(10% 0, 100% 0, 100% 100%, 0 100%);
           }
 
           .ed-reveal-panel {

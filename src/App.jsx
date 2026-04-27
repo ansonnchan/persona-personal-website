@@ -120,8 +120,8 @@ export default function App() {
   const bgmStatus = !hasStarted
     ? 'BGM: PRESS TO PLAY'
     : isPlaying
-      ? (isMuted ? 'BGM: MUTED' : 'BGM: ACTIVE')
-      : 'BGM: PAUSED'
+      ? (isMuted ? 'BGM: MUTED (PRESS M TO UNMUTE)' : 'BGM: ACTIVE (PRESS TO PAUSE)')
+      : 'BGM: PAUSED (TAP TO PLAY)'
 
   return (
     <>
