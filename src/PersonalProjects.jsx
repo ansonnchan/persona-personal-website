@@ -71,6 +71,7 @@ const PROJECTS = [
       "Archive placeholder for an exploratory UI project with layered states, responsive surfaces, and intentional animation cues that guide the user like a combat HUD.",
     link: "https://github.com/ansonnchan",
   },
+  //add more projects here
 ];
 
 
@@ -135,20 +136,22 @@ function ArcanaArt({ arcana, size = 72 }) {
 // ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function VelvetRoomProjects() {
   const navigate = useNavigate();
-  const [filter, setFilter] = useState("ALL");
+  //const [filter, setFilter] = useState("ALL");
   const [selectedProject, setSelectedProject] = useState(null);
   const [hoveredId, setHoveredId] = useState(null);
+const [hoverTimeout, setHoverTimeout] = useState(null);
   const [showIntro, setShowIntro] = useState(true);
   const [introStep, setIntroStep] = useState(0); // 0: Igor, 1: Elizabeth confirm, 2: fade out
 
-  const filtered = useMemo(
-    () => (filter === "ALL" ? PROJECTS : PROJECTS.filter((p) => p.arcana === filter)),
-    [filter]
-  );
-  const arcanaCounts = useMemo(
-    () => PROJECTS.reduce((acc, p) => ({ ...acc, [p.arcana]: (acc[p.arcana] || 0) + 1 }), {}),
-    []
-  );
+  // const filtered = useMemo(
+  //   () => (filter === "ALL" ? PROJECTS : PROJECTS.filter((p) => p.arcana === filter)),
+  //   [filter]
+  // );
+  const filtered = PROJECTS;
+  // const arcanaCounts = useMemo(
+  //   () => PROJECTS.reduce((acc, p) => ({ ...acc, [p.arcana]: (acc[p.arcana] || 0) + 1 }), {}),
+  //   []
+  // );
 
   // Escape key
   useEffect(() => {
@@ -209,21 +212,25 @@ export default function VelvetRoomProjects() {
           </div>
 
           <div className="vr-header__right">
-            <div className="vr-statbar">
-              <div className="vr-statbar__cell">
-                <span className="vr-statbar__val">{PROJECTS.length.toString().padStart(2, "0")}</span>
-                <span className="vr-statbar__label">ARCHIVED</span>
-              </div>
-              <div className="vr-statbar__sep" />
-              <div className="vr-statbar__cell">
-                <span className="vr-statbar__val">{filtered.length.toString().padStart(2, "0")}</span>
-                <span className="vr-statbar__label">VISIBLE</span>
-              </div>
-            </div>
-          </div>
+  <div className="vr-statbar">
+    <div className="vr-statbar__cell">
+      <span className="vr-statbar__val">
+        {PROJECTS.length.toString().padStart(2, "0")}
+      </span>
+      <span className="vr-statbar__label">PROJECTS</span>
+    </div>
+
+    <div className="vr-statbar__sep" />
+
+    <div className="vr-statbar__cell">
+      <span className="vr-statbar__val">ACTIVE</span>
+      <span className="vr-statbar__label">SYSTEM STATUS</span>
+    </div>
+  </div>
+</div>
         </header>
 
-        {/* ── FILTER TABS ── */}
+        {/* ── FILTER TABS ──
         <nav className="vr-filters" aria-label="Arcana filters">
           {ARCANA_ORDER.map((arcana) => {
             const cfg = arcana !== "ALL" ? ARCANA[arcana] : null;
@@ -244,7 +251,7 @@ export default function VelvetRoomProjects() {
               </motion.button>
             );
           })}
-        </nav>
+        </nav> */}
 
         {/* ── MAIN LAYOUT ── */}
         <div className="vr-layout">
@@ -268,13 +275,19 @@ export default function VelvetRoomProjects() {
                       opacity: isDim ? 0.38 : 1,
                       y: 0,
                       scale: isHov ? 1.025 : 1,
-                      rotateX: isHov ? 5 : 0,
-                      rotateY: isHov ? -3 : 0,
+                      //rotateX: isHov ? 5 : 0,
+                      //rotateY: isHov ? -3 : 0,
                       filter: isDim ? "blur(0.4px) saturate(0.5)" : "blur(0px) saturate(1)",
                     }}
                     exit={{ opacity: 0, y: 16, scale: 0.96 }}
                     transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
-                    onHoverStart={() => setHoveredId(project.id)}
+                    onHoverStart={() => {
+  const timeout = setTimeout(() => {
+    setHoveredId(project.id);
+  }, 300);
+
+  setHoverTimeout(timeout);
+}}
                     onHoverEnd={() => setHoveredId((cur) => (cur === project.id ? null : cur))}
                     onClick={() => setSelectedProject(project)}
                   >
@@ -568,7 +581,7 @@ export default function VelvetRoomProjects() {
                     className="vr-summon-card__close"
                     onClick={() => setSelectedProject(null)}
                   >
-                    ✕ CLOSE
+                    ✕ EXIT
                   </button>
                 </div>
 
@@ -840,12 +853,13 @@ export default function VelvetRoomProjects() {
           /* ──── COMPENDIUM ──── */
           .vr-compendium {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            grid-template-columns: repeat(3, minmax(0, 1fr));
             gap: 20px;
             padding: 24px;
             align-content: start;
-            justify-items: start;
+            justify-items: stretch;
             perspective: 1200px;
+            max-width: 100%;
           }
 
           /* ──── HOLOGRAM PANEL ──── */
@@ -879,17 +893,27 @@ export default function VelvetRoomProjects() {
             background: linear-gradient(135deg, rgba(255,255,255,0.035) 0%, transparent 58%);
             pointer-events: none;
           }
+            .vr-card::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+
+  border: 1px solid rgba(255,255,255,0.03);
+
+  pointer-events: none;
+}
 
           .vr-card.is-hovered {
-            border-color: var(--cb, var(--cyan));
-            box-shadow:
-              0 18px 44px rgba(0,0,0,0.44),
-              0 0 0 1px var(--c),
-              0 0 22px var(--cdim),
-              inset 0 0 16px rgba(255,255,255,0.02);
-            z-index: 4;
-          }
+  border-color: var(--cb, var(--cyan));
 
+  box-shadow:
+    0 22px 48px rgba(0,0,0,0.58),
+    0 0 0 1px var(--c),
+    0 0 24px rgba(87,231,255,0.14),
+    inset 0 0 18px rgba(255,255,255,0.03);
+
+  z-index: 4;
+}
           /* Art zone */
           .vr-card__art {
             position: relative;
@@ -973,6 +997,40 @@ export default function VelvetRoomProjects() {
           .vr-corner--tr { top: 5px; right: 5px; border-width: 1px 1px 0 0; }
           .vr-corner--bl { bottom: 5px; left: 5px; border-width: 0 0 1px 1px; }
           .vr-corner--br { bottom: 5px; right: 5px; border-width: 0 1px 1px 0; }
+
+          //vr card
+        .vr-card {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr;
+
+  width: 100%;
+  max-width: 100%;
+  min-height: 360px;
+
+  overflow: hidden;
+
+  background:
+    linear-gradient(
+      180deg,
+      rgba(12, 22, 48, 0.98) 0%,
+      rgba(5, 10, 24, 0.98) 100%
+    );
+
+  border: 2px solid rgba(87,231,255,0.42);
+
+  box-shadow:
+    0 0 0 1px rgba(87,231,255,0.14),
+    0 16px 34px rgba(0,0,0,0.55),
+    inset 0 1px 0 rgba(255,255,255,0.05);
+
+  backdrop-filter: blur(10px);
+
+  transition:
+    border-color 0.25s ease,
+    box-shadow 0.25s ease,
+    transform 0.25s ease;
+}
 
           /* Hologram stats panel */
           .vr-card__hologram {
