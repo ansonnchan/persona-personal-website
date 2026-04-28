@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import igor from "./assets/igor.png";
 import elizabeth from "./assets/elizabeth-2.png";
 
-// ─── ARCANA CONFIG ───────────────────────────────────────────────────────────
 const ARCANA = {
   FOOL: {
     num: "0",
@@ -38,7 +37,6 @@ const ARCANA = {
 
 const ARCANA_ORDER = ["ALL", "FOOL", "MAGICIAN", "JUSTICE", "HERMIT"];
 
-// ─── PROJECT DATA ─────────────────────────────────────────────────────────────
 const PROJECTS = [
   {
     id: "persona-personal-website",
@@ -75,7 +73,7 @@ const PROJECTS = [
   },
 ];
 
-// ─── ARCANA ART SVGs ─────────────────────────────────────────────────────────
+
 function ArcanaArt({ arcana, size = 72 }) {
   const c = ARCANA[arcana]?.color ?? "#4de8ff";
   const arts = {
@@ -141,6 +139,7 @@ export default function VelvetRoomProjects() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [hoveredId, setHoveredId] = useState(null);
   const [showIntro, setShowIntro] = useState(true);
+  const [introStep, setIntroStep] = useState(0); // 0: Igor, 1: Elizabeth confirm, 2: fade out
 
   const filtered = useMemo(
     () => (filter === "ALL" ? PROJECTS : PROJECTS.filter((p) => p.arcana === filter)),
@@ -162,6 +161,32 @@ export default function VelvetRoomProjects() {
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedProject]);
 
+  // Keyboard navigation for filter switching
+  useEffect(() => {
+    const onKey = (e) => {
+      if (e.key === "Escape") {
+        if (selectedProject) {
+          setSelectedProject(null);
+        } else {
+          navigate("/");
+        }
+      }
+      if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
+        if (!selectedProject) {
+          const currentIdx = ARCANA_ORDER.indexOf(filter);
+          if (e.key === "ArrowLeft") {
+            const nextIdx = (currentIdx - 1 + ARCANA_ORDER.length) % ARCANA_ORDER.length;
+            setFilter(ARCANA_ORDER[nextIdx]);
+          } else {
+            const nextIdx = (currentIdx + 1) % ARCANA_ORDER.length;
+            setFilter(ARCANA_ORDER[nextIdx]);
+          }
+        }
+      }
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [selectedProject, filter, navigate]);
   return (
     <LayoutGroup>
       <div className="vr">
@@ -193,10 +218,6 @@ export default function VelvetRoomProjects() {
                 <span className="vr-statbar__label">VISIBLE</span>
               </div>
             </div>
-
-            <button className="vr-return-btn" onClick={() => navigate("/")}>
-              ← RETURN TO MENU
-            </button>
           </div>
         </header>
 
@@ -287,6 +308,38 @@ export default function VelvetRoomProjects() {
                     <i className="vr-corner vr-corner--tr" />
                     <i className="vr-corner vr-corner--bl" />
                     <i className="vr-corner vr-corner--br" />
+
+                                      {/* Hologram stats panel (appears on hover) */}
+                                      <AnimatePresence>
+                                        {isHov && (
+                                          <motion.div
+                                            className="vr-card__hologram"
+                                            initial={{ opacity: 0, y: 12 }}
+                                            animate={{ opacity: 1, y: 0 }}
+                                            exit={{ opacity: 0, y: 12 }}
+                                            transition={{ duration: 0.25 }}
+                                          >
+                                            <div className="vr-holo-stat">
+                                              <span className="vr-holo-label">COMPLEXITY</span>
+                                              <div className="vr-holo-bar">
+                                                <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "72%" }} transition={{ duration: 0.4, delay: 0.05 }} />
+                                              </div>
+                                            </div>
+                                            <div className="vr-holo-stat">
+                                              <span className="vr-holo-label">SCOPE</span>
+                                              <div className="vr-holo-bar">
+                                                <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "85%" }} transition={{ duration: 0.4, delay: 0.1 }} />
+                                              </div>
+                                            </div>
+                                            <div className="vr-holo-stat">
+                                              <span className="vr-holo-label">INNOVATION</span>
+                                              <div className="vr-holo-bar">
+                                                <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "68%" }} transition={{ duration: 0.4, delay: 0.15 }} />
+                                              </div>
+                                            </div>
+                                          </motion.div>
+                                        )}
+                                      </AnimatePresence>
                   </motion.article>
                 );
               })}
@@ -307,14 +360,13 @@ export default function VelvetRoomProjects() {
 
         {/* ── INTRO OVERLAY ── */}
         <AnimatePresence>
-          {showIntro && (
+          {showIntro && introStep < 2 && (
             <motion.div
               className="vr-intro-layer"
               initial={{ opacity: 0 }}
               animate={{ opacity: 1 }}
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
-              onClick={() => setShowIntro(false)}
             >
               <motion.div
                 className="vr-intro-card"
@@ -322,29 +374,126 @@ export default function VelvetRoomProjects() {
                 animate={{ scale: 1, y: 0 }}
                 exit={{ scale: 0.9, y: 20 }}
                 transition={{ duration: 0.35, ease: [0.22, 1, 0.36, 1] }}
-                onClick={(e) => e.stopPropagation()}
               >
                 <div className="vr-intro-portraits">
-                  <figure className="vr-intro-portrait">
+                  {/* Igor - appears when step 0 */}
+                  <motion.figure
+                    className="vr-intro-portrait"
+                    initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                    animate={introStep === 0 ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.4, y: 0, scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                  >
                     <img src={igor} alt="Igor" />
                     <figcaption>IGOR</figcaption>
-                  </figure>
-                  <figure className="vr-intro-portrait">
+                  </motion.figure>
+
+                  {/* Elizabeth - appears when step 1 */}
+                  <motion.figure
+                    className="vr-intro-portrait"
+                    initial={{ opacity: 0, y: 20, scale: 0.8 }}
+                    animate={introStep === 1 ? { opacity: 1, y: 0, scale: 1 } : { opacity: 0.4, y: 0, scale: 1 }}
+                    transition={{ duration: 0.4 }}
+                  >
                     <img src={elizabeth} alt="Elizabeth" />
                     <figcaption>ELIZABETH</figcaption>
-                  </figure>
+                  </motion.figure>
                 </div>
+
+                {/* Dialogue */}
                 <div className="vr-intro-text">
-                  <p className="vr-intro-speaker">IGOR</p>
-                  <p className="vr-intro-line">"Welcome… The compendium awaits. Select any entry to examine its details."</p>
+                  <AnimatePresence mode="wait">
+                    {introStep === 0 && (
+                      <motion.div
+                        key="igor-msg"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="vr-intro-speaker">IGOR</p>
+                        <p className="vr-intro-line">"Welcome esteemed visitor… The compendium awaits. Select any entry to examine its details."</p>
+                      </motion.div>
+                    )}
+                    {introStep === 1 && (
+                      <motion.div
+                        key="elizabeth-msg"
+                        initial={{ opacity: 0, y: -10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        exit={{ opacity: 0, y: 10 }}
+                        transition={{ duration: 0.3 }}
+                      >
+                        <p className="vr-intro-speaker">ELIZABETH</p>
+                        <p className="vr-intro-line">"You are about to visit the reclusive compendium of Anson, a digital archive where ambitious projects converge as Personas. A space where creativity meets precision, and vision materializes into code. Do you wish to proceed?"</p>
+                      </motion.div>
+                    )}
+                  </AnimatePresence>
                 </div>
-                <button className="vr-intro-close" onClick={() => setShowIntro(false)}>
-                  CLOSE
-                </button>
+
+                {/* Buttons */}
+                <div className="vr-intro-buttons">
+                  {introStep === 0 && (
+                    <>
+                      <button
+                        className="vr-intro-btn vr-intro-btn--back"
+                        onClick={() => navigate("/")}
+                      >
+                        GO BACK
+                      </button>
+                      <button
+                        className="vr-intro-btn vr-intro-btn--continue"
+                        onClick={() => setIntroStep(1)}
+                      >
+                        CONTINUE
+                      </button>
+                    </>
+                  )}
+                  {introStep === 1 && (
+                    <>
+                      <button
+                        className="vr-intro-btn vr-intro-btn--back"
+                        onClick={() => setIntroStep(0)}
+                      >
+                        NO, BACK
+                      </button>
+                      <button
+                        className="vr-intro-btn vr-intro-btn--continue"
+                        onClick={() => {
+                          setIntroStep(2);
+                          setTimeout(() => setShowIntro(false), 1000);
+                        }}
+                      >
+                        YES, PROCEED
+                      </button>
+                    </>
+                  )}
+                </div>
               </motion.div>
             </motion.div>
           )}
+
+          {/* Fade to black transition */}
+          {showIntro && introStep === 2 && (
+            <motion.div
+              className="vr-fade-black"
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.6 }}
+            />
+          )}
         </AnimatePresence>
+
+        {/* ── INSTRUCTION PAD ── */}
+        <div className="vr-instruction-pad">
+          <div className="vr-instruction-row">
+            <span className="vr-instruction-key">ESC</span>
+            <span>BACK</span>
+          </div>
+          <div className="vr-instruction-row">
+            <span className="vr-instruction-key">←→</span>
+            <span>SWITCH</span>
+          </div>
+        </div>
 
         {/* ── SUMMON OVERLAY ── */}
         <AnimatePresence>
@@ -672,9 +821,9 @@ export default function VelvetRoomProjects() {
           /* ──── COMPENDIUM ──── */
           .vr-compendium {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(210px, 1fr));
-            gap: 14px;
-            padding: 22px;
+            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+            gap: 18px;
+            padding: 24px;
             align-content: start;
             border-right: none;
             perspective: 1200px;
@@ -793,6 +942,44 @@ export default function VelvetRoomProjects() {
           .vr-corner--bl { bottom: 5px; left: 5px; border-width: 0 0 1px 1px; }
           .vr-corner--br { bottom: 5px; right: 5px; border-width: 0 1px 1px 0; }
 
+          /* Hologram stats panel */
+          .vr-card__hologram {
+            position: absolute;
+            inset: 0; z-index: 2;
+            display: flex; flex-direction: column; gap: 7px;
+            padding: 12px;
+            background: linear-gradient(135deg, rgba(87,231,255,0.08) 0%, rgba(87,231,255,0.04) 100%);
+            border: 1px solid rgba(87,231,255,0.22);
+            backdrop-filter: blur(4px);
+            overflow: hidden;
+          }
+
+          .vr-holo-stat {
+            display: flex; flex-direction: column; gap: 3px;
+          }
+
+          .vr-holo-label {
+            font-family: var(--ff-mono);
+            font-size: 8px; letter-spacing: 0.22em;
+            color: var(--c);
+            opacity: 0.8;
+            text-transform: uppercase;
+          }
+
+          .vr-holo-bar {
+            height: 4px;
+            background: rgba(87,231,255,0.12);
+            border-radius: 2px;
+            overflow: hidden;
+          }
+
+          .vr-holo-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--c), rgba(87,231,255,0.5));
+            box-shadow: 0 0 6px var(--c);
+          }
+
+
           .vr-empty {
             grid-column: 1/-1;
             padding: 40px; text-align: center;
@@ -853,6 +1040,71 @@ export default function VelvetRoomProjects() {
 
           .vr-intro-line {
             font-size: 14px; line-height: 1.6; color: var(--text-mid);
+          }
+
+          .vr-intro-buttons {
+            display: grid; grid-template-columns: 1fr 1fr;
+            gap: 10px; margin-top: 20px;
+          }
+
+          .vr-intro-btn {
+            padding: 10px 14px;
+            border: 1px solid var(--border-hi);
+            background: rgba(5,11,27,0.88);
+            color: var(--cyan);
+            font-family: var(--ff-mono); font-size: 10px; letter-spacing: 0.2em;
+            cursor: pointer; transition: all 0.2s;
+            text-transform: uppercase;
+          }
+
+          .vr-intro-btn:hover {
+            border-color: var(--cyan);
+            background: rgba(87,231,255,0.06);
+            box-shadow: 0 0 12px rgba(87,231,255,0.2);
+          }
+
+          .vr-intro-btn--back { color: rgba(239,71,111,0.8); border-color: rgba(239,71,111,0.4); }
+          .vr-intro-btn--back:hover { border-color: var(--red); color: var(--red); background: rgba(239,71,111,0.06); }
+
+          .vr-intro-btn--continue { color: var(--cyan); border-color: var(--border-hi); }
+          .vr-intro-btn--continue:hover { background: rgba(87,231,255,0.08); }
+
+          /* Fade to black transition */
+          .vr-fade-black {
+            position: fixed; inset: 0; z-index: 199;
+            background: #000;
+            pointer-events: none;
+          }
+
+          /* ──── INSTRUCTION PAD ──── */
+          .vr-instruction-pad {
+            position: fixed;
+            bottom: 24px; right: 28px;
+            display: flex; flex-direction: column;
+            align-items: flex-end; gap: 6px;
+            font-family: var(--ff-mono);
+            padding: 10px 14px;
+            border-radius: 8px;
+            border: 1px solid rgba(87,231,255,0.28);
+            background: rgba(0,0,0,0.65);
+            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+            backdrop-filter: blur(3px);
+            z-index: 50;
+            pointer-events: none;
+          }
+
+          .vr-instruction-row {
+            display: flex; align-items: center; gap: 10px;
+            font-size: 13px; letter-spacing: 0.16em;
+            color: rgba(180,205,230,0.85);
+          }
+
+          .vr-instruction-key {
+            border: 1px solid rgba(87,231,255,0.36);
+            border-radius: 4px;
+            background: rgba(0,0,0,0.8);
+            color: var(--cyan); padding: 3px 8px;
+            font-size: 11px; font-weight: 600;
           }
 
           .vr-intro-close {
