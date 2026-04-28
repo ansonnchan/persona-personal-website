@@ -161,32 +161,34 @@ export default function VelvetRoomProjects() {
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedProject]);
 
-  // Keyboard navigation for filter switching
+  // Keyboard navigation for card cycling
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
         if (selectedProject) {
           setSelectedProject(null);
+        } else if (hoveredId) {
+          setHoveredId(null);
         } else {
           navigate("/");
         }
       }
       if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
-        if (!selectedProject) {
-          const currentIdx = ARCANA_ORDER.indexOf(filter);
+        if (!selectedProject && filtered.length > 0) {
+          const currentIdx = hoveredId ? filtered.findIndex((p) => p.id === hoveredId) : -1;
+          let nextIdx;
           if (e.key === "ArrowLeft") {
-            const nextIdx = (currentIdx - 1 + ARCANA_ORDER.length) % ARCANA_ORDER.length;
-            setFilter(ARCANA_ORDER[nextIdx]);
+            nextIdx = currentIdx <= 0 ? filtered.length - 1 : currentIdx - 1;
           } else {
-            const nextIdx = (currentIdx + 1) % ARCANA_ORDER.length;
-            setFilter(ARCANA_ORDER[nextIdx]);
+            nextIdx = currentIdx >= filtered.length - 1 ? 0 : currentIdx + 1;
           }
+          setHoveredId(filtered[nextIdx].id);
         }
       }
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [selectedProject, filter, navigate]);
+  }, [selectedProject, filtered, hoveredId, navigate]);
   return (
     <LayoutGroup>
       <div className="vr">
@@ -308,38 +310,6 @@ export default function VelvetRoomProjects() {
                     <i className="vr-corner vr-corner--tr" />
                     <i className="vr-corner vr-corner--bl" />
                     <i className="vr-corner vr-corner--br" />
-
-                                      {/* Hologram stats panel (appears on hover) */}
-                                      <AnimatePresence>
-                                        {isHov && (
-                                          <motion.div
-                                            className="vr-card__hologram"
-                                            initial={{ opacity: 0, y: 12 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                            exit={{ opacity: 0, y: 12 }}
-                                            transition={{ duration: 0.25 }}
-                                          >
-                                            <div className="vr-holo-stat">
-                                              <span className="vr-holo-label">COMPLEXITY</span>
-                                              <div className="vr-holo-bar">
-                                                <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "72%" }} transition={{ duration: 0.4, delay: 0.05 }} />
-                                              </div>
-                                            </div>
-                                            <div className="vr-holo-stat">
-                                              <span className="vr-holo-label">SCOPE</span>
-                                              <div className="vr-holo-bar">
-                                                <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "85%" }} transition={{ duration: 0.4, delay: 0.1 }} />
-                                              </div>
-                                            </div>
-                                            <div className="vr-holo-stat">
-                                              <span className="vr-holo-label">INNOVATION</span>
-                                              <div className="vr-holo-bar">
-                                                <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "68%" }} transition={{ duration: 0.4, delay: 0.15 }} />
-                                              </div>
-                                            </div>
-                                          </motion.div>
-                                        )}
-                                      </AnimatePresence>
                   </motion.article>
                 );
               })}
@@ -356,6 +326,54 @@ export default function VelvetRoomProjects() {
               </motion.div>
             )}
           </section>
+
+          {/* ── HOLOGRAM PANEL (RIGHT SIDE) ── */}
+          <aside className="vr-hologram-panel">
+            <AnimatePresence>
+              {hoveredId && (
+                <motion.div
+                  key={hoveredId}
+                  className="vr-holo-display"
+                  initial={{ opacity: 0, y: 12 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0, y: 12 }}
+                  transition={{ duration: 0.25 }}
+                >
+                  <div style={{ paddingBottom: "12px", borderBottom: "1px solid rgba(87,231,255,0.1)" }}>
+                    <p style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(87,231,255,0.6)", marginBottom: "4px" }}>PROFILE</p>
+                    <p style={{ fontSize: "14px", fontWeight: "400", color: "rgba(255,255,255,0.9)" }}>Selected Project</p>
+                  </div>
+
+                  <div className="vr-holo-stat">
+                    <span className="vr-holo-label">COMPLEXITY</span>
+                    <div className="vr-holo-bar">
+                      <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "72%" }} transition={{ duration: 0.4, delay: 0.05 }} />
+                    </div>
+                    <span style={{ fontSize: "9px", color: "rgba(87,231,255,0.5)" }}>72%</span>
+                  </div>
+                  <div className="vr-holo-stat">
+                    <span className="vr-holo-label">SCOPE</span>
+                    <div className="vr-holo-bar">
+                      <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "85%" }} transition={{ duration: 0.4, delay: 0.1 }} />
+                    </div>
+                    <span style={{ fontSize: "9px", color: "rgba(87,231,255,0.5)" }}>85%</span>
+                  </div>
+                  <div className="vr-holo-stat">
+                    <span className="vr-holo-label">INNOVATION</span>
+                    <div className="vr-holo-bar">
+                      <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "68%" }} transition={{ duration: 0.4, delay: 0.15 }} />
+                    </div>
+                    <span style={{ fontSize: "9px", color: "rgba(87,231,255,0.5)" }}>68%</span>
+                  </div>
+
+                  <div style={{ paddingTop: "12px", borderTop: "1px solid rgba(87,231,255,0.1)" }}>
+                    <p style={{ fontSize: "9px", letterSpacing: "0.2em", color: "rgba(87,231,255,0.5)", textTransform: "uppercase", marginBottom: "6px" }}>STATUS</p>
+                    <p style={{ fontSize: "12px", color: "rgba(87,231,255,0.8)" }}>◆ ACTIVE</p>
+                  </div>
+                </motion.div>
+              )}
+            </AnimatePresence>
+          </aside>
         </div>
 
         {/* ── INTRO OVERLAY ── */}
@@ -484,14 +502,14 @@ export default function VelvetRoomProjects() {
         </AnimatePresence>
 
         {/* ── INSTRUCTION PAD ── */}
-        <div className="vr-instruction-pad">
-          <div className="vr-instruction-row">
-            <span className="vr-instruction-key">ESC</span>
+        <div className="vr-instruction-pad vr-footer">
+          <div className="vr-instruction-row vr-footer-row">
+            <span className="vr-instruction-key vr-footer-key">ESC</span>
             <span>BACK</span>
           </div>
-          <div className="vr-instruction-row">
-            <span className="vr-instruction-key">←→</span>
-            <span>SWITCH</span>
+          <div className="vr-instruction-row vr-footer-row">
+            <span className="vr-instruction-key vr-footer-key">←→</span>
+            <span>SWITCH CARDS</span>
           </div>
         </div>
 
@@ -814,32 +832,44 @@ export default function VelvetRoomProjects() {
           .vr-layout {
             position: relative; z-index: 10;
             display: grid;
-            grid-template-columns: 1fr;
+            grid-template-columns: 3fr 1fr;
             min-height: calc(100dvh - 170px);
+            width: 100%;
           }
 
           /* ──── COMPENDIUM ──── */
           .vr-compendium {
             display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
-            gap: 18px;
+            grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+            gap: 20px;
             padding: 24px;
             align-content: start;
-            border-right: none;
+            justify-items: start;
             perspective: 1200px;
           }
 
-          /* ──── CARDS ──── */
-          .vr-card {
+          /* ──── HOLOGRAM PANEL ──── */
+          .vr-hologram-panel {
+            display: flex;
+            align-items: flex-start;
+            justify-content: center;
+            padding: 32px 20px;
+            min-height: calc(100dvh - 170px);
             position: relative;
-            display: flex; flex-direction: column;
-            background: var(--card-bg);
-            border: 1px solid rgba(87,231,255,0.14);
-            cursor: pointer;
-            overflow: hidden;
-            transform-style: preserve-3d;
-            will-change: transform;
-            transition: border-color 0.35s ease, box-shadow 0.35s ease, background 0.35s ease;
+          }
+
+          .vr-holo-display {
+            display: flex;
+            flex-direction: column;
+            gap: 24px;
+            padding: 28px;
+            border: 1px solid rgba(87,231,255,0.28);
+            border-radius: 8px;
+            background: rgba(6, 13, 29, 0.6);
+            backdrop-filter: blur(8px);
+            box-shadow: 0 0 16px rgba(87,231,255,0.1), inset 0 0 12px rgba(87,231,255,0.05);
+            width: 100%;
+            max-width: 280px;
           }
 
           /* Glass sheen */
@@ -863,9 +893,10 @@ export default function VelvetRoomProjects() {
           /* Art zone */
           .vr-card__art {
             position: relative;
-            height: 88px;
+            height: 110px;
             display: flex; align-items: center; justify-content: center;
             overflow: hidden;
+            grid-column: 1;
           }
           .vr-card__art-glow {
             position: absolute; inset: 0;
@@ -881,18 +912,19 @@ export default function VelvetRoomProjects() {
           /* Body */
           .vr-card__body {
             position: relative; z-index: 1;
-            display: flex; flex-direction: column; gap: 7px;
-            padding: 11px 13px 13px;
+            display: flex; flex-direction: column; gap: 8px;
+            padding: 14px 16px 16px;
             border-top: 1px solid rgba(87,231,255,0.07);
             flex: 1;
+            grid-column: 1;
           }
           .vr-card__arcana-label {
             font-family: var(--ff-mono); font-size: 8.5px;
             letter-spacing: 0.26em; color: var(--c); opacity: 0.7;
           }
           .vr-card__title {
-            font-family: var(--ff-title); font-size: 15px; font-weight: 400;
-            letter-spacing: 0.06em; color: var(--text-hi); line-height: 1.12;
+            font-family: var(--ff-title); font-size: 17px; font-weight: 400;
+            letter-spacing: 0.06em; color: var(--text-hi); line-height: 1.15;
             text-transform: uppercase;
           }
           .vr-card__summary {
@@ -944,14 +976,18 @@ export default function VelvetRoomProjects() {
 
           /* Hologram stats panel */
           .vr-card__hologram {
-            position: absolute;
-            inset: 0; z-index: 2;
-            display: flex; flex-direction: column; gap: 7px;
-            padding: 12px;
-            background: linear-gradient(135deg, rgba(87,231,255,0.08) 0%, rgba(87,231,255,0.04) 100%);
-            border: 1px solid rgba(87,231,255,0.22);
-            backdrop-filter: blur(4px);
+            position: relative;
+            z-index: 2;
+            grid-column: 2;
+            grid-row: 1 / -1;
+            display: flex; flex-direction: column; gap: 8px;
+            padding: 14px 10px;
+            background: linear-gradient(135deg, rgba(87,231,255,0.12) 0%, rgba(87,231,255,0.06) 100%);
+            border-left: 1px solid rgba(87,231,255,0.2);
+            backdrop-filter: blur(6px);
             overflow: hidden;
+            align-content: start;
+            justify-content: flex-start;
           }
 
           .vr-holo-stat {
@@ -960,23 +996,24 @@ export default function VelvetRoomProjects() {
 
           .vr-holo-label {
             font-family: var(--ff-mono);
-            font-size: 8px; letter-spacing: 0.22em;
+            font-size: 9px; letter-spacing: 0.2em;
             color: var(--c);
-            opacity: 0.8;
+            opacity: 0.85;
             text-transform: uppercase;
+            line-height: 1;
           }
 
           .vr-holo-bar {
             height: 4px;
-            background: rgba(87,231,255,0.12);
+            background: rgba(87,231,255,0.1);
             border-radius: 2px;
             overflow: hidden;
           }
 
           .vr-holo-fill {
             height: 100%;
-            background: linear-gradient(90deg, var(--c), rgba(87,231,255,0.5));
-            box-shadow: 0 0 6px var(--c);
+            background: linear-gradient(90deg, var(--c), rgba(87,231,255,0.6));
+            box-shadow: 0 0 4px var(--c);
           }
 
 
@@ -1079,36 +1116,39 @@ export default function VelvetRoomProjects() {
           /* ──── INSTRUCTION PAD ──── */
           .vr-instruction-pad {
             position: fixed;
-            bottom: 24px; right: 28px;
+            bottom: 20px; right: 28px;
             display: flex; flex-direction: column;
-            align-items: flex-end; gap: 6px;
-            font-family: var(--ff-mono);
-            padding: 10px 14px;
-            border-radius: 8px;
-            border: 1px solid rgba(87,231,255,0.28);
-            background: rgba(0,0,0,0.65);
-            box-shadow: 0 8px 24px rgba(0,0,0,0.6);
-            backdrop-filter: blur(3px);
+            align-items: flex-end; gap: 5px;
+            font-family: 'Bebas Neue', sans-serif;
+            padding: 8px 10px;
+            border-radius: 10px;
+            border: 1px solid rgba(255,255,255,0.28);
+            background: rgba(0,0,0,0.58);
+            box-shadow: 0 8px 22px rgba(0,0,0,0.55);
+            backdrop-filter: blur(2px);
             z-index: 50;
             pointer-events: none;
           }
 
-          .vr-instruction-row {
-            display: flex; align-items: center; gap: 10px;
-            font-size: 13px; letter-spacing: 0.16em;
-            color: rgba(180,205,230,0.85);
+          .vr-footer-row {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 17px; letter-spacing: 2.2px;
+            color: rgba(255,255,255,0.9);
+            text-shadow: 0 1px 2px rgba(0,0,0,0.9);
           }
 
-          .vr-instruction-key {
-            border: 1px solid rgba(87,231,255,0.36);
-            border-radius: 4px;
-            background: rgba(0,0,0,0.8);
-            color: var(--cyan); padding: 3px 8px;
-            font-size: 11px; font-weight: 600;
+          .vr-footer-key {
+            border: 1px solid rgba(255,255,255,0.55);
+            border-radius: 5px;
+            background: rgba(0,0,0,0.72);
+            color: #fff; padding: 2px 8px;
+            font-size: 14px; font-family: 'Bebas Neue', sans-serif;
           }
 
-          .vr-intro-close {
-            width: 100%;
+          /* ──── MOUSE CURSOR ──── */
+          .vr-cursor {
+            position: fixed;
+
             padding: 10px;
             border: 1px solid var(--border-hi);
             background: transparent;
