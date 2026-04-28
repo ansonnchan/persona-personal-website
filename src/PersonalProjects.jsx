@@ -284,9 +284,9 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
                     onHoverStart={() => {
   const timeout = setTimeout(() => {
     setHoveredId(project.id);
-  }, 300);
+  }, 400);
 
-  setHoverTimeout(timeout);
+  setHoverTimeout(timeout);x
 }}
                     onHoverEnd={() => setHoveredId((cur) => (cur === project.id ? null : cur))}
                     onClick={() => setSelectedProject(project)}

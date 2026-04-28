@@ -5,7 +5,6 @@ import sharedBackground from './assets/Mainn-web.mp4'
 import experienceBackground from './assets/main2-web.mp4'
 import bgmTrack from './assets/Color Your Night - Lotus Juice - Topic (128k).mp3'
 import P3Menu from './P3Menu'
-import Education from './Education'
 import Experience from './Experience'
 import PersonalProjects from './PersonalProjects'
 import Skills from './Skills'
@@ -34,9 +33,6 @@ function AnimatedRoutes() {
         } />
         <Route path="/about" element={
           <PageTransition variant="about"><AboutMe /></PageTransition>
-        } />
-        <Route path="/education" element={
-          <PageTransition><Education /></PageTransition>
         } />
         <Route path="/experience" element={
           <PageTransition><Experience src={experienceBackground} /></PageTransition>

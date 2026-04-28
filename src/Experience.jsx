@@ -15,7 +15,7 @@ const MISSIONS = [
     lead: "Shinjiro Aragaki",
     status: "COMPLETE",
     summary:
-      "Computational modeling under Assistant Professor Terence Chan",
+      "Computational modeling under Dr. Terence Chan",
     dates: "June 2025 - August 2025",
     techStack: ["Python", "MATLAB"],
     achievements: [
