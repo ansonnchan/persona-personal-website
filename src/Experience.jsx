@@ -11,6 +11,7 @@ const MISSIONS = [
     operation: "REQUEST FILE",
     role: "Software Developer Intern",
     company: "Borrowd",
+    lead: "Elizabeth of Borrowd",
     status: "COMPLETE",
     dates: "January 2026 - April 2026",
     summary:
@@ -19,11 +20,11 @@ const MISSIONS = [
     achievements: [
       "Reduced manual analysis time by 65+ hours per week. ",
       "Increasing cache hit rate to 90% and reducing database load by 38%.",
-      "Optimized PostgreSQL queries, improving overall backend performance by 30%.",
+      "Optimized PostgreSQL queries, improving backend performance by ~30%.",
       "Talked to real humans and touched grass",
 
     ],
-    unlocked: ["Backend Debugging", "Production Ops", "API Delivery"],
+    unlocked: ["System Reliability", "Database Optimization", "Backend System Design"],
     visual: missionVisualA,
   },
   {
@@ -32,6 +33,7 @@ const MISSIONS = [
     operation: "EVENT ARCHIVE",
     role: "Software Developer Intern",
     company: "Atria",
+    lead: "Chidori Yoshino of Atria",
     status: "INCOMING",
     dates: "May 2026 - Present",
     summary:
@@ -40,7 +42,7 @@ const MISSIONS = [
     achievements: [
       "This area is locked. Level requirement not met.",
     ],
-    unlocked: ["Full-Stack Flow", "Feature Ownership", "Cross-Team Execution"],
+    unlocked: ["LOCKED SKILL", "LOCKED SKILL", "LOCKED SKILL"],
     visual: missionVisualB,
   },
 ];
@@ -106,8 +108,8 @@ export default function Experience({ src }) {
 
       <div className={`exp-shell ${mounted ? "mounted" : ""}`}>
         <header className="exp-header">
-          <div className="exp-header-kicker">CLASSIFIED ARCHIVES</div>
-          <h1>OPERATIONS ARCHIVE</h1>
+          <div className="exp-header-kicker">CODENAME: THE ENGINEER</div>
+          <h1>MISSION ARCHIVES</h1>
           <p>CHOSEN CHARACTER ROUTE: Software Engineer</p>
         </header>
 
@@ -217,8 +219,8 @@ export default function Experience({ src }) {
               <div className="exp-visual-gradient" />
              <div className="exp-visual-scan" /> 
               <div className="exp-visual-label">
-                <span>FOCUS</span>
-                <strong>{current.company}</strong>
+                <span>MISSION LEAD</span>
+                <strong>{current.lead}</strong>
               </div>
             </div>
           </section>
@@ -331,6 +333,7 @@ export default function Experience({ src }) {
           grid-template-columns: minmax(220px, 0.8fr) minmax(470px, 1.2fr) minmax(320px, 1fr);
           gap: clamp(16px, 1.7vw, 30px);
           align-items: stretch;
+          height: clamp(560px, 66vh, 760px);
         }
 
         .exp-nav {
@@ -343,6 +346,7 @@ export default function Experience({ src }) {
           display: flex;
           flex-direction: column;
           gap: 10px;
+          height: 100%;
         }
 
         .exp-nav-top {
@@ -434,6 +438,7 @@ export default function Experience({ src }) {
           align-items: stretch;
           padding-top: 0px;
           min-height: 66vh;
+          height: 100%;
         }
 
         .exp-hint-card {
@@ -484,6 +489,7 @@ export default function Experience({ src }) {
           display: flex;
           flex-direction: column;
           height: 100%;
+          min-height: 0;
         }
 
         .exp-card-stripe {
@@ -691,6 +697,7 @@ export default function Experience({ src }) {
           flex: 1 1 auto;
           overflow-y: auto;
           padding-right: 6px;
+          min-height: 0;
         }
 
         .exp-dossier-body::-webkit-scrollbar {
@@ -707,6 +714,7 @@ export default function Experience({ src }) {
           min-height: 66vh;
           display: flex;
           align-items: stretch;
+          height: 100%;
         }
 
         .exp-visual-frame {
@@ -718,6 +726,7 @@ export default function Experience({ src }) {
           box-shadow: 0 18px 34px rgba(1, 7, 17, 0.54), 0 0 34px rgba(93, 208, 255, 0.24);
           animation: exp-visual-in 0.45s ease both;
           background: rgba(5, 19, 41, 0.66);
+          height: 100%;
         }
 
         .exp-visual-frame img {
@@ -752,13 +761,20 @@ export default function Experience({ src }) {
         .exp-visual-label {
           position: absolute;
           left: 12px;
-          bottom: 14px;
+          top: 12px;
           display: grid;
           gap: 2px;
           color: #ffffff;
           font-family: 'Bebas Neue', sans-serif;
           letter-spacing: 1.2px;
-          text-shadow: 0 0 10px rgba(58, 191, 255, 0.45);
+          text-shadow: 0 1px 6px rgba(0, 0, 0, 0.75);
+          background: rgba(6, 18, 36, 0.72);
+          border: 1px solid rgba(190, 240, 255, 0.38);
+          padding: 8px 10px;
+          border-radius: 6px;
+          backdrop-filter: blur(5px);
+          z-index: 3;
+          box-shadow: 0 8px 18px rgba(1, 6, 14, 0.35);
         }
 
         .exp-visual-label strong {
@@ -880,6 +896,10 @@ export default function Experience({ src }) {
         @media (max-width: 980px) {
           .exp-shell {
             padding: 3.5vh 3.2vw 8.5vh;
+          }
+
+          .exp-layout {
+            height: auto;
           }
 
           .exp-layout {
