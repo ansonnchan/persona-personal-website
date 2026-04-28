@@ -3,36 +3,57 @@ import { useNavigate } from "react-router-dom";
 import defaultBackground from "./assets/main2-web.mp4";
 import missionVisualA from "./assets/elizabeth.png";
 import missionVisualB from "./assets/chidori.png";
+import missionVisualC from "./assets/shinjiro.png";
 
 const MISSIONS = [
   {
-    id: "borrowd",
+    id: "unisa",
     missionCode: "MISSION_01",
+   operation: "RECON",
+    role: "Research Assistant",
+    company: "Adelaide University",
+    lead: "Shinjiro Aragaki",
+    status: "COMPLETE",
+    summary:
+      "Computational modeling under Assistant Professor Terence Chan",
+    dates: "June 2025 - August 2025",
+    techStack: ["Python", "MATLAB"],
+    achievements: [
+  "Developed particle system simulation of multi-body physical interactions",
+  "Implemented Conway’s Game of Life to explore emergent cellular behavior",
+   "Designed structured state logging for temporal analysis of system dynamics"
+],
+    unlocked: ["Computational Modeling", "Data Simulation"],
+    visual: missionVisualC,
+  },
+  {
+    id: "borrowd",
+    missionCode: "MISSION_02",
     operation: "PAYLOAD",
     role: "Software Developer Intern",
     company: "Borrowd",
-    lead: "Elizabeth of Borrowd",
+    lead: "Elizabeth",
     status: "COMPLETE",
     dates: "January 2026 - April 2026",
     summary:
       "Shipped backend features supporting both internal and end users",
     techStack: ["Python", "Django", "PostgreSQL"],
     achievements: [
-      "Reduced manual analysis time by 65+ hours per week. ",
-      "Increasing cache hit rate to 90% and reducing database load by 38%.",
-      "Optimized PostgreSQL queries, improving backend performance by ~30%.",
+      "Reduced manual analysis time by 65+ hours per week ",
+      "Increasing cache hit rate to 90% and reducing database load by 38%",
+      "Optimized PostgreSQL queries, improving backend performance by ~30%",
     ],
     unlocked: ["System Reliability", "Database Optimization", "Backend System Design"],
     visual: missionVisualA,
   },
   {
     id: "atria",
-    missionCode: "MISSION_02",
+    missionCode: "MISSION_03",
     operation: "PAYLOAD",
     role: "Software Developer Intern",
     company: "Atria",
-    lead: "Chidori Yoshino of Atria",
-    status: "INCOMING",
+    lead: "Chidori Yoshino",
+    status: "ACTIVE",
     dates: "May 2026 - Present",
     summary:
       "Fullstack development, focusing on shipping new features",
@@ -214,7 +235,9 @@ export default function Experience({ src }) {
           <section className="exp-visual" aria-label="Mission visual">
             <div //conditional class to change only for mission 1 (elizabeth)
   key={current.id}
-  className={`exp-visual-frame ${current.id === "borrowd" ? "mission-1" : ""}`}
+className={`exp-visual-frame ${
+  current.id === "unisa" || current.id === "borrowd" ? "mission-12" : ""
+}`}
 >
               <img src={current.visual} alt={`${current.company} mission visual`} />
               <div className="exp-visual-gradient" />
@@ -740,13 +763,13 @@ export default function Experience({ src }) {
         }
 
         /* special styling for mission 1 visual to better frame subject */
-.exp-visual-frame.mission-1 {
+.exp-visual-frame.mission-12 {
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-.exp-visual-frame.mission-1 img {
+.exp-visual-frame.mission-12 img {
   height: 95%;
   width: auto;
   max-width: 90%;
