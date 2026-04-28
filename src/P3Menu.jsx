@@ -1,11 +1,11 @@
 import { useState, useEffect } from "react";
 
 const ITEMS = [
-  { id: "about",      label: "ABOUT ME",          page: "about",      fontSize: 62, offsetX: 0,  offsetY: 0,  skew: -6,  skewY: 10  },
-  { id: "experience", label: "EXPERIENCE",        page: "experience", fontSize: 51, offsetX: 10, offsetY: 28, skew: -11, skewY: -10 },
-  { id: "projects",   label: "PERSONAL PROJECTS", page: "projects",   fontSize: 43, offsetX: 8,  offsetY: 32, skew: -4,  skewY: 7   },
-  { id: "skills",     label: "SKILLS",            page: "skills",     fontSize: 50, offsetX: 9,  offsetY: 20, skew: -7,  skewY: 6   },
-  { id: "socials",    label: "SOCIALS",           page: "socials",    fontSize: 55, offsetX: 10, offsetY: 22, skew: -3,  skewY: 5   },
+  { id: "about",      label: "ABOUT ME",   page: "about",      fontSize: 80, offsetX: 0,  offsetY: 0,  skew: -6,  skewY: 10  },
+  { id: "experience", label: "EXPERIENCE", page: "experience", fontSize: 66, offsetX: 20, offsetY: 8,  skew: -11, skewY: -10 },
+  { id: "projects",   label: "PROJECTS",   page: "projects",   fontSize: 68, offsetX: 8,  offsetY: 6,  skew: 0,   skewY: -4  },
+  { id: "skills",     label: "SKILLS",     page: "skills",     fontSize: 74, offsetX: 16, offsetY: 8,  skew: -3,  skewY: 5   },
+  { id: "socials",    label: "SOCIALS",    page: "socials",    fontSize: 56, offsetX: 10, offsetY: 6,  skew: -4,  skewY: 7   },
 ];
 
 const CLIP_SHAPES = [
@@ -26,15 +26,23 @@ export default function P3Menu({ onNavigate }) {
     setAnimKey(k => k + 1);
   };
 
+  const navigateWrap = (direction) => {
+    if (direction === "up") {
+      activate(active === 0 ? ITEMS.length - 1 : active - 1);
+    } else if (direction === "down") {
+      activate(active === ITEMS.length - 1 ? 0 : active + 1);
+    }
+  };
+
   useEffect(() => {
-    const t = setTimeout(() => setMounted(true), 1000);
+    const t = setTimeout(() => setMounted(true), 200);
     return () => clearTimeout(t);
   }, []);
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === "ArrowUp")   activate(Math.max(0, active - 1));
-      if (e.key === "ArrowDown") activate(Math.min(ITEMS.length - 1, active + 1));
+      if (e.key === "ArrowUp")   navigateWrap("up");
+      if (e.key === "ArrowDown") navigateWrap("down");
       if (e.key === "Enter")     onNavigate?.(ITEMS[active].page);
     };
     window.addEventListener("keydown", onKey);
@@ -52,7 +60,52 @@ export default function P3Menu({ onNavigate }) {
           align-items: center;
           justify-content: center;
           pointer-events: none;
+          overflow: hidden;
         }
+
+        .p3-name-tag {
+          position: absolute;
+          top: 100px;
+          left: 40px;
+          z-index: 30;
+          font-family: 'Anton', sans-serif;
+          font-style: italic;
+          font-size: clamp(64px, 6vw, 72px);
+          line-height: 0.88;
+          letter-spacing: 2px;
+          transform: rotate(-18deg);
+          transform-origin: top left;
+          user-select: none;
+          pointer-events: none;
+          display: flex;
+          flex-direction: column;
+          white-space: nowrap;
+          animation: p3-name-float 6s ease-in-out infinite;
+        }
+
+        .p3-name-tag span:first-child { 
+        color: rgba(0, 0, 0, 0.86); text-shadow: 1px 1px 0 rgba(60, 226, 255, 0.3); //change color  (dark blue)
+        }
+
+        .p3-name-tag span:last-child { 
+        color: rgba(10, 10, 14, 0.64); position: relative; 
+        }
+
+        // .p3-name-tag span:last-child::after {
+        //   content: "";
+        //   position: absolute;
+        //   left: 0; bottom: 6px;
+        //   width: 100%; height: 2px;
+        //   background: rgba(60, 226, 255, 0.4);
+        // }
+
+        @keyframes p3-name-float {
+          0%, 100% { transform: rotate(-18deg) translateY(0px); }
+          50% { transform: rotate(-18deg) translateY(-8px); }
+        }
+
+        .p3-stripe { position:absolute; right:0; top:0; bottom:0; width:5px; background:#c4001a; z-index:10; }
+        .p3-stripe2 { position:absolute; right:9px; top:0; bottom:0; width:2px; background:rgba(245,122,139,0.22); z-index:10; }
 
         .p3-menu {
           position: relative;
@@ -60,9 +113,8 @@ export default function P3Menu({ onNavigate }) {
           padding: 48px;
           display: flex;
           flex-direction: column;
-          align-items: flex-start;
+          align-items: center;
           pointer-events: all;
-          margin-left: clamp(220px, 21vw, 360px);
         }
 
         .p3-row {
@@ -77,10 +129,7 @@ export default function P3Menu({ onNavigate }) {
           transform: translateX(36px);
           transition: opacity 0.38s ease, transform 0.38s cubic-bezier(0.22,1,0.36,1);
         }
-        .p3-row.mounted {
-          opacity: 1 !important;
-          transform: translateX(0) !important;
-        }
+        .p3-row.mounted { opacity: 1 !important; transform: translateX(0) !important; }
 
         .p3-glow {
           position: absolute;
@@ -90,18 +139,12 @@ export default function P3Menu({ onNavigate }) {
           background: radial-gradient(ellipse at center, rgba(255,100,180,0.35) 0%, transparent 70%);
           filter: blur(18px);
           z-index: 0;
-          pointer-events: none;
           opacity: 0;
           transition: opacity 0.3s ease;
         }
         .p3-row.active .p3-glow { opacity: 1; }
 
-        .p3-skew-wrap {
-          position: relative;
-          display: flex;
-          align-items: center;
-          isolation: isolate;
-        }
+        .p3-skew-wrap { position: relative; display: flex; align-items: center; isolation: isolate; }
 
         @keyframes p3-shadow-pop {
           0%   { transform: translateY(-40%) translateX(-12px) scaleX(0) scaleY(1); }
@@ -116,11 +159,9 @@ export default function P3Menu({ onNavigate }) {
           transform-origin: left center;
           background: rgba(235, 80, 120, 0.85);
           z-index: 1;
-          pointer-events: none;
           transform: translateY(-40%) translateX(-12px) scaleX(0);
-          transition: transform 0.18s ease;
         }
-        .p3-shadow-tri.pop {
+        .p3-row.active .p3-shadow-tri.pop {
           animation: p3-shadow-pop 0.28s cubic-bezier(0.34, 1.56, 0.64, 1) forwards;
         }
 
@@ -131,14 +172,10 @@ export default function P3Menu({ onNavigate }) {
           background: #ffffff;
           z-index: 2;
           transition: transform 0.22s cubic-bezier(0.22,1,0.36,1);
-          pointer-events: none;
+          transform: translateY(-50%) scaleX(0);
         }
 
-        .p3-label-wrap {
-          position: relative;
-          z-index: 3;
-        }
-
+        .p3-label-wrap { position: relative; z-index: 3; }
         .p3-label-base {
           font-family: 'Anton', sans-serif;
           font-style: italic;
@@ -149,10 +186,7 @@ export default function P3Menu({ onNavigate }) {
           user-select: none;
         }
 
-        .p3-label-dark {
-          color: #3ce2ff;
-          transition: color 0.12s ease;
-        }
+        .p3-label-dark { color: #3ce2ff; transition: color 0.12s ease; }
         .p3-row.active .p3-label-dark { color: #6b0010; }
         .p3-row:hover:not(.active) .p3-label-dark { color: #00d9ff; }
 
@@ -166,87 +200,38 @@ export default function P3Menu({ onNavigate }) {
         }
         .p3-row.active .p3-label-bright { opacity: 1; }
 
-        .p3-hint {
-          position: absolute;
-          bottom: 24px; right: 28px;
-          z-index: 20;
-          display: flex; flex-direction: column;
-          align-items: flex-end; gap: 5px;
-          font-family: 'Anton', sans-serif;
-          opacity: 0;
-          transition: opacity 0.5s ease 0.9s;
-        }
+       .p3-hint {
+         position: fixed;
+         bottom: 20px; right: 28px;
+         display: flex; flex-direction: column;
+         align-items: flex-end; gap: 5px;
+         font-family: 'Bebas Neue', sans-serif;
+         padding: 8px 10px;
+         border-radius: 10px;
+         border: 1px solid rgba(255,255,255,0.28);
+         background: rgba(0,0,0,0.58);
+         box-shadow: 0 8px 22px rgba(0,0,0,0.55);
+         backdrop-filter: blur(2px);
+         z-index: 14;
+         pointer-events: none;
+         opacity: 0;
+         transition: opacity 0.4s ease 0.6s;
+       }
         .p3-hint.mounted { opacity: 1; }
-        .p3-hint-row {
-          display: flex; align-items: center; gap: 8px;
-          font-size: 13px; letter-spacing: 2px;
-          color: rgba(255,255,255,0.28);
-        }
-        .p3-hint-key {
-          border: 1px solid rgba(255,255,255,0.2);
-          border-radius: 3px;
-          padding: 1px 6px; font-size: 11px;
-        }
 
-        .p3-name-tag {
-          position: absolute;
-          top: 18px;
-          left: 22px;
-          z-index: 20;
-          font-family: 'Anton', sans-serif;
-          font-style: italic;
-          font-size: 82px;
-          line-height: 0.88;
-          letter-spacing: 2px;
-          color: rgba(10, 10, 14, 0.64);
-          transform: rotate(18deg);
-          transform-origin: left top;
-          user-select: none;
-          pointer-events: none;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-start;
-        }
-        .p3-name-tag span:first-child {
-          color: rgba(0, 0, 0, 0.86);
-        }
+       .p3-hint-row {
+         display: flex; align-items: center; gap: 8px;
+         font-size: 17px; letter-spacing: 2.2px;
+         color: rgba(255,255,255,0.9);
+         text-shadow: 0 1px 2px rgba(0,0,0,0.9);
+       }
+       .p3-hint-key {
+         border: 1px solid rgba(255,255,255,0.55);
+         border-radius: 5px;
+         background: rgba(0,0,0,0.72);
+         color: #fff; padding: 2px 8px; font-size: 14px;
+       }
 
-        @media (max-width: 1100px) {
-          .p3-menu {
-            margin-left: clamp(140px, 15vw, 220px);
-          }
-
-          .p3-name-tag {
-            font-size: 66px;
-            top: 14px;
-            left: 16px;
-          }
-        }
-
-        @media (max-width: 800px) {
-          .p3-overlay {
-            justify-content: flex-start;
-            padding-left: 16px;
-          }
-
-          .p3-menu {
-            margin-left: 0;
-            padding: 18px 8px;
-          }
-
-          .p3-name-tag {
-            display: none;
-          }
-
-          .p3-row {
-            margin-top: 2px !important;
-          }
-
-          .p3-label-base {
-            font-size: clamp(34px, 9vw, 54px) !important;
-            letter-spacing: 1px;
-          }
-        }
       `}</style>
 
       <div className="p3-overlay">
@@ -254,6 +239,9 @@ export default function P3Menu({ onNavigate }) {
           <span>anson's</span>
           <span>persona</span>
         </div>
+        <div className="p3-stripe" />
+        <div className="p3-stripe2" />
+
         <nav className="p3-menu">
           {ITEMS.map((item, i) => {
             const isActive = active === i;
@@ -321,7 +309,7 @@ export default function P3Menu({ onNavigate }) {
         </nav>
 
         <div className={`p3-hint ${mounted ? "mounted" : ""}`}>
-          <div className="p3-hint-row"><span className="p3-hint-key">↑↓</span><span>NAVIGATE</span></div>
+          <div className="p3-hint-row"><span className="p3-hint-key">↑↓</span><span>SELECT</span></div>
           <div className="p3-hint-row"><span className="p3-hint-key">↵</span><span>CONFIRM</span></div>
         </div>
       </div>
