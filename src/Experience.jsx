@@ -21,7 +21,7 @@ const MISSIONS = [
     achievements: [
   "Developed particle system simulation of multi-body physical interactions",
   "Implemented Conway’s Game of Life to explore emergent cellular behavior",
-   "Designed structured state logging for temporal analysis of system dynamics"
+  "Designed structured state logging for temporal analysis of system dynamics"
 ],
     unlocked: ["Computational Modeling", "Data Simulation"],
     visual: missionVisualC,
@@ -39,9 +39,8 @@ const MISSIONS = [
       "Shipped backend features supporting both internal and end users",
     techStack: ["Python", "Django", "PostgreSQL"],
     achievements: [
-      "Reduced manual analysis time by 65+ hours per week ",
-      "Increasing cache hit rate to 90% and reducing database load by 38%",
-      "Optimized PostgreSQL queries, improving backend performance by ~30%",
+      "Shipped backend improvements across internal and user-facing systems",
+      "Integrated automated testing into the CI/CD pipeline to improve release reliability and stabilize deployment workflows"
     ],
     unlocked: ["System Reliability", "Database Optimization", "Backend System Design"],
     visual: missionVisualA,
@@ -210,7 +209,7 @@ export default function Experience({ src }) {
                 </section>
 
                 <section className="exp-section">
-                  <h3>ACHIEVEMENTS</h3>
+                  <h3>BRIEFING</h3>
                   <ul className="exp-list">
                     {current.achievements.map((item) => (
                       <li key={item}>{item}</li>

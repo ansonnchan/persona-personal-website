@@ -2,7 +2,6 @@ import { useState, useEffect } from "react";
 
 const ITEMS = [
   { id: "about",      label: "ABOUT ME",          page: "about",      fontSize: 62, offsetX: 0,  offsetY: 0,  skew: -6,  skewY: 10  },
-  { id: "education",  label: "EDUCATION",         page: "education",  fontSize: 54, offsetX: 4,  offsetY: 30, skew: -8,  skewY: -8  },
   { id: "experience", label: "EXPERIENCE",        page: "experience", fontSize: 51, offsetX: 10, offsetY: 28, skew: -11, skewY: -10 },
   { id: "projects",   label: "PERSONAL PROJECTS", page: "projects",   fontSize: 43, offsetX: 8,  offsetY: 32, skew: -4,  skewY: 7   },
   { id: "skills",     label: "SKILLS",            page: "skills",     fontSize: 50, offsetX: 9,  offsetY: 20, skew: -7,  skewY: 6   },
