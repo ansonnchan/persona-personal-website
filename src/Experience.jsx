@@ -1,89 +1,74 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import defaultBackground from "./assets/train-web.mp4";
+import defaultBackground from "./assets/main2-web.mp4";
+import missionVisualA from "./assets/elizabeth.png";
+import missionVisualB from "./assets/chidori.png";
 
-const STATIONS = [
+const MISSIONS = [
   {
     id: "borrowd",
-    shortLabel: "ROLE 01",
-    line: "CAREER LINE",
-    title: "Borrowd",
-    details: [
-      "Borrowd",
-      "Software Developer Intern",
-      "January 2026 - April 2026",
-      "Backend development, fixing bugs and implementing features both internally (employees) and externally",
-      "Tech Stack: Python, Django"
+    missionCode: "MISSION_01",
+    operation: "REQUEST FILE",
+    role: "Software Developer Intern",
+    company: "Borrowd",
+    status: "COMPLETE",
+    dates: "January 2026 - April 2026",
+    summary:
+      "Shipped backend features supporting both internal and end users",
+    techStack: ["Python", "Django", "PostgreSQL"],
+    achievements: [
+      "Reduced manual analysis time by 65+ hours per week. ",
+      "Increasing cache hit rate to 90% and reducing database load by 38%.",
+      "Optimized PostgreSQL queries, improving overall backend performance by 30%.",
+      "Talked to real humans and touched grass",
+
     ],
-    status: "COMPLETED",
-    completion: 100,
-    notes: ["TODO: Add 1-2 measurable impact bullets for this role."],
+    unlocked: ["Backend Debugging", "Production Ops", "API Delivery"],
+    visual: missionVisualA,
   },
   {
     id: "atria",
-    shortLabel: "ROLE 02",
-    line: "CAREER LINE",
-    title: "Atria",
-    details: [
-      "Atria",
-      "Software Developer Intern",
-      "May 2026 - Present",
-      "Full-stack development, new feature implementation",
-      "Tech Stack: JavaScript, React, Python, Django",
-    ],
+    missionCode: "MISSION_02",
+    operation: "EVENT ARCHIVE",
+    role: "Software Developer Intern",
+    company: "Atria",
     status: "INCOMING",
-    completion: 60,
-    notes: ["TODO: Add confirmed timeline and expected responsibilities."],
-  },
-  /* 
-  {
-    id: "next",
-    shortLabel: "ROLE 03",
-    line: "CAREER LINE",
-    title: "Next Internship Target",
-    details: [
-      "TODO: Target company / domain",
-      "TODO: Preferred role",
-      "TODO: Target term",
-      "TODO: Priority skills to build",
+    dates: "May 2026 - Present",
+    summary:
+      "Fullstack development, focusing on shipping new features",
+    techStack: ["JavaScript", "React", "Python", "Django"],
+    achievements: [
+      "This area is locked. Level requirement not met.",
     ],
-    status: "ACTIVE",
-    completion: 45,
-    notes: ["TODO: Keep this focused on job search pipeline milestones."],
+    unlocked: ["Full-Stack Flow", "Feature Ownership", "Cross-Team Execution"],
+    visual: missionVisualB,
   },
-  {
-    id: "fulltime",
-    shortLabel: "ROLE 04",
-    line: "CAREER LINE",
-    title: "Full-Time Goal",
-    details: [
-      "TODO: Target role after graduation",
-      "TODO: Preferred industry/team",
-      "TODO: Location preference",
-      "TODO: Readiness checklist",
-    ],
-    status: "PLANNING",
-    completion: 30,
-    notes: ["TODO: Use this as the long-term destination checkpoint."],
-  },
-  */
 ];
 
 function statusClass(status) {
-  const key = status.toLowerCase();
-  if (key === "completed") return "done";
-  if (key === "incoming") return "incoming";
-  if (key === "live" || key === "active" || key === "in progress") return "live";
+  if (status === "COMPLETE") return "done";
+  if (status === "INCOMING") return "incoming";
   return "default";
 }
 
 export default function Experience({ src }) {
   const navigate = useNavigate();
   const [active, setActive] = useState(0);
-  const [panelOpen, setPanelOpen] = useState(false);
   const [mounted, setMounted] = useState(false);
   const resolvedBackground = src || defaultBackground;
-  const current = STATIONS[active];
+
+  const current = MISSIONS[active];
+
+/* dead code for neighbor previews; might need later if I want to add peeking next mission
+  const neighbors = useMemo(() => {
+    const prevIndex = (active - 1 + MISSIONS.length) % MISSIONS.length;
+    const nextIndex = (active + 1) % MISSIONS.length;
+    return {
+      prev: MISSIONS[prevIndex],
+      next: MISSIONS[nextIndex],
+    };
+  }, [active]);
+  */
 
   useEffect(() => {
     const t = setTimeout(() => setMounted(true), 80);
@@ -92,418 +77,708 @@ export default function Experience({ src }) {
 
   useEffect(() => {
     const onKey = (e) => {
-      if (e.key === "ArrowLeft") {
+      if (e.key === "ArrowUp") {
         e.preventDefault();
-        setActive((i) => (i - 1 + STATIONS.length) % STATIONS.length);
-        setPanelOpen(false);
+        setActive((i) => (i - 1 + MISSIONS.length) % MISSIONS.length);
       }
-      if (e.key === "ArrowRight") {
+      if (e.key === "ArrowDown") {
         e.preventDefault();
-        setActive((i) => (i + 1) % STATIONS.length);
-        setPanelOpen(false);
-      }
-      if (e.key === "Enter") {
-        e.preventDefault();
-        setPanelOpen((open) => !open);
+        setActive((i) => (i + 1) % MISSIONS.length);
       }
       if (e.key === "Escape" || e.key === "Backspace") {
-        if (panelOpen) {
-          setPanelOpen(false);
-        } else {
-          navigate(-1);
-        }
+        navigate(-1);
       }
     };
 
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);
-  }, [navigate, panelOpen]);
+  }, [navigate]);
+
+  const movePrev = () => setActive((i) => (i - 1 + MISSIONS.length) % MISSIONS.length);
+  const moveNext = () => setActive((i) => (i + 1) % MISSIONS.length);
 
   return (
-    <div id="menu-screen">
-      <video src={resolvedBackground} autoPlay loop muted playsInline preload="auto" />
+    <div id="menu-screen" className="exp-screen">
+      <video src={resolvedBackground} autoPlay loop muted playsInline preload="auto" className="exp-bg-video" />
 
-      <div className="exp-overlay">
+      <div className="exp-bg-overlay" aria-hidden="true" />
+      <div className="exp-noise" aria-hidden="true" />
+
+      <div className={`exp-shell ${mounted ? "mounted" : ""}`}>
         <header className="exp-header">
-          <h1>CAREER ARC</h1>
-          <p>Chosen Route: Software Engineer</p>
+          <div className="exp-header-kicker">CLASSIFIED ARCHIVES</div>
+          <h1>OPERATIONS ARCHIVE</h1>
+          <p>CHOSEN CHARACTER ROUTE: Software Engineer</p>
         </header>
 
-        <section className="exp-route-wrap" aria-label="Career arc stations">
-          <div className="exp-route-line" aria-hidden="true" />
-          <div className="exp-stations" style={{ gridTemplateColumns: `repeat(${STATIONS.length}, minmax(0, 1fr))` }}>
-            {STATIONS.map((station, index) => {
-              const isActive = index === active;
-              return (
-                <button
-                  key={station.id}
-                  type="button"
-                  className={`exp-station ${isActive ? "active" : ""}`}
-                  onClick={() => {
-                    setActive(index);
-                    setPanelOpen(false);
-                  }}
-                >
-                  <span className="exp-station-dot" />
-                  <span className="exp-station-label">STOP {index + 1}</span>
-                  {isActive && !panelOpen ? <span className="exp-enter-chip">ENTER</span> : null}
-                </button>
-              );
-            })}
-          </div>
-        </section>
-
-        {!panelOpen ? (
-          <div className="exp-enter-hint" role="status" aria-live="polite">
-            <span className="exp-enter-title">{current.title}</span>
-            <span className="exp-enter-text">Press ENTER to view checkpoint summary</span>
-          </div>
-        ) : null}
-
-        <section className={`exp-detail ${panelOpen ? "open" : ""}`}>
-          <div className="exp-detail-top">
-            <div className="exp-detail-title">{current.title}</div>
-            <div className={`exp-status ${statusClass(current.status)}`}>{current.status}</div>
-          </div>
-
-          <div className="exp-detail-lines">
-            {current.details.map((line) => (
-              <div className="exp-detail-line" key={line}>{line}</div>
-            ))}
-          </div>
-
-          <div className="exp-progress-block">
-            <div className="exp-progress-head">
-              <span>{current.line}</span>
-              <span>{current.completion}%</span>
+        <div className="exp-layout">
+          <aside className="exp-nav" aria-label="Mission navigation">
+            <div className="exp-nav-top">
+              <span>MISSION LOG</span>
+              <span>{String(active + 1).padStart(2, "0")}/{String(MISSIONS.length).padStart(2, "0")}</span>
             </div>
-            <div className="exp-progress-rail">
-              <div className="exp-progress-fill" style={{ width: `${current.completion}%` }} />
-            </div>
-          </div>
 
-          <div className="exp-achievements">
-            <div className="exp-achievements-title">NOTES</div>
-            {current.notes.map((item) => (
-              <div className="exp-achievement" key={item}>- {item}</div>
-            ))}
-          </div>
-        </section>
+            <button type="button" className="exp-nav-action" onClick={movePrev} aria-label="Previous mission">
+              ◀ PREV FILE
+            </button>
+
+            <div className="exp-nav-list">
+              {MISSIONS.map((mission, index) => {
+                const isActive = index === active;
+                return (
+                  <button
+                    key={mission.id}
+                    type="button"
+                    className={`exp-nav-item ${isActive ? "active" : ""}`}
+                    onClick={() => setActive(index)}
+                  >
+                    <span className="exp-nav-code">{mission.missionCode}</span>
+                    <span className="exp-nav-role">{mission.role}</span>
+                    <span className="exp-nav-status">{mission.status}</span>
+                  </button>
+                );
+              })}
+            </div>
+
+            <button type="button" className="exp-nav-action" onClick={moveNext} aria-label="Next mission">
+              NEXT FILE ▶
+            </button>
+          </aside>
+
+          <main className="exp-focus-area" aria-live="polite">
+
+            <article key={current.id} className="exp-dossier-card">
+              <div className="exp-card-stripe" aria-hidden="true" />
+
+              <div className="exp-card-top">
+                <div className="exp-op-tag">{current.operation}</div>
+                <div className={`exp-status ${statusClass(current.status)}`}>{current.status}</div>
+              </div>
+
+              <div className="exp-title-wrap">
+                <div className="exp-mission-code">{current.missionCode}</div>
+                <h2>{current.role}</h2>
+              </div>
+
+              <div className="exp-meta-grid">
+                <div>
+                  <span className="exp-meta-label">COMPANY</span>
+                  <span className="exp-meta-value">{current.company}</span>
+                </div>
+                <div>
+                  <span className="exp-meta-label">DATES</span>
+                  <span className="exp-meta-value">{current.dates}</span>
+                </div>
+              </div>
+
+              <div className="exp-dossier-body">
+                <section className="exp-summary">
+                  <h3>CASE SUMMARY</h3>
+                  <p>{current.summary}</p>
+                </section>
+
+                <section className="exp-section">
+                  <h3>TECH STACK</h3>
+                  <div className="exp-chip-row">
+                    {current.techStack.map((item) => (
+                      <span className="exp-chip" key={item}>
+                        {item}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+
+                <section className="exp-section">
+                  <h3>ACHIEVEMENTS</h3>
+                  <ul className="exp-list">
+                    {current.achievements.map((item) => (
+                      <li key={item}>{item}</li>
+                    ))}
+                  </ul>
+                </section>
+
+                <section className="exp-section exp-unlocked">
+                  <h3>SKILLS UNLOCKED</h3>
+                  <div className="exp-chip-row">
+                    {current.unlocked.map((item) => (
+                      <span className="exp-chip unlock" key={item}>
+                        + {item}
+                      </span>
+                    ))}
+                  </div>
+                </section>
+              </div>
+            </article>
+          </main>
+
+          <section className="exp-visual" aria-label="Mission visual">
+            <div key={current.id} className="exp-visual-frame">
+              <img src={current.visual} alt={`${current.company} mission visual`} />
+              <div className="exp-visual-gradient" />
+             <div className="exp-visual-scan" /> 
+              <div className="exp-visual-label">
+                <span>FOCUS</span>
+                <strong>{current.company}</strong>
+              </div>
+            </div>
+          </section>
+        </div>
       </div>
 
       <div className={`exp-footer${mounted ? " mounted" : ""}`}>
-        <div className="exp-footer-row"><span className="exp-footer-key">← →</span><span>MOVE</span></div>
-        <div className="exp-footer-row"><span className="exp-footer-key">ENTER</span><span>DETAIL</span></div>
-        <div className="exp-footer-row"><span className="exp-footer-key">ESC</span><span>BACK</span></div>
+        <div className="exp-footer-row">
+          <span className="exp-footer-key">UP</span>
+          <span className="exp-footer-key">DOWN</span>
+          <span>SWITCH FILE</span>
+        </div>
+        <div className="exp-footer-row">
+          <span className="exp-footer-key">ESC</span>
+          <span>BACK</span>
+        </div>
       </div>
 
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Anton&family=Bebas+Neue&display=swap');
 
-        .exp-overlay {
+        .exp-screen {
+          position: relative;
+          color: #ffffff;
+          overflow: hidden;
+        }
+
+        .exp-bg-video {
           position: absolute;
           inset: 0;
-          z-index: 10;
-          padding: 5vh 3.5vw 9vh;
-          display: grid;
-          grid-template-rows: auto auto 1fr;
-          gap: 20px;
-          color: #eef8ff;
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+        }
+
+        .exp-bg-overlay {
+          position: absolute;
+          inset: 0;
+          background:
+            linear-gradient(110deg, rgba(2, 10, 25, 0.78) 10%, rgba(4, 20, 48, 0.6) 36%, rgba(7, 27, 58, 0.25) 58%, rgba(3, 10, 24, 0.7) 100%),
+            radial-gradient(circle at 80% 50%, rgba(67, 198, 255, 0.22), transparent 48%),
+            radial-gradient(circle at 22% 26%, rgba(255, 53, 80, 0.12), transparent 44%);
+          backdrop-filter: blur(1px);
+          z-index: 1;
+        }
+
+        .exp-noise {
+          position: absolute;
+          inset: 0;
+          z-index: 2;
+          pointer-events: none;
+          opacity: 0.2;
+          mix-blend-mode: soft-light;
+          background-image: repeating-linear-gradient(
+            0deg,
+            rgba(255, 255, 255, 0.02) 0,
+            rgba(255, 255, 255, 0.02) 1px,
+            transparent 1px,
+            transparent 4px
+          );
+        }
+
+        .exp-shell {
+          position: relative;
+          z-index: 3;
+          min-height: 100vh;
+          padding: 2.2vh 3vw 9vh;
+          opacity: 0;
+          transform: translateY(10px);
+          transition: opacity 0.45s ease, transform 0.45s ease;
+        }
+
+        .exp-shell.mounted {
+          opacity: 1;
+          transform: translateY(0);
+        }
+
+        .exp-header {
+          margin-bottom: 18px;
+          animation: exp-fade-down 0.55s ease;
+        }
+
+        .exp-header-kicker {
+          font-family: 'Bebas Neue', sans-serif;
+          letter-spacing: 2px;
+          font-size: clamp(15px, 0.92vw, 19px);
+          color: rgba(255, 255, 255, 0.88);
         }
 
         .exp-header h1 {
           margin: 0;
           font-family: 'Anton', sans-serif;
-          font-size: clamp(48px, 7vw, 92px);
+          font-size: clamp(42px, 5.2vw, 86px);
+          letter-spacing: 1.2px;
           line-height: 0.9;
-          letter-spacing: 1px;
-          color: #082b73;
-          text-shadow: 0 2px 0 rgba(255, 255, 255, 0.2);
+          color: #ffffff;
+          text-shadow: 0 0 18px rgba(79, 201, 255, 0.45);
         }
 
         .exp-header p {
           margin: 8px 0 0;
           font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(20px, 2.2vw, 34px);
           letter-spacing: 1px;
-          color: #0d347f;
-          opacity: 1;
-          text-shadow: 0 1px 0 rgba(255, 255, 255, 0.22);
+          font-size: clamp(17px, 1.3vw, 25px);
+          color: rgba(255, 255, 255, 0.88);
         }
 
-        .exp-route-wrap {
-          position: relative;
-          padding: 16px 0 10px;
-        }
-
-        .exp-route-line {
-          position: absolute;
-          left: 8%;
-          right: 8%;
-          top: 34px;
-          height: 6px;
-          background: linear-gradient(90deg, rgba(142, 245, 255, 0.22), rgba(142, 245, 255, 0.8), rgba(142, 245, 255, 0.22));
-          box-shadow: 0 0 16px rgba(142, 245, 255, 0.35);
-          animation: exp-route-pulse 2.4s ease-in-out infinite;
-        }
-
-        @keyframes exp-route-pulse {
-          0%, 100% { opacity: 0.72; }
-          50% { opacity: 1; }
-        }
-
-        .exp-stations {
-          position: relative;
+        .exp-layout {
           display: grid;
-          grid-template-columns: repeat(5, minmax(0, 1fr));
-          gap: 10px;
-          align-items: start;
+          grid-template-columns: minmax(220px, 0.8fr) minmax(470px, 1.2fr) minmax(320px, 1fr);
+          gap: clamp(16px, 1.7vw, 30px);
+          align-items: stretch;
         }
 
-        .exp-station {
-          border: 0;
-          background: transparent;
-          color: #d8f8ff;
+        .exp-nav {
+          position: relative;
+          border: 1px solid rgba(165, 236, 255, 0.34);
+          background: linear-gradient(160deg, rgba(4, 17, 39, 0.84), rgba(6, 28, 65, 0.62));
+          box-shadow: 0 10px 28px rgba(2, 8, 18, 0.5), inset 0 0 0 1px rgba(255, 255, 255, 0.08);
+          clip-path: polygon(0 0, 100% 0, 100% 96%, calc(100% - 20px) 100%, 0 100%);
+          padding: 14px;
           display: flex;
           flex-direction: column;
+          gap: 10px;
+        }
+
+        .exp-nav-top {
+          display: flex;
+          justify-content: space-between;
           align-items: center;
-          gap: 10px;
-          cursor: pointer;
-          transition: transform 0.2s ease;
-        }
-
-        .exp-station:hover {
-          transform: translateY(-2px);
-        }
-
-        .exp-station-dot {
-          width: 26px;
-          height: 26px;
-          border-radius: 50%;
-          background: #7defff;
-          border: 2px solid rgba(255, 255, 255, 0.75);
-          box-shadow: 0 0 0 6px rgba(125, 239, 255, 0.15);
-          transition: transform 0.2s ease, box-shadow 0.2s ease, background 0.2s ease;
-        }
-
-        .exp-station-label {
-          font-family: 'Anton', sans-serif;
-          font-size: clamp(18px, 1.45vw, 25px);
-          letter-spacing: 0.7px;
-          text-align: center;
-          line-height: 1;
-          color: rgba(236, 251, 255, 0.9);
-          opacity: 0;
-          transform: translateY(-4px);
-          transition: color 0.2s ease, opacity 0.18s ease, transform 0.18s ease;
-        }
-
-        .exp-station.active .exp-station-dot {
-          transform: scale(1.22);
-          background: #fff;
-          box-shadow: 0 0 0 8px rgba(142, 245, 255, 0.28), 0 0 22px rgba(142, 245, 255, 0.7);
-        }
-
-        .exp-station.active .exp-station-label {
-          color: #9cf5ff;
-          opacity: 1;
-          transform: translateY(0);
-        }
-
-        .exp-enter-chip {
-          margin-top: -4px;
           font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(13px, 0.95vw, 18px);
+          font-size: 18px;
           letter-spacing: 1.2px;
-          padding: 1px 7px;
-          border: 1px solid rgba(255, 255, 255, 0.72);
-          background: rgba(0, 0, 0, 0.52);
-          color: #f4fdff;
-          border-radius: 5px;
-          animation: exp-enter-blink 1s ease-in-out infinite;
+          color: #ffffff;
+          border-bottom: 1px solid rgba(255, 255, 255, 0.18);
+          padding-bottom: 8px;
         }
 
-        @keyframes exp-enter-blink {
-          0%, 100% { opacity: 1; }
-          50% { opacity: 0.45; }
+        .exp-nav-action {
+          border: 1px solid rgba(173, 241, 255, 0.3);
+          background: rgba(9, 42, 86, 0.55);
+          color: #ffffff;
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 16px;
+          letter-spacing: 1px;
+          padding: 8px 10px;
+          cursor: pointer;
+          transition: transform 0.25s ease, border-color 0.25s ease, background 0.25s ease;
         }
 
-        .exp-enter-hint {
-          justify-self: end;
-          width: min(42vw, 700px);
-          min-height: 86px;
+        .exp-nav-action:hover {
+          transform: translateX(3px);
+          border-color: rgba(215, 245, 255, 0.72);
+          background: rgba(10, 61, 128, 0.65);
+        }
+
+        .exp-nav-list {
           display: flex;
           flex-direction: column;
-          justify-content: center;
+          gap: 9px;
+          margin: 2px 0;
+        }
+
+        .exp-nav-item {
+          border: 1px solid rgba(255, 255, 255, 0.14);
+          background: rgba(7, 26, 61, 0.5);
+          padding: 9px;
+          display: grid;
           gap: 2px;
-          padding: 14px 18px;
-          background: linear-gradient(180deg, rgba(10, 24, 92, 0.8) 0%, rgba(6, 14, 54, 0.86) 100%);
-          border: 1px solid rgba(147, 239, 255, 0.35);
-          clip-path: polygon(0 0, 100% 0, calc(100% - 16px) 100%, 0 100%);
-          box-shadow: inset 0 0 0 1px rgba(147, 239, 255, 0.08), 14px 14px 0 rgba(0, 6, 30, 0.35);
+          text-align: left;
+          cursor: pointer;
+          transform: translateX(0);
+          transition: transform 0.25s ease, background 0.25s ease, border-color 0.25s ease, opacity 0.25s ease;
+          opacity: 0.55;
         }
 
-        .exp-enter-title {
-          font-family: 'Anton', sans-serif;
-          font-size: clamp(23px, 1.8vw, 31px);
-          color: #a3f7ff;
-          line-height: 1;
+        .exp-nav-item.active {
+          opacity: 1;
+          border-color: rgba(198, 240, 255, 0.8);
+          background: linear-gradient(120deg, rgba(14, 78, 146, 0.68), rgba(10, 41, 85, 0.84));
+          transform: translateX(7px) skewX(-6deg);
+          box-shadow: 0 0 18px rgba(115, 216, 255, 0.35);
         }
 
-        .exp-enter-text {
+        .exp-nav-item:hover {
+          opacity: 0.92;
+        }
+
+        .exp-nav-code {
           font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(16px, 1.1vw, 22px);
           letter-spacing: 1px;
-          color: #eefbff;
+          font-size: 17px;
+          color: #ffffff;
         }
 
-        .exp-detail {
-          justify-self: end;
-          width: min(42vw, 700px);
-          min-height: 52vh;
-          background: linear-gradient(180deg, rgba(12, 24, 96, 0.95) 0%, rgba(6, 15, 62, 0.96) 100%);
-          border: 1px solid rgba(147, 239, 255, 0.35);
-          clip-path: polygon(0 0, 100% 0, calc(100% - 18px) 100%, 0 100%);
-          padding: 18px 20px;
-          box-shadow: inset 0 0 0 1px rgba(147, 239, 255, 0.1), 14px 14px 0 rgba(0, 6, 30, 0.45);
-          transform: translateX(18px);
-          opacity: 0;
-          transition: transform 0.28s ease, opacity 0.28s ease;
+        .exp-nav-role {
+          font-family: 'Anton', sans-serif;
+          font-size: 14px;
+          color: rgba(255, 255, 255, 0.9);
+          line-height: 1.12;
+        }
+
+        .exp-nav-status {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 14px;
+          letter-spacing: 1px;
+          color: rgba(255, 255, 255, 0.92);
+        }
+
+        .exp-focus-area {
+          display: flex;
+          justify-content: center;
+          align-items: stretch;
+          padding-top: 0px;
+          min-height: 66vh;
+        }
+
+        .exp-hint-card {
+          position: absolute;
+          top: 52%;
+          width: 146px;
+          height: 122px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          background: linear-gradient(160deg, rgba(9, 27, 55, 0.7), rgba(9, 25, 48, 0.42));
+          backdrop-filter: blur(2px);
+          display: grid;
+          place-content: center;
+          text-align: center;
+          gap: 4px;
+          color: rgba(255, 255, 255, 0.65);
+          font-family: 'Bebas Neue', sans-serif;
+          letter-spacing: 1px;
           pointer-events: none;
           overflow: hidden;
         }
 
-        .exp-detail.open {
-          transform: translateX(0);
-          opacity: 1;
-          pointer-events: all;
+        .exp-hint-card small {
+          font-size: 13px;
+          color: rgba(255, 255, 255, 0.56);
         }
 
-        .exp-detail-top {
+        .exp-hint-left {
+          left: -36px;
+          transform: translateY(-50%) rotate(-8deg);
+        }
+
+        .exp-hint-right {
+          right: -36px;
+          transform: translateY(-50%) rotate(8deg);
+        }
+
+        .exp-dossier-card {
+          position: relative;
+          width: min(100%, 720px);
+          border: 1px solid rgba(197, 244, 255, 0.42);
+          background:
+            linear-gradient(140deg, rgba(6, 21, 48, 0.95) 0%, rgba(9, 40, 89, 0.88) 56%, rgba(10, 35, 77, 0.95) 100%);
+          box-shadow: 0 20px 48px rgba(1, 6, 14, 0.62), 0 0 38px rgba(94, 205, 255, 0.2);
+          clip-path: polygon(0 0, 100% 0, 100% 94%, calc(100% - 22px) 100%, 0 100%, 0 16px);
+          padding: 20px;
+          animation: exp-card-in 0.45s cubic-bezier(0.22, 0.92, 0.29, 1) both;
+          overflow: hidden;
           display: flex;
-          align-items: center;
-          justify-content: space-between;
-          gap: 10px;
-          margin-bottom: 14px;
+          flex-direction: column;
+          height: 100%;
         }
 
-        .exp-detail-title {
-          font-family: 'Anton', sans-serif;
-          font-size: clamp(30px, 2.5vw, 45px);
-          line-height: 0.95;
-          color: #97f6ff;
+        .exp-card-stripe {
+          position: absolute;
+          inset: -50% auto auto -24%;
+          width: 78%;
+          height: 220%;
+          transform: rotate(18deg);
+          background: linear-gradient(180deg, rgba(74, 201, 255, 0.16), rgba(74, 201, 255, 0));
+          pointer-events: none;
+        }
+
+        .exp-card-top {
+          position: relative;
+          z-index: 1;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          gap: 12px;
+        }
+
+        .exp-op-tag {
+          font-family: 'Bebas Neue', sans-serif;
+          letter-spacing: 1.2px;
+          font-size: 18px;
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.3);
+          padding: 4px 10px;
+          background: rgba(5, 32, 76, 0.66);
         }
 
         .exp-status {
           font-family: 'Bebas Neue', sans-serif;
+          font-size: 18px;
           letter-spacing: 1px;
-          font-size: clamp(18px, 1.3vw, 24px);
-          padding: 6px 10px;
-          clip-path: polygon(0 0, 100% 0, calc(100% - 8px) 100%, 0 100%);
-          background: #8df6ff;
-          color: #08153f;
+          padding: 4px 10px;
+          color: #ffffff;
+          border: 1px solid rgba(255, 255, 255, 0.25);
+          background: rgba(83, 169, 213, 0.32);
         }
 
         .exp-status.done {
-          background: #8dffb7;
+          background: rgba(56, 175, 126, 0.38);
+          box-shadow: 0 0 16px rgba(56, 175, 126, 0.28);
         }
 
         .exp-status.incoming {
-          background: #ffd56f;
+          background: rgba(175, 68, 84, 0.38);
+          box-shadow: 0 0 16px rgba(230, 84, 106, 0.2);
         }
 
-        .exp-status.live {
-          background: #9cf5ff;
+        .exp-title-wrap {
+          position: relative;
+          z-index: 1;
+          margin-top: 12px;
+          font-size: clamp(26px, 2vw, 40px);
         }
 
-        .exp-detail-lines {
-          display: flex;
-          flex-direction: column;
-          gap: 8px;
+        .exp-mission-code {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(18px, 1.05vw, 24px);
+          letter-spacing: 2px;
+          color: rgba(255, 255, 255, 0.86);
         }
 
-        .exp-detail-line {
+        .exp-title-wrap h2 {
+          margin: 4px 0 0;
           font-family: 'Anton', sans-serif;
-          font-size: clamp(17px, 1.1vw, 23px);
-          color: #f2fcff;
-          line-height: 1.2;
-          padding: 8px 10px;
-          background: rgba(255, 255, 255, 0.06);
-          border: 1px solid rgba(166, 240, 255, 0.18);
-          border-radius: 10px;
+          font-size: clamp(32px, 2.5vw, 48px);
+          line-height: 0.95;
+          letter-spacing: 0.7px;
+          color: #ffffff;
+          text-shadow: 0 0 15px rgba(114, 216, 255, 0.32);
         }
 
-        .exp-progress-block {
-          margin-top: 16px;
+        .exp-meta-grid {
+          position: relative;
+          z-index: 1;
+          margin-top: 14px;
+          display: grid;
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+          gap: 12px;
         }
 
-        .exp-progress-head {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
+        .exp-meta-grid > div {
+          display: grid;
+          gap: 2px;
+          border-left: 2px solid rgba(166, 234, 255, 0.4);
+          padding-left: 8px;
+        }
+
+        .exp-meta-label {
           font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(18px, 1.1vw, 23px);
-          letter-spacing: 1px;
-          color: #b7fbff;
+          font-size: 14px;
+          letter-spacing: 1.2px;
+          color: rgba(255, 255, 255, 0.72);
         }
 
-        .exp-progress-rail {
-          margin-top: 7px;
-          height: 12px;
-          background: rgba(0, 0, 0, 0.35);
-          border: 1px solid rgba(151, 238, 255, 0.2);
-          overflow: hidden;
-        }
-
-        .exp-progress-fill {
-          height: 100%;
-          background: linear-gradient(90deg, #6be7ff 0%, #95f6ff 60%, #dbfeff 100%);
-          box-shadow: 0 0 10px rgba(125, 239, 255, 0.45);
-          transition: width 0.35s ease;
-        }
-
-        .exp-achievements {
-          margin-top: 18px;
-          padding: 14px;
-          background: rgba(6, 14, 58, 0.92);
-          border: 1px solid rgba(146, 239, 255, 0.15);
-          clip-path: polygon(0 0, 100% 0, calc(100% - 12px) 100%, 0 100%);
-        }
-
-        .exp-achievements-title {
+        .exp-meta-value {
           font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(18px, 1.15vw, 24px);
+          color: #ffffff;
+          letter-spacing: 0.5px;
+        }
+
+        .exp-summary {
+          position: relative;
+          z-index: 1;
+          margin-top: 14px;
+          border: 1px solid rgba(160, 236, 255, 0.26);
+          background: linear-gradient(130deg, rgba(7, 29, 68, 0.76), rgba(7, 26, 59, 0.46));
+          padding: 12px;
+          clip-path: polygon(0 0, 100% 0, 100% 90%, calc(100% - 14px) 100%, 0 100%);
+          animation: exp-fade-up 0.38s ease both;
+        }
+
+        .exp-summary h3,
+        .exp-section h3 {
+          margin: 0;
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 18px;
           letter-spacing: 1.5px;
-          font-size: clamp(20px, 1.2vw, 26px);
-          color: #8ff4ff;
-          margin-bottom: 8px;
+          color: #ffffff;
         }
 
-        .exp-achievement {
+        .exp-summary p {
+          margin: 6px 0 0;
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(18px, 1.18vw, 24px);
+          line-height: 1.24;
+          letter-spacing: 0.35px;
+          color: rgba(255, 255, 255, 0.95);
+        }
+
+        .exp-section {
+          position: relative;
+          z-index: 1;
+          margin-top: 12px;
+          border: 1px solid rgba(160, 236, 255, 0.2);
+          background: rgba(5, 20, 42, 0.54);
+          padding: 10px;
+        }
+
+        .exp-chip-row {
+          margin-top: 6px;
+          display: flex;
+          gap: 8px;
+          flex-wrap: wrap;
+        }
+
+        .exp-chip {
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: 16px;
+          letter-spacing: 0.8px;
+          color: #ffffff;
+          padding: 4px 10px;
+          border: 1px solid rgba(185, 241, 255, 0.35);
+          background: rgba(12, 63, 122, 0.52);
+          transform: skewX(-8deg);
+          transition: transform 0.2s ease, background 0.2s ease, border-color 0.2s ease;
+        }
+
+        .exp-chip:hover {
+          transform: skewX(-8deg) translateY(-2px);
+          background: rgba(24, 104, 187, 0.58);
+          border-color: rgba(230, 249, 255, 0.72);
+        }
+
+        .exp-chip.unlock {
+          border-color: rgba(255, 116, 133, 0.38);
+          background: rgba(101, 21, 41, 0.4);
+        }
+
+        .exp-list {
+          margin: 8px 0 0;
+          padding: 0;
+          list-style: none;
+          display: grid;
+          gap: 6px;
+        }
+
+        .exp-list li {
+          position: relative;
+          padding-left: 14px;
+          font-family: 'Bebas Neue', sans-serif;
+          font-size: clamp(17px, 1.05vw, 22px);
+          line-height: 1.2;
+          letter-spacing: 0.25px;
+          color: rgba(255, 255, 255, 0.92);
+        }
+
+        .exp-list li::before {
+          content: "";
+          position: absolute;
+          left: 0;
+          top: 0.5em;
+          width: 8px;
+          height: 1px;
+          background: rgba(255, 255, 255, 0.85);
+          box-shadow: 0 0 8px rgba(91, 206, 255, 0.58);
+        }
+
+        /* scrollable body inside dossier card to prevent overflow */
+        .exp-dossier-body {
+          flex: 1 1 auto;
+          overflow-y: auto;
+          padding-right: 6px;
+        }
+
+        .exp-dossier-body::-webkit-scrollbar {
+          width: 10px;
+        }
+
+        .exp-dossier-body::-webkit-scrollbar-thumb {
+          background: linear-gradient(180deg, rgba(120,200,255,0.22), rgba(120,200,255,0.12));
+          border-radius: 6px;
+          border: 2px solid rgba(6,18,36,0.18);
+        }
+
+        .exp-visual {
+          min-height: 66vh;
+          display: flex;
+          align-items: stretch;
+        }
+
+        .exp-visual-frame {
+          position: relative;
+          width: 100%;
+          border: 1px solid rgba(192, 245, 255, 0.4);
+          overflow: hidden;
+          clip-path: polygon(0 0, 100% 0, 100% 84%, 86% 100%, 0 100%);
+          box-shadow: 0 18px 34px rgba(1, 7, 17, 0.54), 0 0 34px rgba(93, 208, 255, 0.24);
+          animation: exp-visual-in 0.45s ease both;
+          background: rgba(5, 19, 41, 0.66);
+        }
+
+        .exp-visual-frame img {
+          width: 100%;
+          height: 100%;
+          object-fit: cover;
+          opacity : 1;
+          filter: none;
+          transform: scale(0.98);
+        }
+
+        .exp-visual-gradient {
+          position: absolute;
+          inset: 0;
+          background:
+            radial-gradient(circle at 65% 30%, rgba(78, 204, 255, 0.25), transparent 42%),
+            linear-gradient(180deg, rgba(8, 24, 46, 0.15) 0%, rgba(4, 15, 30, 0.72) 86%);
+        }
+
+        .exp-visual-scan {
+        display : none; 
+        /**
+          position: absolute;
+          inset: -20% 0 auto;
+          height: 38%;
+          background: linear-gradient(180deg, rgba(255, 255, 255, 0.18), rgba(255, 255, 255, 0));
+          animation: exp-scan 3.2s linear infinite;
+          pointer-events: none;
+          */
+        }
+
+        .exp-visual-label {
+          position: absolute;
+          left: 12px;
+          bottom: 14px;
+          display: grid;
+          gap: 2px;
+          color: #ffffff;
+          font-family: 'Bebas Neue', sans-serif;
+          letter-spacing: 1.2px;
+          text-shadow: 0 0 10px rgba(58, 191, 255, 0.45);
+        }
+
+        .exp-visual-label strong {
+          font-size: clamp(24px, 1.55vw, 34px);
           font-family: 'Anton', sans-serif;
-          font-size: clamp(16px, 1vw, 21px);
-          line-height: 1.22;
-          color: #eefaff;
-          margin-top: 7px;
+          letter-spacing: 0.8px;
         }
 
         .exp-footer {
           position: fixed;
-          right: 28px;
-          bottom: 20px;
+          right: 24px;
+          bottom: 16px;
+          z-index: 5;
           display: flex;
           flex-direction: column;
           align-items: flex-end;
-          gap: 5px;
-          padding: 8px 10px;
-          border-radius: 10px;
-          border: 1px solid rgba(255, 255, 255, 0.28);
-          background: rgba(0, 0, 0, 0.58);
-          box-shadow: 0 8px 22px rgba(0, 0, 0, 0.55);
-          backdrop-filter: blur(2px);
-          font-family: 'Bebas Neue', sans-serif;
-          z-index: 20;
+          gap: 6px;
           opacity: 0;
-          transition: opacity 0.4s ease 0.6s;
+          transition: opacity 0.35s ease 0.5s;
+          pointer-events: none;
         }
 
         .exp-footer.mounted {
@@ -513,65 +788,121 @@ export default function Experience({ src }) {
         .exp-footer-row {
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 7px;
+          color: rgba(255, 255, 255, 0.92);
+          font-family: 'Bebas Neue', sans-serif;
+          letter-spacing: 1px;
           font-size: 17px;
-          letter-spacing: 2.2px;
-          color: rgba(255, 255, 255, 0.9);
-          text-shadow: 0 1px 2px rgba(0, 0, 0, 0.9);
+          text-shadow: 0 2px 5px rgba(0, 0, 0, 0.68);
         }
 
         .exp-footer-key {
-          border: 1px solid rgba(255, 255, 255, 0.55);
-          border-radius: 5px;
-          background: rgba(0, 0, 0, 0.72);
-          color: #fff;
+          border: 1px solid rgba(194, 241, 255, 0.45);
           padding: 2px 8px;
-          font-size: 14px;
+          border-radius: 5px;
+          background: rgba(8, 32, 69, 0.66);
+          color: #ffffff;
         }
 
-        @media (max-width: 1150px) {
-          .exp-overlay {
-            padding: 4vh 3.5vw 8vh;
+        @keyframes exp-card-in {
+          from {
+            opacity: 0;
+            transform: translateX(20px) scale(0.98);
+            filter: blur(2px);
           }
-
-          .exp-stations {
-            gap: 6px;
-          }
-
-          .exp-station-label {
-            font-size: clamp(16px, 1.8vw, 22px);
-          }
-
-          .exp-detail {
-            width: min(100%, 760px);
-            justify-self: stretch;
-          }
-
-          .exp-enter-hint {
-            width: min(100%, 760px);
-            justify-self: stretch;
+          to {
+            opacity: 1;
+            transform: translateX(0) scale(1);
+            filter: blur(0);
           }
         }
 
-        @media (max-width: 820px) {
-          .exp-route-wrap {
-            overflow-x: auto;
-            padding-bottom: 2px;
+        @keyframes exp-visual-in {
+          from {
+            opacity: 0;
+            transform: translateX(22px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        @keyframes exp-scan {
+          from {
+            transform: translateY(0);
+            opacity: 0;
+          }
+          15% {
+            opacity: 0.65;
+          }
+          85% {
+            opacity: 0.12;
+          }
+          to {
+            transform: translateY(340%);
+            opacity: 0;
+          }
+        }
+
+        @keyframes exp-fade-down {
+          from {
+            opacity: 0;
+            transform: translateY(-8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes exp-fade-up {
+          from {
+            opacity: 0;
+            transform: translateY(8px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @media (max-width: 1240px) {
+          .exp-layout {
+            grid-template-columns: minmax(190px, 0.75fr) minmax(420px, 1fr) minmax(280px, 0.82fr);
           }
 
-          .exp-route-line {
-            left: 26px;
-            right: 26px;
+          .exp-hint-card {
+            display: none;
+          }
+        }
+
+        @media (max-width: 980px) {
+          .exp-shell {
+            padding: 3.5vh 3.2vw 8.5vh;
           }
 
-          .exp-stations {
-            width: 680px;
+          .exp-layout {
+            grid-template-columns: 1fr;
+            gap: 12px;
           }
 
-          .exp-detail {
+          .exp-nav {
+            order: 1;
+          }
+
+          .exp-focus-area {
+            order: 2;
             min-height: auto;
-            max-height: 58vh;
-            overflow-y: auto;
+          }
+
+          .exp-visual {
+            order: 3;
+            min-height: 36vh;
+          }
+
+          .exp-dossier-card {
+            width: 100%;
           }
 
           .exp-footer {
