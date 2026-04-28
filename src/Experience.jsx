@@ -8,7 +8,7 @@ const MISSIONS = [
   {
     id: "borrowd",
     missionCode: "MISSION_01",
-    operation: "REQUEST FILE",
+    operation: "PAYLOAD",
     role: "Software Developer Intern",
     company: "Borrowd",
     lead: "Elizabeth of Borrowd",
@@ -21,8 +21,6 @@ const MISSIONS = [
       "Reduced manual analysis time by 65+ hours per week. ",
       "Increasing cache hit rate to 90% and reducing database load by 38%.",
       "Optimized PostgreSQL queries, improving backend performance by ~30%.",
-      "Talked to real humans and touched grass",
-
     ],
     unlocked: ["System Reliability", "Database Optimization", "Backend System Design"],
     visual: missionVisualA,
@@ -30,7 +28,7 @@ const MISSIONS = [
   {
     id: "atria",
     missionCode: "MISSION_02",
-    operation: "EVENT ARCHIVE",
+    operation: "PAYLOAD",
     role: "Software Developer Intern",
     company: "Atria",
     lead: "Chidori Yoshino of Atria",
@@ -204,7 +202,7 @@ export default function Experience({ src }) {
                   <div className="exp-chip-row">
                     {current.unlocked.map((item) => (
                       <span className="exp-chip unlock" key={item}>
-                        + {item}
+                        {item}
                       </span>
                     ))}
                   </div>
@@ -214,7 +212,10 @@ export default function Experience({ src }) {
           </main>
 
           <section className="exp-visual" aria-label="Mission visual">
-            <div key={current.id} className="exp-visual-frame">
+            <div //conditional class to change only for mission 1 (elizabeth)
+  key={current.id}
+  className={`exp-visual-frame ${current.id === "borrowd" ? "mission-1" : ""}`}
+>
               <img src={current.visual} alt={`${current.company} mission visual`} />
               <div className="exp-visual-gradient" />
              <div className="exp-visual-scan" /> 
@@ -598,10 +599,10 @@ export default function Experience({ src }) {
         .exp-summary {
           position: relative;
           z-index: 1;
-          margin-top: 14px;
+          margin-top: 10px;
           border: 1px solid rgba(160, 236, 255, 0.26);
           background: linear-gradient(130deg, rgba(7, 29, 68, 0.76), rgba(7, 26, 59, 0.46));
-          padding: 12px;
+          padding: 8px;
           clip-path: polygon(0 0, 100% 0, 100% 90%, calc(100% - 14px) 100%, 0 100%);
           animation: exp-fade-up 0.38s ease both;
         }
@@ -618,7 +619,7 @@ export default function Experience({ src }) {
         .exp-summary p {
           margin: 6px 0 0;
           font-family: 'Bebas Neue', sans-serif;
-          font-size: clamp(18px, 1.18vw, 24px);
+          font-size: clamp(16px, 1.18vw, 24px);
           line-height: 1.24;
           letter-spacing: 0.35px;
           color: rgba(255, 255, 255, 0.95);
@@ -627,10 +628,10 @@ export default function Experience({ src }) {
         .exp-section {
           position: relative;
           z-index: 1;
-          margin-top: 12px;
+          margin-top: 8px;
           border: 1px solid rgba(160, 236, 255, 0.2);
           background: rgba(5, 20, 42, 0.54);
-          padding: 10px;
+          padding: 8px;
         }
 
         .exp-chip-row {
@@ -693,12 +694,18 @@ export default function Experience({ src }) {
         }
 
         /* scrollable body inside dossier card to prevent overflow */
+        /*maybe don't want scroll 
+
         .exp-dossier-body {
           flex: 1 1 auto;
           overflow-y: auto;
           padding-right: 6px;
           min-height: 0;
         }
+          */
+         .exp-dossier-body {
+            overflow-y: visible;
+            }
 
         .exp-dossier-body::-webkit-scrollbar {
           width: 10px;
@@ -727,15 +734,37 @@ export default function Experience({ src }) {
           animation: exp-visual-in 0.45s ease both;
           background: rgba(5, 19, 41, 0.66);
           height: 100%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
         }
+
+        /* special styling for mission 1 visual to better frame subject */
+.exp-visual-frame.mission-1 {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.exp-visual-frame.mission-1 img {
+  height: 95%;
+  width: auto;
+  max-width: 90%;
+  object-fit: cover;
+  object-position: center 65%;
+  display: block;
+  margin: auto;
+}
 
         .exp-visual-frame img {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          object-position: center;
           opacity : 1;
-          filter: none;
+          filter: contrast(1.15) saturate(1.1);
           transform: scale(0.98);
+          transition: all 0.4s ease;
         }
 
         .exp-visual-gradient {
@@ -761,7 +790,8 @@ export default function Experience({ src }) {
         .exp-visual-label {
           position: absolute;
           left: 12px;
-          top: 12px;
+          top: auto;
+          bottom: 12px;
           display: grid;
           gap: 2px;
           color: #ffffff;
@@ -775,6 +805,7 @@ export default function Experience({ src }) {
           backdrop-filter: blur(5px);
           z-index: 3;
           box-shadow: 0 8px 18px rgba(1, 6, 14, 0.35);
+          position: absolute;
         }
 
         .exp-visual-label strong {
