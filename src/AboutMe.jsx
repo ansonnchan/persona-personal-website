@@ -80,12 +80,15 @@ export default function AboutMe() {
        setRevealed(false);
        setActive(i => Math.min(ITEMS.length - 1, i + 1));
      }
-     if (e.key === "Enter" || e.key === "ArrowRight") setRevealed(true);
-     if (e.key === "ArrowLeft") {
-       if (revealed) setRevealed(false);
-       else navigate(-1);
-     }
-     if (e.key === "Escape" || e.key === "Backspace") navigate(-1);
+     if (e.key === "Enter") setRevealed(true);
+    
+     if (e.key === "Escape") {
+  if (revealed) {
+    setRevealed(false); //just hide the content if it's currently revealed
+  } else {
+    navigate(-1); //go back to home page 
+  }
+}
    };
    window.addEventListener("keydown", onKey);
    return () => window.removeEventListener("keydown", onKey);

@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useMemo, useState, useRef } from "react";
 import { AnimatePresence, LayoutGroup, motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import igor from "./assets/igor.png";
@@ -71,12 +71,11 @@ const PROJECTS = [
       "Archive placeholder for an exploratory UI project with layered states, responsive surfaces, and intentional animation cues that guide the user like a combat HUD.",
     link: "https://github.com/ansonnchan",
   },
-  //add more projects here
 ];
-
 
 function ArcanaArt({ arcana, size = 72 }) {
   const c = ARCANA[arcana]?.color ?? "#4de8ff";
+
   const arts = {
     FOOL: (
       <svg width={size} height={size} viewBox="0 0 100 100">
@@ -88,70 +87,127 @@ function ArcanaArt({ arcana, size = 72 }) {
           return (
             <line
               key={a}
-              x1={50 + 14 * Math.cos(r)} y1={50 + 14 * Math.sin(r)}
-              x2={50 + 32 * Math.cos(r)} y2={50 + 32 * Math.sin(r)}
-              stroke={c} strokeWidth="0.7" opacity="0.38"
+              x1={50 + 14 * Math.cos(r)}
+              y1={50 + 14 * Math.sin(r)}
+              x2={50 + 32 * Math.cos(r)}
+              y2={50 + 32 * Math.sin(r)}
+              stroke={c}
+              strokeWidth="0.7"
+              opacity="0.38"
             />
           );
         })}
-        <circle cx="50" cy="50" r="45" fill="none" stroke={c} strokeWidth="0.4" strokeDasharray="3 7" opacity="0.18" />
+        <circle
+          cx="50"
+          cy="50"
+          r="45"
+          fill="none"
+          stroke={c}
+          strokeWidth="0.4"
+          strokeDasharray="3 7"
+          opacity="0.18"
+        />
       </svg>
     ),
+
     MAGICIAN: (
       <svg width={size} height={size} viewBox="0 0 100 100">
         <polygon
           points="50,10 62,38 92,38 68,56 78,84 50,66 22,84 32,56 8,38 38,38"
-          fill="none" stroke={c} strokeWidth="0.9" opacity="0.5"
+          fill="none"
+          stroke={c}
+          strokeWidth="0.9"
+          opacity="0.5"
         />
         <circle cx="50" cy="50" r="7" fill={c} opacity="0.5" />
         <circle cx="50" cy="50" r="19" fill="none" stroke={c} strokeWidth="0.4" opacity="0.2" />
       </svg>
     ),
+
     JUSTICE: (
       <svg width={size} height={size} viewBox="0 0 100 100">
         <line x1="50" y1="14" x2="50" y2="86" stroke={c} strokeWidth="1.2" opacity="0.4" />
         <line x1="22" y1="32" x2="78" y2="32" stroke={c} strokeWidth="1" opacity="0.4" />
-        <rect x="16" y="35" width="26" height="16" rx="3" fill="none" stroke={c} strokeWidth="0.8" opacity="0.45" />
-        <rect x="58" y="35" width="26" height="16" rx="3" fill="none" stroke={c} strokeWidth="0.8" opacity="0.45" />
+        <rect
+          x="16"
+          y="35"
+          width="26"
+          height="16"
+          rx="3"
+          fill="none"
+          stroke={c}
+          strokeWidth="0.8"
+          opacity="0.45"
+        />
+        <rect
+          x="58"
+          y="35"
+          width="26"
+          height="16"
+          rx="3"
+          fill="none"
+          stroke={c}
+          strokeWidth="0.8"
+          opacity="0.45"
+        />
         <circle cx="50" cy="32" r="3.5" fill={c} opacity="0.55" />
         <line x1="42" y1="35" x2="38" y2="51" stroke={c} strokeWidth="0.6" opacity="0.28" />
         <line x1="58" y1="35" x2="62" y2="51" stroke={c} strokeWidth="0.6" opacity="0.28" />
       </svg>
     ),
+
     HERMIT: (
       <svg width={size} height={size} viewBox="0 0 100 100">
-        <ellipse cx="50" cy="62" rx="17" ry="24" fill="none" stroke={c} strokeWidth="0.8" opacity="0.35" />
+        <ellipse
+          cx="50"
+          cy="62"
+          rx="17"
+          ry="24"
+          fill="none"
+          stroke={c}
+          strokeWidth="0.8"
+          opacity="0.35"
+        />
         <circle cx="50" cy="36" r="11" fill="none" stroke={c} strokeWidth="0.9" opacity="0.45" />
         <circle cx="50" cy="36" r="4.5" fill={c} opacity="0.5" />
         <line x1="50" y1="47" x2="50" y2="62" stroke={c} strokeWidth="1.2" opacity="0.42" />
         {[-28, -14, 0, 14, 28].map((offset, i) => (
-          <line key={i} x1={50 + offset * 0.4} y1={86} x2={50} y2={62} stroke={c} strokeWidth="0.5" opacity="0.18" />
+          <line
+            key={i}
+            x1={50 + offset * 0.4}
+            y1={86}
+            x2={50}
+            y2={62}
+            stroke={c}
+            strokeWidth="0.5"
+            opacity="0.18"
+          />
         ))}
       </svg>
     ),
   };
+
   return arts[arcana] ?? null;
 }
 
-// ─── MAIN COMPONENT ───────────────────────────────────────────────────────────
 export default function VelvetRoomProjects() {
   const navigate = useNavigate();
-  //const [filter, setFilter] = useState("ALL");
-  const [selectedProject, setSelectedProject] = useState(null);
-  const [hoveredId, setHoveredId] = useState(null);
-const [hoverTimeout, setHoverTimeout] = useState(null);
-  const [showIntro, setShowIntro] = useState(true);
-  const [introStep, setIntroStep] = useState(0); // 0: Igor, 1: Elizabeth confirm, 2: fade out
 
-  // const filtered = useMemo(
-  //   () => (filter === "ALL" ? PROJECTS : PROJECTS.filter((p) => p.arcana === filter)),
-  //   [filter]
-  // );
+  const [selectedProject, setSelectedProject] = useState(null);
+
+  const [hoveredId, setHoveredId] = useState(null);
+  const hoverTimerRef = useRef(null);
+
+  const [lockedHoverId, setLockedHoverId] = useState(null);
+
+  const [showIntro, setShowIntro] = useState(true);
+  const [introStep, setIntroStep] = useState(0);
+
   const filtered = PROJECTS;
-  // const arcanaCounts = useMemo(
-  //   () => PROJECTS.reduce((acc, p) => ({ ...acc, [p.arcana]: (acc[p.arcana] || 0) + 1 }), {}),
-  //   []
-  // );
+
+  const activeId = lockedHoverId || hoveredId;
+
+  const activeProject = filtered.find((p) => p.id === activeId);
 
   // Escape key
   useEffect(() => {
@@ -160,11 +216,13 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
         setSelectedProject(null);
       }
     };
+
     window.addEventListener("keydown", onKey);
+
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedProject]);
 
-  // Keyboard navigation for card cycling
+  // Keyboard navigation
   useEffect(() => {
     const onKey = (e) => {
       if (e.key === "Escape") {
@@ -172,30 +230,51 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
           setSelectedProject(null);
         } else if (hoveredId) {
           setHoveredId(null);
+          setLockedHoverId(null);
         } else {
           navigate("/");
         }
       }
+
       if (e.key === "ArrowLeft" || e.key === "ArrowRight") {
         if (!selectedProject && filtered.length > 0) {
-          const currentIdx = hoveredId ? filtered.findIndex((p) => p.id === hoveredId) : -1;
+          const currentIdx = hoveredId
+            ? filtered.findIndex((p) => p.id === hoveredId)
+            : -1;
+
           let nextIdx;
+
           if (e.key === "ArrowLeft") {
             nextIdx = currentIdx <= 0 ? filtered.length - 1 : currentIdx - 1;
           } else {
             nextIdx = currentIdx >= filtered.length - 1 ? 0 : currentIdx + 1;
           }
-          setHoveredId(filtered[nextIdx].id);
+
+          const nextProject = filtered[nextIdx];
+
+          setHoveredId(nextProject.id);
+          setLockedHoverId(nextProject.id);
+        }
+      }
+
+      if (e.key === "Enter") {
+        if (hoveredId && !selectedProject) {
+          const project = filtered.find((p) => p.id === hoveredId);
+
+          if (project) {
+            setSelectedProject(project);
+          }
         }
       }
     };
+
     window.addEventListener("keydown", onKey);
+
     return () => window.removeEventListener("keydown", onKey);
   }, [selectedProject, filtered, hoveredId, navigate]);
+
   return (
-    <LayoutGroup>
       <div className="vr">
-        {/* ── ATMOSPHERIC LAYERS ── */}
         <div className="vr-bg-base" />
         <div className="vr-bg-glow vr-bg-glow--a" />
         <div className="vr-bg-glow vr-bg-glow--b" />
@@ -203,63 +282,40 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
         <div className="vr-scanlines" />
         <div className="vr-grid" />
 
-        {/* ── HEADER ── */}
         <header className="vr-header">
           <div className="vr-header__left">
-            <p className="vr-eyebrow">VELVET ROOM  ·  PROJECT ARCHIVE</p>
+            <p className="vr-eyebrow">VELVET ROOM · PROJECT ARCHIVE</p>
             <h1 className="vr-title">COMPENDIUM</h1>
-            <p className="vr-subtitle">Select an entry to inspect its status and summon details</p>
+            <p className="vr-subtitle">
+              Select an entry to inspect its status and summon details
+            </p>
           </div>
 
           <div className="vr-header__right">
-  <div className="vr-statbar">
-    <div className="vr-statbar__cell">
-      <span className="vr-statbar__val">
-        {PROJECTS.length.toString().padStart(2, "0")}
-      </span>
-      <span className="vr-statbar__label">PROJECTS</span>
-    </div>
+            <div className="vr-statbar">
+              <div className="vr-statbar__cell">
+                <span className="vr-statbar__val">
+                  {PROJECTS.length.toString().padStart(2, "0")}
+                </span>
+                <span className="vr-statbar__label">PROJECTS</span>
+              </div>
 
-    <div className="vr-statbar__sep" />
+              <div className="vr-statbar__sep" />
 
-    <div className="vr-statbar__cell">
-      <span className="vr-statbar__val">ACTIVE</span>
-      <span className="vr-statbar__label">SYSTEM STATUS</span>
-    </div>
-  </div>
-</div>
+              <div className="vr-statbar__cell">
+                <span className="vr-statbar__val">ACTIVE</span>
+                <span className="vr-statbar__label">SYSTEM STATUS</span>
+              </div>
+            </div>
+          </div>
         </header>
 
-        {/* ── FILTER TABS ──
-        <nav className="vr-filters" aria-label="Arcana filters">
-          {ARCANA_ORDER.map((arcana) => {
-            const cfg = arcana !== "ALL" ? ARCANA[arcana] : null;
-            const isActive = filter === arcana;
-            return (
-              <motion.button
-                key={arcana}
-                className={`vr-tab ${isActive ? "is-active" : ""}`}
-                style={cfg && isActive ? { "--tab-c": cfg.color } : {}}
-                onClick={() => setFilter(arcana)}
-                whileTap={{ scale: 0.97 }}
-              >
-                {cfg && <span className="vr-tab__num">{cfg.num}</span>}
-                <span className="vr-tab__name">{arcana}</span>
-                <span className="vr-tab__count">
-                  {arcana === "ALL" ? PROJECTS.length : arcanaCounts[arcana] || 0}
-                </span>
-              </motion.button>
-            );
-          })}
-        </nav> */}
-
-        {/* ── MAIN LAYOUT ── */}
         <div className="vr-layout">
-          {/* COMPENDIUM GRID */}
           <section className="vr-compendium" aria-label="Project archive">
             <AnimatePresence mode="popLayout">
               {filtered.map((project) => {
                 const cfg = ARCANA[project.arcana];
+
                 const isHov = hoveredId === project.id;
                 const isDim = hoveredId && hoveredId !== project.id;
 
@@ -268,57 +324,96 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
                     key={project.id}
                     layout
                     layoutId={`card-${project.id}`}
-                    className={`vr-card ${isHov ? "is-hovered" : ""} ${isDim ? "is-dimmed" : ""}`}
-                    style={{ "--c": cfg.color, "--cb": cfg.borderActive, "--cdim": cfg.dimColor }}
+                    className={`vr-card ${isHov ? "is-hovered" : ""} ${
+                      isDim ? "is-dimmed" : ""
+                    }`}
+                    style={{
+                      "--c": cfg.color,
+                      "--cb": cfg.borderActive,
+                      "--cdim": cfg.dimColor,
+                    }}
                     initial={{ opacity: 0, y: 24, scale: 0.97 }}
                     animate={{
                       opacity: isDim ? 0.38 : 1,
                       y: 0,
                       scale: isHov ? 1.025 : 1,
-                      //rotateX: isHov ? 5 : 0,
-                      //rotateY: isHov ? -3 : 0,
-                      filter: isDim ? "blur(0.4px) saturate(0.5)" : "blur(0px) saturate(1)",
+                      filter: isDim
+                        ? "blur(0.4px) saturate(0.5)"
+                        : "blur(0px) saturate(1)",
                     }}
                     exit={{ opacity: 0, y: 16, scale: 0.96 }}
-                    transition={{ duration: 0.36, ease: [0.22, 1, 0.36, 1] }}
-                    onHoverStart={() => {
-  const timeout = setTimeout(() => {
-    setHoveredId(project.id);
-  }, 400);
+                    transition={{
+                      duration: 0.36,
+                      ease: [0.22, 1, 0.36, 1],
+                    }}
 
-  setHoverTimeout(timeout);x
-}}
-                    onHoverEnd={() => setHoveredId((cur) => (cur === project.id ? null : cur))}
+                    // FIX #6
+                    onHoverStart={() => {
+                      if (hoverTimerRef.current) {
+                        clearTimeout(hoverTimerRef.current);
+                      }
+
+                      // immediate hover
+                      setHoveredId(project.id);
+
+                      // delayed lock
+                      hoverTimerRef.current = setTimeout(() => {
+                        setLockedHoverId(project.id);
+                      }, 300);
+                    }}
+
+                    // FIX #7
+                    onHoverEnd={() => {
+                      if (hoverTimerRef.current) {
+                        clearTimeout(hoverTimerRef.current);
+                      }
+
+                      setHoveredId(null);
+                      setLockedHoverId(null);
+                    }}
+
                     onClick={() => setSelectedProject(project)}
                   >
-                    {/* Arcana art header */}
                     <div className="vr-card__art">
                       <div className="vr-card__art-glow" />
+
                       <ArcanaArt arcana={project.arcana} size={68} />
-                      <span className="vr-card__arcana-num">{cfg.num}</span>
+
+                      <span className="vr-card__arcana-num">
+                        {cfg.num}
+                      </span>
                     </div>
 
-                    {/* Card body */}
                     <div className="vr-card__body">
-                      <p className="vr-card__arcana-label">{cfg.full}</p>
-                      <h2 className="vr-card__title">{project.title}</h2>
-                      <p className="vr-card__summary">{project.summary}</p>
+                      <p className="vr-card__arcana-label">
+                        {cfg.full}
+                      </p>
+
+                      <h2 className="vr-card__title">
+                        {project.title}
+                      </h2>
+
+                      <p className="vr-card__summary">
+                        {project.summary}
+                      </p>
 
                       <div className="vr-card__stack">
                         {project.stack.slice(0, 3).map((s) => (
-                          <span key={s} className="vr-tag">{s}</span>
+                          <span key={s} className="vr-tag">
+                            {s}
+                          </span>
                         ))}
                       </div>
 
                       <div className="vr-card__footer">
-                        <span className="vr-card__impact">{project.impact}</span>
+                        <span className="vr-card__impact">
+                          {project.impact}
+                        </span>
                       </div>
                     </div>
 
-                    {/* Scan-mode sweep */}
                     <div className="vr-card__scan" />
 
-                    {/* Corner brackets (appear on hover) */}
                     <i className="vr-corner vr-corner--tl" />
                     <i className="vr-corner vr-corner--tr" />
                     <i className="vr-corner vr-corner--bl" />
@@ -327,61 +422,157 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
                 );
               })}
             </AnimatePresence>
-
-            {filtered.length === 0 && (
-              <motion.div
-                className="vr-empty"
-                initial={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-                transition={{ duration: 0.3 }}
-              >
-                NO ARCHIVED ENTITIES MATCH THIS ARCANA
-              </motion.div>
-            )}
           </section>
 
-          {/* ── HOLOGRAM PANEL (RIGHT SIDE) ── */}
+          {/* FIX #8 */}
           <aside className="vr-hologram-panel">
-            <AnimatePresence>
-              {hoveredId && (
+            <AnimatePresence mode="wait">
+              {activeProject && (
                 <motion.div
-                  key={hoveredId}
+                  key={activeProject.id}
                   className="vr-holo-display"
                   initial={{ opacity: 0, y: 12 }}
                   animate={{ opacity: 1, y: 0 }}
                   exit={{ opacity: 0, y: 12 }}
                   transition={{ duration: 0.25 }}
                 >
-                  <div style={{ paddingBottom: "12px", borderBottom: "1px solid rgba(87,231,255,0.1)" }}>
-                    <p style={{ fontSize: "11px", letterSpacing: "0.1em", color: "rgba(87,231,255,0.6)", marginBottom: "4px" }}>PROFILE</p>
-                    <p style={{ fontSize: "14px", fontWeight: "400", color: "rgba(255,255,255,0.9)" }}>Selected Project</p>
+                  <div
+                    style={{
+                      paddingBottom: "12px",
+                      borderBottom:
+                        "1px solid rgba(87,231,255,0.1)",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontSize: "11px",
+                        letterSpacing: "0.1em",
+                        color: "rgba(87,231,255,0.6)",
+                        marginBottom: "4px",
+                      }}
+                    >
+                      PROFILE
+                    </p>
+
+                    <p
+                      style={{
+                        fontSize: "14px",
+                        fontWeight: "400",
+                        color: "rgba(255,255,255,0.9)",
+                      }}
+                    >
+                      {activeProject.title}
+                    </p>
                   </div>
 
                   <div className="vr-holo-stat">
-                    <span className="vr-holo-label">COMPLEXITY</span>
+                    <span className="vr-holo-label">
+                      COMPLEXITY
+                    </span>
+
                     <div className="vr-holo-bar">
-                      <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "72%" }} transition={{ duration: 0.4, delay: 0.05 }} />
+                      <motion.div
+                        className="vr-holo-fill"
+                        initial={{ width: 0 }}
+                        animate={{ width: "72%" }}
+                        transition={{
+                          duration: 0.4,
+                          delay: 0.05,
+                        }}
+                      />
                     </div>
-                    <span style={{ fontSize: "9px", color: "rgba(87,231,255,0.5)" }}>72%</span>
-                  </div>
-                  <div className="vr-holo-stat">
-                    <span className="vr-holo-label">SCOPE</span>
-                    <div className="vr-holo-bar">
-                      <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "85%" }} transition={{ duration: 0.4, delay: 0.1 }} />
-                    </div>
-                    <span style={{ fontSize: "9px", color: "rgba(87,231,255,0.5)" }}>85%</span>
-                  </div>
-                  <div className="vr-holo-stat">
-                    <span className="vr-holo-label">INNOVATION</span>
-                    <div className="vr-holo-bar">
-                      <motion.div className="vr-holo-fill" initial={{ width: 0 }} animate={{ width: "68%" }} transition={{ duration: 0.4, delay: 0.15 }} />
-                    </div>
-                    <span style={{ fontSize: "9px", color: "rgba(87,231,255,0.5)" }}>68%</span>
+
+                    <span
+                      style={{
+                        fontSize: "9px",
+                        color: "rgba(87,231,255,0.5)",
+                      }}
+                    >
+                      72%
+                    </span>
                   </div>
 
-                  <div style={{ paddingTop: "12px", borderTop: "1px solid rgba(87,231,255,0.1)" }}>
-                    <p style={{ fontSize: "9px", letterSpacing: "0.2em", color: "rgba(87,231,255,0.5)", textTransform: "uppercase", marginBottom: "6px" }}>STATUS</p>
-                    <p style={{ fontSize: "12px", color: "rgba(87,231,255,0.8)" }}>◆ ACTIVE</p>
+                  <div className="vr-holo-stat">
+                    <span className="vr-holo-label">
+                      SCOPE
+                    </span>
+
+                    <div className="vr-holo-bar">
+                      <motion.div
+                        className="vr-holo-fill"
+                        initial={{ width: 0 }}
+                        animate={{ width: "85%" }}
+                        transition={{
+                          duration: 0.4,
+                          delay: 0.1,
+                        }}
+                      />
+                    </div>
+
+                    <span
+                      style={{
+                        fontSize: "9px",
+                        color: "rgba(87,231,255,0.5)",
+                      }}
+                    >
+                      85%
+                    </span>
+                  </div>
+
+                  <div className="vr-holo-stat">
+                    <span className="vr-holo-label">
+                      INNOVATION
+                    </span>
+
+                    <div className="vr-holo-bar">
+                      <motion.div
+                        className="vr-holo-fill"
+                        initial={{ width: 0 }}
+                        animate={{ width: "68%" }}
+                        transition={{
+                          duration: 0.4,
+                          delay: 0.15,
+                        }}
+                      />
+                    </div>
+
+                    <span
+                      style={{
+                        fontSize: "9px",
+                        color: "rgba(87,231,255,0.5)",
+                      }}
+                    >
+                      68%
+                    </span>
+                  </div>
+
+                  <div
+                    style={{
+                      paddingTop: "12px",
+                      borderTop:
+                        "1px solid rgba(87,231,255,0.1)",
+                    }}
+                  >
+                    <p
+                      style={{
+                        fontSize: "9px",
+                        letterSpacing: "0.2em",
+                        color: "rgba(87,231,255,0.5)",
+                        textTransform: "uppercase",
+                        marginBottom: "6px",
+                      }}
+                    >
+                      STATUS
+                    </p>
+
+                    <p
+                      style={{
+                        fontSize: "12px",
+                        color: "rgba(87,231,255,0.8)",
+                      }}
+                    >
+                      ◆ ACTIVE
+                    </p>
                   </div>
                 </motion.div>
               )}
@@ -515,15 +706,21 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
         </AnimatePresence>
 
         {/* ── INSTRUCTION PAD ── */}
+        
         <div className="vr-instruction-pad vr-footer">
+          <div className="vr-instruction-row vr-footer-row">
+            <span className="vr-instruction-key vr-footer-key">←→</span>
+            <span>SELECT</span>
+          </div>
+          <div className="vr-instruction-row vr-footer-row">
+  <span className="vr-instruction-key vr-footer-key">↵</span>
+  <span>OPEN</span>
+</div>
           <div className="vr-instruction-row vr-footer-row">
             <span className="vr-instruction-key vr-footer-key">ESC</span>
             <span>BACK</span>
           </div>
-          <div className="vr-instruction-row vr-footer-row">
-            <span className="vr-instruction-key vr-footer-key">←→</span>
-            <span>SWITCH CARDS</span>
-          </div>
+  
         </div>
 
         {/* ── SUMMON OVERLAY ── */}
@@ -998,7 +1195,7 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
           .vr-corner--bl { bottom: 5px; left: 5px; border-width: 0 0 1px 1px; }
           .vr-corner--br { bottom: 5px; right: 5px; border-width: 0 1px 1px 0; }
 
-          //vr card
+          /* card */
         .vr-card {
   position: relative;
   display: grid;
@@ -1349,6 +1546,5 @@ const [hoverTimeout, setHoverTimeout] = useState(null);
           }
         `}</style>
       </div>
-    </LayoutGroup>
   );
 }

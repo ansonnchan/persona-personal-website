@@ -180,9 +180,8 @@ export default function Skills() {
 
       <div className="skills-footer" aria-hidden="true">
         <div className="skills-footer-row"><span className="skills-footer-key">ESC</span><span>BACK</span></div>
-        <div className="skills-footer-row"><span className="skills-footer-key">←</span><span>PREV</span></div>
-        <div className="skills-footer-row"><span className="skills-footer-key">→</span><span>NEXT</span></div>
-        <div className="skills-footer-row"><span className="skills-footer-key">ENTER</span><span>FLIP</span></div>
+        <div className="skills-footer-row"><span className="skills-footer-key">←→</span><span>SELECT</span></div>
+        <div className="skills-footer-row"><span className="skills-footer-key">↵</span><span>FLIP</span></div>
       </div>
 
       <style>{`
