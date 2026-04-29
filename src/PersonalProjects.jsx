@@ -347,7 +347,7 @@ export default function VelvetRoomProjects() {
                       ease: [0.22, 1, 0.36, 1],
                     }}
 
-                    // FIX #6
+
                     onHoverStart={() => {
                       if (hoverTimerRef.current) {
                         clearTimeout(hoverTimerRef.current);
@@ -362,7 +362,7 @@ export default function VelvetRoomProjects() {
                       }, 300);
                     }}
 
-                    // FIX #7
+           
                     onHoverEnd={() => {
                       if (hoverTimerRef.current) {
                         clearTimeout(hoverTimerRef.current);
@@ -424,7 +424,7 @@ export default function VelvetRoomProjects() {
             </AnimatePresence>
           </section>
 
-          {/* FIX #8 */}
+      
           <aside className="vr-hologram-panel">
             <AnimatePresence mode="wait">
               {activeProject && (
