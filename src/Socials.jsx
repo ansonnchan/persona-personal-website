@@ -77,7 +77,7 @@ export default function Socials() {
       if (e.key === "ArrowUp")    setActive(i => Math.max(0, i - 1));
       if (e.key === "ArrowDown")  setActive(i => Math.min(ITEMS.length - 1, i + 1));
       if (e.key === "Enter")      openExternalLink(ITEMS[active].href);
-      if ((e.key === "Escape" || e.key === "Backspace")) navigate(-1);
+      if ((e.key === "Escape")) navigate(-1);
     };
     window.addEventListener("keydown", onKey);
     return () => window.removeEventListener("keydown", onKey);

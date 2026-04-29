@@ -707,21 +707,22 @@ export default function VelvetRoomProjects() {
 
         {/* ── INSTRUCTION PAD ── */}
         
-        <div className="vr-instruction-pad vr-footer">
-          <div className="vr-instruction-row vr-footer-row">
-            <span className="vr-instruction-key vr-footer-key">←→</span>
-            <span>SELECT</span>
-          </div>
-          <div className="vr-instruction-row vr-footer-row">
-  <span className="vr-instruction-key vr-footer-key">↵</span>
-  <span>OPEN</span>
+        <div className={`vr-footer ${!showIntro ? "mounted" : ""}`}>
+  <div className="vr-footer-row">
+    <span className="vr-footer-key">←→</span>
+    <span>SELECT</span>
+  </div>
+
+  <div className="vr-footer-row">
+    <span className="vr-footer-key">↵</span>
+    <span>OPEN</span>
+  </div>
+
+  <div className="vr-footer-row">
+    <span className="vr-footer-key">ESC</span>
+    <span>BACK</span>
+  </div>
 </div>
-          <div className="vr-instruction-row vr-footer-row">
-            <span className="vr-instruction-key vr-footer-key">ESC</span>
-            <span>BACK</span>
-          </div>
-  
-        </div>
 
         {/* ── SUMMON OVERLAY ── */}
         <AnimatePresence>
@@ -822,6 +823,7 @@ export default function VelvetRoomProjects() {
         {/* ── STYLES ── */}
         <style>{`
           @import url('https://fonts.googleapis.com/css2?family=Anton&family=Barlow+Condensed:wght@300;400;500;600;700&family=Share+Tech+Mono&display=swap');
+          @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,700;1,700&display=swap');
 
           *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -1368,37 +1370,79 @@ export default function VelvetRoomProjects() {
             pointer-events: none;
           }
 
-          /* ──── INSTRUCTION PAD ──── */
-          .vr-instruction-pad {
-            position: fixed;
-            bottom: 20px; right: 28px;
-            display: flex; flex-direction: column;
-            align-items: flex-end; gap: 5px;
-            font-family: 'Bebas Neue', sans-serif;
-            padding: 8px 10px;
-            border-radius: 10px;
-            border: 1px solid rgba(255,255,255,0.28);
-            background: rgba(0,0,0,0.58);
-            box-shadow: 0 8px 22px rgba(0,0,0,0.55);
-            backdrop-filter: blur(2px);
-            z-index: 50;
-            pointer-events: none;
-          }
+          .vr-footer {
+  position: fixed;
+  bottom: 20px;
+  right: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
 
-          .vr-footer-row {
-            display: flex; align-items: center; gap: 8px;
-            font-size: 17px; letter-spacing: 2.2px;
-            color: rgba(255,255,255,0.9);
-            text-shadow: 0 1px 2px rgba(0,0,0,0.9);
-          }
+  padding: 8px 10px;
 
-          .vr-footer-key {
-            border: 1px solid rgba(255,255,255,0.55);
-            border-radius: 5px;
-            background: rgba(0,0,0,0.72);
-            color: #fff; padding: 2px 8px;
-            font-size: 14px; font-family: 'Bebas Neue', sans-serif;
-          }
+  border-radius: 10px;
+
+  border: 1px solid rgba(255,255,255,0.28);
+
+  background: rgba(0,0,0,0.58);
+
+  box-shadow:
+    0 8px 22px rgba(0,0,0,0.55),
+    0 0 18px rgba(87,231,255,0.08);
+
+  backdrop-filter: blur(4px);
+
+  z-index: 50;
+
+  opacity: 0;
+  transform: translateY(8px);
+
+  transition:
+    opacity 0.45s ease,
+    transform 0.45s ease;
+}
+
+.vr-footer.mounted {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.vr-footer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-family: 'Bebas Neue', sans-serif;
+
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 2.2px;
+
+  color: rgba(255,255,255,0.9);
+
+  text-shadow:
+    0 1px 2px rgba(0,0,0,0.9);
+}
+
+.vr-footer-key {
+  border: 1px solid rgba(255,255,255,0.55);
+font-family: 'Bebas Neue', sans-serif;
+  border-radius: 5px;
+
+  background: rgba(0,0,0,0.72);
+
+  color: #fff;
+
+  padding: 2px 8px;
+
+  font-size: 14px;
+
+  min-width: 40px;
+  text-align: center;
+
+  box-shadow:
+    inset 0 0 6px rgba(255,255,255,0.04);
+}
 
           /* ──── MOUSE CURSOR ──── */
           .vr-cursor {

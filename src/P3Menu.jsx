@@ -52,6 +52,7 @@ export default function P3Menu({ onNavigate }) {
   return (
     <>
       <style>{`
+                @import url('https://fonts.googleapis.com/css2?family=Bebas+Neue&family=Barlow+Condensed:ital,wght@0,400;0,700;1,700&display=swap');
         .p3-overlay {
           position: absolute;
           inset: 0;
@@ -220,12 +221,14 @@ export default function P3Menu({ onNavigate }) {
         .p3-hint.mounted { opacity: 1; }
 
        .p3-hint-row {
+       font-family: 'Bebas Neue', sans-serif;
          display: flex; align-items: center; gap: 8px;
          font-size: 17px; letter-spacing: 2.2px;
          color: rgba(255,255,255,0.9);
          text-shadow: 0 1px 2px rgba(0,0,0,0.9);
        }
        .p3-hint-key {
+       font-family: 'Bebas Neue', sans-serif;
          border: 1px solid rgba(255,255,255,0.55);
          border-radius: 5px;
          background: rgba(0,0,0,0.72);

@@ -96,7 +96,7 @@ export default function Skills() {
         e.preventDefault();
         setFlipped((prev) => prev.map((v, i) => (i === active ? !v : v)));
       }
-      if (e.key === "Escape" || e.key === "Backspace") {
+      if (e.key === "Escape") {
         navigate(-1);
       }
     };

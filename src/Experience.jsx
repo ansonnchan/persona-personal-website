@@ -105,7 +105,7 @@ export default function Experience({ src }) {
         e.preventDefault();
         setActive((i) => (i + 1) % MISSIONS.length);
       }
-      if (e.key === "Escape" || e.key === "Backspace") {
+      if (e.key === "Escape") {
         navigate(-1);
       }
     };
@@ -252,8 +252,7 @@ className={`exp-visual-frame ${
 
       <div className={`exp-footer${mounted ? " mounted" : ""}`}>
         <div className="exp-footer-row">
-          <span className="exp-footer-key">UP</span>
-          <span className="exp-footer-key">DOWN</span>
+          <span className="exp-footer-key">↑↓</span>
           <span>SWITCH FILE</span>
         </div>
         <div className="exp-footer-row">
@@ -837,41 +836,69 @@ className={`exp-visual-frame ${
         }
 
         .exp-footer {
-          position: fixed;
-          right: 24px;
-          bottom: 16px;
-          z-index: 5;
-          display: flex;
-          flex-direction: column;
-          align-items: flex-end;
-          gap: 6px;
-          opacity: 0;
-          transition: opacity 0.35s ease 0.5s;
-          pointer-events: none;
-        }
+  position: fixed;
+  bottom: 20px;
+  right: 28px;
 
-        .exp-footer.mounted {
-          opacity: 1;
-        }
+  display: flex;
+  flex-direction: column;
+  align-items: flex-end;
+  gap: 5px;
 
-        .exp-footer-row {
-          display: flex;
-          align-items: center;
-          gap: 7px;
-          color: rgba(255, 255, 255, 0.92);
-          font-family: 'Bebas Neue', sans-serif;
-          letter-spacing: 1px;
-          font-size: 17px;
-          text-shadow: 0 2px 5px rgba(0, 0, 0, 0.68);
-        }
+  padding: 8px 10px;
 
-        .exp-footer-key {
-          border: 1px solid rgba(194, 241, 255, 0.45);
-          padding: 2px 8px;
-          border-radius: 5px;
-          background: rgba(8, 32, 69, 0.66);
-          color: #ffffff;
-        }
+  border-radius: 10px;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+
+  background: rgba(0, 0, 0, 0.58);
+
+  box-shadow:
+    0 8px 22px rgba(0, 0, 0, 0.55);
+
+  backdrop-filter: blur(2px);
+
+  z-index: 50;
+
+  opacity: 0;
+  transition: opacity 0.4s ease 0.6s;
+
+  pointer-events: none;
+}
+
+.exp-footer.mounted {
+  opacity: 1;
+}
+
+.exp-footer-row {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  font-family: 'Bebas Neue', sans-serif;
+  font-size: 17px;
+  letter-spacing: 2.2px;
+
+  color: rgba(255,255,255,0.9);
+
+  text-shadow:
+    0 1px 2px rgba(0, 0, 0, 0.9);
+}
+
+.exp-footer-key {
+  border: 1px solid rgba(255,255,255,0.55);
+
+  border-radius: 5px;
+
+  background: rgba(0, 0, 0, 0.72);
+
+  color: #fff;
+
+  padding: 2px 8px;
+
+  font-size: 14px;
+
+  line-height: 1;
+}
 
         @keyframes exp-card-in {
           from {
