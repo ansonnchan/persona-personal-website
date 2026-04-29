@@ -10,20 +10,20 @@ const MISSIONS = [
     id: "unisa",
     missionCode: "MISSION_01",
    operation: "RECON",
-    role: "Research Assistant",
-    company: "Adelaide University",
+    role: "Undergraduate Researcher",
+    company: "University of South Australia",
     lead: "Shinjiro Aragaki",
     status: "COMPLETE",
     summary:
       "Computational modeling under Dr. Terence Chan",
-    dates: "June 2025 - August 2025",
-    techStack: ["Python", "MATLAB"],
+    dates: "July 2025 - August 2025",
+    techStack: ["TypeScript", "React","MATLAB"],
     achievements: [
-  "Developed particle system simulation of multi-body physical interactions",
-  "Implemented Conway’s Game of Life to explore emergent cellular behavior",
-  "Designed structured state logging for temporal analysis of system dynamics"
+  "Built a deterministic Game of Life simulation engine for batch experiments",
+  "Studied emergent behavior via entropy, stability, and structure metrics",
+  "Exported results to MATLAB for statistical analysis and visualization"
 ],
-    unlocked: ["Computational Modeling", "Data Simulation"],
+    unlocked: ["Computational Modeling", "Data Simulation", "Statistical Analysis"],
     visual: missionVisualC,
   },
   {
