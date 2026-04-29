@@ -242,8 +242,7 @@ export default function P3Menu({ onNavigate }) {
           <span>anson's</span>
           <span>persona</span>
         </div>
-        <div className="p3-stripe" />
-        <div className="p3-stripe2" />
+ 
 
         <nav className="p3-menu">
           {ITEMS.map((item, i) => {
