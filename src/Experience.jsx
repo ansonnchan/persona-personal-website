@@ -16,7 +16,7 @@ const MISSIONS = [
     status: "COMPLETE",
     summary:
       "Computational modeling under Dr. Terence Chan",
-    dates: "July 2025 - August 2025",
+    dates: "June 2025 - August 2025",
     techStack: ["TypeScript", "React","MATLAB"],
     achievements: [
   "Built a deterministic Game of Life simulation engine for batch experiments",
