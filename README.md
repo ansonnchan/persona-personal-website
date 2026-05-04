@@ -8,4 +8,4 @@ Special thanks and foundational code credit to @blairxu13.
 
 ## Status
 
-DISCONTINUED::: New portfolio: wwww.ansonnchan.dev
+DISCONTINUED::: New portfolio: [LINK TO PORTFOLIO](wwww.ansonnchan.dev)
