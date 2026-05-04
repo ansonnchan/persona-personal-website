@@ -8,4 +8,4 @@ Special thanks and foundational code credit to @blairxu13.
 
 ## Status
 
-Active portfolio project. I will continue updating content, projects, and experience as I grow.
+DISCONTINUED::: New portfolio: wwww.ansonnchan.dev
